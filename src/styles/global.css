@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-cream: 245 244 240;
+    --color-charcoal: 26 26 26;
+    --color-mid: 107 107 107;
+    --color-border: 224 222 217;
+    --color-accent: 42 42 42;
+  }
+
+  .dark {
+    --color-cream: 17 17 17;
+    --color-charcoal: 240 239 233;
+    --color-mid: 136 136 136;
+    --color-border: 37 37 37;
+    --color-accent: 229 227 221;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream text-charcoal antialiased;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  .section-eyebrow {
+    @apply text-xs font-medium tracking-[0.2em] uppercase text-mid;
+  }
+
+  .section-headline {
+    @apply text-3xl md:text-4xl lg:text-5xl font-serif leading-tight text-charcoal;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-7 py-3.5 bg-charcoal text-cream text-sm font-medium tracking-wide
+           hover:bg-accent transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-7 py-3.5 border border-charcoal text-charcoal text-sm font-medium tracking-wide
+           hover:bg-charcoal hover:text-cream transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal;
+  }
+
+  .divider {
+    @apply border-t border-border;
+  }
+
+  .form-field {
+    @apply block w-full px-4 py-3 bg-transparent border border-border text-charcoal placeholder:text-mid
+           focus:outline-none focus:border-charcoal transition-colors duration-150 text-sm;
+  }
+}
+
+/* Waveform animation for hero */
+@keyframes wave-pulse {
+  0%, 100% { transform: scaleY(1); opacity: 0.4; }
+  50% { transform: scaleY(1.8); opacity: 0.9; }
+}
+
+.wave-bar {
+  animation: wave-pulse var(--duration, 1.2s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}

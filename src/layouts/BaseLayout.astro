@@ -1,0 +1,89 @@
+---
+import '../styles/global.css';
+import type { Translations } from '../i18n/en';
+
+interface Props {
+  t: Translations;
+  canonicalUrl: string;
+  alternateUrl: string;
+}
+
+const { t, canonicalUrl, alternateUrl } = Astro.props;
+const isEn = t.lang === 'en';
+const alternateLang = isEn ? 'es' : 'en';
+---
+
+<!doctype html>
+<html lang={t.lang} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{t.site.title}</title>
+    <meta name="description" content={t.site.description} />
+
+    <!-- Canonical & hreflang -->
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang={t.lang} href={canonicalUrl} />
+    <link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
+    <link rel="alternate" hreflang="x-default" href={isEn ? canonicalUrl : alternateUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={t.site.title} />
+    <meta property="og:description" content={t.site.description} />
+    <meta property="og:image" content={`https://auden.studio${t.site.ogImage}`} />
+    <meta property="og:locale" content={t.lang === 'en' ? 'en_US' : 'es_ES'} />
+
+    <!-- Twitter / X card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={t.site.title} />
+    <meta name="twitter:description" content={t.site.description} />
+    <meta name="twitter:image" content={`https://auden.studio${t.site.ogImage}`} />
+
+    <!-- JSON-LD structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Organization',
+          '@id': 'https://auden.studio/#org',
+          name: 'Auden',
+          url: 'https://auden.studio',
+          description: 'Sonic branding agency creating original sonic identities for brands.',
+          sameAs: [],
+        },
+        {
+          '@type': 'WebSite',
+          '@id': 'https://auden.studio/#website',
+          url: 'https://auden.studio',
+          name: 'Auden',
+          publisher: { '@id': 'https://auden.studio/#org' },
+        },
+        {
+          '@type': 'Service',
+          '@id': 'https://auden.studio/#service',
+          name: 'Sonic Branding',
+          provider: { '@id': 'https://auden.studio/#org' },
+          description: 'Original sonic identities for brands — audio logos, sonic systems, and strategic brand sound.',
+          areaServed: 'Worldwide',
+        },
+      ],
+    })} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap.xml" />
+
+    <!-- Theme: prevent flash of incorrect theme -->
+    <script is:inline>
+      const theme = localStorage.getItem('theme')
+        ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

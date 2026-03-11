@@ -1,0 +1,82 @@
+---
+import type { Translations } from '../i18n/en';
+
+interface Props {
+  t: Translations;
+}
+
+const { t } = Astro.props;
+---
+
+<section
+  id="packages"
+  class="py-28 md:py-36 px-6 md:px-10 bg-charcoal text-cream"
+  aria-labelledby="packages-headline"
+>
+  <div class="max-w-8xl mx-auto">
+    <!-- Header -->
+    <div class="mb-16 md:mb-24">
+      <p class="text-xs font-medium tracking-[0.2em] uppercase text-mid mb-5">
+        {t.packages.eyebrow}
+      </p>
+      <h2 id="packages-headline" class="text-3xl md:text-4xl lg:text-5xl font-serif leading-tight text-cream">
+        {t.packages.headline}
+      </h2>
+    </div>
+
+    <!-- Package cards -->
+    <div class="grid md:grid-cols-3 gap-px bg-white/10 dark:bg-black/10">
+      {t.packages.items.map((pkg) => (
+        <article
+          class:list={[
+            'relative flex flex-col p-8 md:p-10',
+            pkg.featured ? 'bg-white/8 dark:bg-black/8' : 'bg-charcoal',
+          ]}
+        >
+          {pkg.featured && (
+            <div class="absolute top-0 left-0 right-0 h-px bg-cream/30" aria-hidden="true" />
+          )}
+
+          <!-- Tier number -->
+          <span class="text-[10px] font-medium tracking-[0.25em] text-mid mb-8">{pkg.tier}</span>
+
+          <!-- Name & price -->
+          <div class="mb-6">
+            <h3 class="text-xl font-serif text-cream mb-3">{pkg.name}</h3>
+            <p class="text-3xl font-serif text-cream">{pkg.price}</p>
+          </div>
+
+          <!-- Positioning -->
+          <p class="text-sm text-mid leading-relaxed mb-8 border-t border-white/10 dark:border-black/10 pt-6">
+            {pkg.positioning}
+          </p>
+
+          <!-- Includes -->
+          <ul class="flex flex-col gap-2.5 mb-8 flex-1" aria-label={`${pkg.name} includes`}>
+            {pkg.includes.map((item) => (
+              <li class="flex items-start gap-3 text-sm text-cream/80">
+                <span class="mt-[5px] w-1 h-1 rounded-full bg-mid flex-shrink-0" aria-hidden="true" />
+                {item}
+              </li>
+            ))}
+          </ul>
+
+          <!-- Result -->
+          {pkg.result && (
+            <p class="text-xs text-mid border-t border-white/10 dark:border-black/10 pt-6 leading-relaxed italic">
+              {pkg.result}
+            </p>
+          )}
+
+          <!-- CTA -->
+          <a
+            href="#contact"
+            class="mt-8 inline-flex items-center justify-center py-3.5 px-6 border border-cream/30 text-cream text-sm font-medium tracking-wide hover:bg-cream hover:text-charcoal transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cream"
+          >
+            {t.nav.contact}
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

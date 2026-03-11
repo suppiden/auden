@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import Hero from '../../sections/Hero.astro';
+import Offer from '../../sections/Offer.astro';
+import Packages from '../../sections/Packages.astro';
+import Extras from '../../sections/Extras.astro';
+import Portfolio from '../../sections/Portfolio.astro';
+import Contact from '../../sections/Contact.astro';
+import { getTranslations } from '../../i18n/utils';
+
+const t = getTranslations('es');
+const canonicalUrl = 'https://auden.studio/es/';
+const alternateUrl = 'https://auden.studio/';
+---
+
+<BaseLayout t={t} canonicalUrl={canonicalUrl} alternateUrl={alternateUrl}>
+  <Nav t={t} />
+  <main id="main-content">
+    <Hero t={t} />
+    <Offer t={t} />
+    <Packages t={t} />
+    <Extras t={t} />
+    <Portfolio t={t} />
+    <Contact t={t} />
+  </main>
+  <Footer t={t} />
+</BaseLayout>

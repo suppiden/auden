@@ -1,0 +1,40 @@
+  Project structure:
+  src/
+    layouts/BaseLayout.astro   — SEO head, JSON-LD, hreflang, OG/Twitter
+    components/
+      Nav.astro                — sticky nav with mobile menu
+      Footer.astro
+      ContactForm.tsx          — React island (EmailJS)
+    sections/
+      Hero.astro               — full-viewport, animated waveform bars
+      Offer.astro              — 3 brand pillars
+      Packages.astro           — dark section, 3 pricing tiers
+      Extras.astro             — add-on list
+      Portfolio.astro          — data-driven, graceful empty state
+      Contact.astro            — 2-col layout with React form island
+    i18n/en.ts + es.ts        — all copy centralized
+    data/portfolio.ts          — add items here when ready
+    pages/index.astro          — / (English)
+    pages/es/index.astro       — /es/ (Spanish)
+    pages/sitemap.xml.ts       — hand-rolled sitemap
+
+  ---
+  Next steps before going live:
+
+  ┌───────────────────────┬──────────────────────────────────────────────────────────────┐
+  │         What          │                            Where                             │
+  ├───────────────────────┼──────────────────────────────────────────────────────────────┤
+  │ Add logo image        │ Replace AUDEN text in Nav.astro + Footer.astro               │
+  ├───────────────────────┼──────────────────────────────────────────────────────────────┤
+  │ Create OG image       │ public/og-image.jpg (1200×630)                               │
+  ├───────────────────────┼──────────────────────────────────────────────────────────────┤
+  │ Wire contact form     │ Copy .env.example → .env, fill EmailJS keys                  │
+  ├───────────────────────┼──────────────────────────────────────────────────────────────┤
+  │ Set external form URL │ PUBLIC_EXTERNAL_FORM_URL in .env                             │
+  ├───────────────────────┼──────────────────────────────────────────────────────────────┤
+  │ Add brand font        │ src/styles/global.css → swap system stack                    │
+  ├───────────────────────┼──────────────────────────────────────────────────────────────┤
+  │ Add portfolio items   │ src/data/portfolio.ts                                        │
+  ├───────────────────────┼──────────────────────────────────────────────────────────────┤
+  │ Set real domain       │ Update https://auden.studio in astro.config.mjs if different │
+  └───────────────────────┴──────────────────────────────────────────────────────────────┘

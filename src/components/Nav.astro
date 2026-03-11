@@ -1,0 +1,144 @@
+---
+import type { Translations } from '../i18n/en';
+
+interface Props {
+  t: Translations;
+}
+
+const { t } = Astro.props;
+---
+
+<header
+  id="site-nav"
+  class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+  data-nav
+>
+  <nav
+    class="max-w-8xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between"
+    aria-label="Main navigation"
+  >
+    <!-- Logo -->
+    <a href={t.lang === 'es' ? '/es/' : '/'} class="flex items-center" aria-label="Auden home">
+      <!-- Replace with <img> when logo asset is available -->
+      <span class="text-lg font-serif tracking-widest text-charcoal">AUDEN</span>
+    </a>
+
+    <!-- Desktop links -->
+    <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-mid">
+      <li>
+        <a href="#offer" class="hover:text-charcoal transition-colors">{t.nav.offer}</a>
+      </li>
+      <li>
+        <a href="#work" class="hover:text-charcoal transition-colors">{t.nav.work}</a>
+      </li>
+      <li>
+        <a href="#contact" class="hover:text-charcoal transition-colors">{t.nav.contact}</a>
+      </li>
+    </ul>
+
+    <!-- Right side -->
+    <div class="flex items-center gap-5">
+      <a
+        href={t.nav.langSwitchHref}
+        class="text-xs font-medium tracking-widest uppercase text-mid hover:text-charcoal transition-colors"
+        aria-label={`Switch to ${t.nav.langSwitch}`}
+      >
+        {t.nav.langSwitch}
+      </a>
+
+      <!-- Theme toggle -->
+      <button
+        class="flex items-center justify-center w-8 h-8 text-mid hover:text-charcoal transition-colors"
+        aria-label="Toggle theme"
+        data-theme-toggle
+      >
+        <!-- Sun: shown in dark mode (click to go light) -->
+        <svg data-sun-icon class="hidden w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+        </svg>
+        <!-- Moon: shown in light mode (click to go dark) -->
+        <svg data-moon-icon class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+
+      <a href="#contact" class="hidden md:inline-flex btn-primary text-xs py-2.5 px-5">
+        {t.nav.contact}
+      </a>
+
+      <!-- Mobile menu button -->
+      <button
+        class="md:hidden flex flex-col gap-1.5 p-1"
+        aria-label="Open menu"
+        aria-expanded="false"
+        data-menu-toggle
+      >
+        <span class="block w-5 h-px bg-charcoal transition-all" data-line></span>
+        <span class="block w-5 h-px bg-charcoal transition-all" data-line></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div
+    class="md:hidden hidden bg-cream border-t border-border px-6 py-6 flex flex-col gap-6"
+    data-mobile-menu
+  >
+    <a href="#offer" class="text-base font-medium text-charcoal" data-mobile-link>{t.nav.offer}</a>
+    <a href="#work" class="text-base font-medium text-charcoal" data-mobile-link>{t.nav.work}</a>
+    <a href="#contact" class="text-base font-medium text-charcoal" data-mobile-link>{t.nav.contact}</a>
+    <a href="#contact" class="btn-primary text-center mt-2">{t.nav.contact}</a>
+  </div>
+</header>
+
+<script>
+  const nav = document.querySelector('[data-nav]') as HTMLElement;
+  const toggle = document.querySelector('[data-menu-toggle]') as HTMLButtonElement;
+  const mobileMenu = document.querySelector('[data-mobile-menu]') as HTMLElement;
+  const mobileLinks = document.querySelectorAll('[data-mobile-link]');
+  const themeToggle = document.querySelector('[data-theme-toggle]') as HTMLButtonElement;
+  const sunIcon = document.querySelector('[data-sun-icon]') as SVGElement;
+  const moonIcon = document.querySelector('[data-moon-icon]') as SVGElement;
+
+  // Sync theme icons with current state
+  function syncThemeIcons() {
+    const isDark = document.documentElement.classList.contains('dark');
+    sunIcon.classList.toggle('hidden', !isDark);
+    moonIcon.classList.toggle('hidden', isDark);
+  }
+
+  syncThemeIcons();
+
+  themeToggle?.addEventListener('click', () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    syncThemeIcons();
+  });
+
+  // Scroll backdrop
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) {
+      nav.classList.add('bg-cream/95', 'backdrop-blur-sm', 'border-b', 'border-border');
+    } else {
+      nav.classList.remove('bg-cream/95', 'backdrop-blur-sm', 'border-b', 'border-border');
+    }
+  });
+
+  // Mobile menu toggle
+  toggle?.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden', !isOpen);
+    mobileMenu.classList.toggle('flex', isOpen);
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  // Close mobile menu on link click
+  mobileLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      mobileMenu.classList.remove('flex');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
