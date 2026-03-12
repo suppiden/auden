@@ -10,22 +10,20 @@ export default {
         mid: 'rgb(var(--color-mid) / <alpha-value>)',
         border: 'rgb(var(--color-border) / <alpha-value>)',
         accent: 'rgb(var(--color-accent) / <alpha-value>)',
+        fire: 'rgb(var(--color-fire) / <alpha-value>)',
       },
       fontFamily: {
         sans: [
+          '"Helvetica Neue LT Pro"',
           'ui-sans-serif',
           '-apple-system',
           'BlinkMacSystemFont',
-          '"Segoe UI"',
-          'system-ui',
           'sans-serif',
         ],
         serif: [
-          'ui-serif',
-          'Georgia',
-          '"Times New Roman"',
-          'Times',
-          'serif',
+          '"Helvetica Neue LT Pro"',
+          'ui-sans-serif',
+          'sans-serif',
         ],
       },
       spacing: {

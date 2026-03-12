@@ -18,21 +18,21 @@ const { t } = Astro.props;
     aria-label="Main navigation"
   >
     <!-- Logo -->
-    <a href={t.lang === 'es' ? '/es/' : '/'} class="flex items-center" aria-label="Auden home">
-      <!-- Replace with <img> when logo asset is available -->
-      <span class="text-lg font-serif tracking-widest text-charcoal">AUDEN</span>
+    <a href={t.lang === 'es' ? '/es/' : '/'} class="flex items-center" aria-label="Auden home" data-logo>
+      <img src="/auden_u_palabra_white.png" alt="Auden" class="hidden dark:block" style="height: 2.25rem; transition: height 0.4s cubic-bezier(0.16,1,0.3,1);" />
+      <img src="/auden_u_palabra_black.png" alt="Auden" class="block dark:hidden" style="height: 2.25rem; transition: height 0.4s cubic-bezier(0.16,1,0.3,1);" />
     </a>
 
     <!-- Desktop links -->
     <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-mid">
       <li>
-        <a href="#offer" class="hover:text-charcoal transition-colors">{t.nav.offer}</a>
+        <a href="#offer" class="nav-link hover:text-charcoal transition-colors pb-0.5">{t.nav.offer}</a>
       </li>
       <li>
-        <a href="#work" class="hover:text-charcoal transition-colors">{t.nav.work}</a>
+        <a href="#work" class="nav-link hover:text-charcoal transition-colors pb-0.5">{t.nav.work}</a>
       </li>
       <li>
-        <a href="#contact" class="hover:text-charcoal transition-colors">{t.nav.contact}</a>
+        <a href="#contact" class="nav-link hover:text-charcoal transition-colors pb-0.5">{t.nav.contact}</a>
       </li>
     </ul>
 
@@ -116,14 +116,7 @@ const { t } = Astro.props;
     syncThemeIcons();
   });
 
-  // Scroll backdrop
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 20) {
-      nav.classList.add('bg-cream/95', 'backdrop-blur-sm', 'border-b', 'border-border');
-    } else {
-      nav.classList.remove('bg-cream/95', 'backdrop-blur-sm', 'border-b', 'border-border');
-    }
-  });
+  // Scroll backdrop handled in BaseLayout to co-ordinate with logo scale
 
   // Mobile menu toggle
   toggle?.addEventListener('click', () => {

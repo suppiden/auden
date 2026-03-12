@@ -23,13 +23,11 @@ const alternateLang = isEn ? 'es' : 'en';
     <title>{t.site.title}</title>
     <meta name="description" content={t.site.description} />
 
-    <!-- Canonical & hreflang -->
     <link rel="canonical" href={canonicalUrl} />
     <link rel="alternate" hreflang={t.lang} href={canonicalUrl} />
     <link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
     <link rel="alternate" hreflang="x-default" href={isEn ? canonicalUrl : alternateUrl} />
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={t.site.title} />
@@ -37,60 +35,130 @@ const alternateLang = isEn ? 'es' : 'en';
     <meta property="og:image" content={`https://auden.studio${t.site.ogImage}`} />
     <meta property="og:locale" content={t.lang === 'en' ? 'en_US' : 'es_ES'} />
 
-    <!-- Twitter / X card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={t.site.title} />
     <meta name="twitter:description" content={t.site.description} />
     <meta name="twitter:image" content={`https://auden.studio${t.site.ogImage}`} />
 
-    <!-- JSON-LD structured data -->
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@graph': [
-        {
-          '@type': 'Organization',
-          '@id': 'https://auden.studio/#org',
-          name: 'Auden',
-          url: 'https://auden.studio',
-          description: 'Sonic branding agency creating original sonic identities for brands.',
-          sameAs: [],
-        },
-        {
-          '@type': 'WebSite',
-          '@id': 'https://auden.studio/#website',
-          url: 'https://auden.studio',
-          name: 'Auden',
-          publisher: { '@id': 'https://auden.studio/#org' },
-        },
-        {
-          '@type': 'Service',
-          '@id': 'https://auden.studio/#service',
-          name: 'Sonic Branding',
-          provider: { '@id': 'https://auden.studio/#org' },
-          description: 'Original sonic identities for brands — audio logos, sonic systems, and strategic brand sound.',
-          areaServed: 'Worldwide',
-        },
+        { '@type': 'Organization', '@id': 'https://auden.studio/#org', name: 'Auden', url: 'https://auden.studio', description: 'Sonic branding agency.' },
+        { '@type': 'WebSite', '@id': 'https://auden.studio/#website', url: 'https://auden.studio', name: 'Auden', publisher: { '@id': 'https://auden.studio/#org' } },
+        { '@type': 'Service', '@id': 'https://auden.studio/#service', name: 'Sonic Branding', provider: { '@id': 'https://auden.studio/#org' }, areaServed: 'Worldwide' },
       ],
     })} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap.xml" />
 
-    <!-- Theme: prevent flash of incorrect theme (defaults dark) -->
     <script is:inline>
       const theme = localStorage.getItem('theme') ?? 'dark';
       document.documentElement.classList.toggle('dark', theme === 'dark');
     </script>
   </head>
   <body>
+    <div class="cursor-dot" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true"></div>
+
     <slot />
+
     <script>
+      // ── Custom cursor ─────────────────────────────────────────────
+      const dot  = document.querySelector('.cursor-dot')  as HTMLElement | null;
+      const ring = document.querySelector('.cursor-ring') as HTMLElement | null;
+
+      if (dot && ring) {
+        let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+        let rx = mx, ry = my;
+
+        document.addEventListener('mousemove', (e) => {
+          mx = e.clientX; my = e.clientY;
+          dot.style.left = mx + 'px';
+          dot.style.top  = my + 'px';
+        });
+
+        (function tick() {
+          rx += (mx - rx) * 0.1;
+          ry += (my - ry) * 0.1;
+          ring.style.left = rx + 'px';
+          ring.style.top  = ry + 'px';
+          requestAnimationFrame(tick);
+        })();
+
+        document.querySelectorAll('a, button, [data-tilt]').forEach(el => {
+          el.addEventListener('mouseenter', () => document.body.classList.add('is-hovering'));
+          el.addEventListener('mouseleave', () => document.body.classList.remove('is-hovering'));
+        });
+      }
+
+      // ── Text scramble ─────────────────────────────────────────────
+      function scramble(el: HTMLElement, duration = 1500) {
+        const chars    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#?%&';
+        const original = el.textContent ?? '';
+        el.setAttribute('aria-label', original);
+        let start: number | null = null;
+
+        function step(ts: number) {
+          if (!start) start = ts;
+          const p        = Math.min((ts - start) / duration, 1);
+          const revealed = Math.floor(p * original.length);
+          el.textContent = original.split('').map((c, i) => {
+            if (c === ' ' || c === '.' || c === ',' || c === '—') return c;
+            if (i < revealed) return c;
+            return chars[Math.floor(Math.random() * chars.length)];
+          }).join('');
+          if (p < 1) requestAnimationFrame(step);
+          else el.textContent = original;
+        }
+        requestAnimationFrame(step);
+      }
+
+      document.querySelectorAll<HTMLElement>('[data-scramble]').forEach(el => {
+        setTimeout(() => scramble(el), 400);
+      });
+
+      // ── 3D tilt ───────────────────────────────────────────────────
+      document.querySelectorAll<HTMLElement>('[data-tilt]').forEach(el => {
+        el.addEventListener('mousemove', (e) => {
+          const r = el.getBoundingClientRect();
+          const x = ((e.clientX - r.left) / r.width  - 0.5) * 14;
+          const y = ((e.clientY - r.top)  / r.height - 0.5) * -14;
+          el.style.transform  = `perspective(900px) rotateX(${y}deg) rotateY(${x}deg) translateZ(6px)`;
+          el.style.transition = 'transform 0.06s ease';
+        });
+        el.addEventListener('mouseleave', () => {
+          el.style.transform  = '';
+          el.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+        });
+      });
+
+      // ── Logo scale on scroll ──────────────────────────────────────
+      const logoImgs = document.querySelectorAll<HTMLElement>('[data-logo] img');
+      const nav      = document.querySelector('[data-nav]') as HTMLElement | null;
+
+      window.addEventListener('scroll', () => {
+        const atTop = window.scrollY < 20;
+        logoImgs.forEach(img => { img.style.height = atTop ? '2.25rem' : '1.75rem'; });
+        if (nav) {
+          if (!atTop) {
+            nav.classList.add('bg-cream/95', 'backdrop-blur-sm', 'border-b', 'border-border');
+          } else {
+            nav.classList.remove('bg-cream/95', 'backdrop-blur-sm', 'border-b', 'border-border');
+          }
+        }
+      }, { passive: true });
+
+      // ── Scroll reveals ────────────────────────────────────────────
       const io = new IntersectionObserver((entries) => {
         entries.forEach(e => {
           if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
         });
-      }, { threshold: 0.12 });
-      document.querySelectorAll('[data-reveal], [data-reveal-stagger]').forEach(el => io.observe(el));
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll(
+        '[data-reveal], [data-reveal-stagger], [data-reveal-text], [data-reveal-wipe]'
+      ).forEach(el => io.observe(el));
     </script>
   </body>
 </html>

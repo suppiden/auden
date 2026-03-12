@@ -44,73 +44,55 @@ export const es: Translations = {
       },
     ],
   },
-  packages: {
-    eyebrow: 'Oferta',
-    headline: 'Tres niveles de identidad sonora.',
-    items: [
+  identity: {
+    eyebrow: 'Nuestra oferta',
+    headline: 'Auden Sonic Identity.',
+    description:
+      'Nuestro producto estrella. Una identidad sonora completa creada desde cero, siguiendo el Auden Sonic Method — desde la investigación de marca hasta la entrega final.',
+    includes: [
+      'Audio logo original + variaciones',
+      'Documento completo de marca sonora',
+      'Mood, emoción y carácter sonoro',
+      'Guía estratégica de identidad sonora',
+      'Derechos de uso comercial completos',
+    ],
+    cta: 'Iniciar un proyecto',
+    methodEyebrow: 'Auden Sonic Method',
+    methodHeadline: 'Cómo trabajamos.',
+    phases: [
       {
-        tier: '01',
-        name: 'Sonic Branding',
-        price: '800€',
-        positioning: 'Para marcas que necesitan una firma sonora clara y profesional para sus contenidos digitales.',
-        result: 'Una identidad de audio distintiva que refuerza el reconocimiento de marca.',
-        includes: [
-          'Audio logo original (2–4 seg)',
-          '1 variación funcional',
-          'Mood sonoro esencial',
-          'Emoción y carácter principal',
-          'Documento básico de uso',
-          'Derechos de uso comercial digital',
-          '1 ronda de revisión',
-        ],
+        number: '01',
+        name: 'Brand Decode',
+        description:
+          'Estudiamos tu marca, audiencia y entorno competitivo para entender exactamente qué debe comunicar tu sonido.',
       },
       {
-        tier: '02',
-        name: 'Sonic Identity Pro',
-        price: '1.500€',
-        positioning: 'Para marcas activas que generan contenido y campañas de forma frecuente.',
-        result: 'Un sistema sonoro completo para publicidad y redes sociales.',
-        includes: [
-          'Audio logo + 2 variaciones',
-          'Bed musical (10–20 seg)',
-          'Adaptación sonora para 1 canal',
-          'Mood sonoro definido',
-          'Mini guía de uso',
-          'Derechos de uso comercial ampliados',
-          '2 rondas de revisión',
-        ],
-        featured: true,
+        number: '02',
+        name: 'Sonic Territory',
+        description:
+          'Mapeamos el paisaje sonoro de tu categoría y definimos el territorio distintivo que tu marca va a ocupar.',
       },
       {
-        tier: '03',
-        name: 'Sonic Branding Estratégico',
-        price: '2.500€',
-        positioning:
-          'Para marcas que buscan coherencia, posicionamiento a largo plazo y escalabilidad total.',
-        result: 'Una identidad sonora completa diseñada para durar y escalar.',
-        includes: [
-          'Audio logo completo + variaciones',
-          'Sistema sonoro de marca completo',
-          'Bed musical, transición y cierre',
-          'Mood estratégico, emoción, energía, timbres y tono',
-          'Adaptaciones para 2–3 formatos',
-          'Guía estratégica de identidad sonora',
-          'Derechos de uso comercial completos',
-          '3 rondas de revisión',
-          '1 mes de soporte ligero para ajustes',
-        ],
+        number: '03',
+        name: 'Sonic Blueprint',
+        description:
+          'Diseñamos la arquitectura sonora completa: mood, tonalidad, emoción y todos los elementos sonoros de firma.',
+      },
+      {
+        number: '04',
+        name: 'Sonic Production',
+        description:
+          'Producimos y entregamos todos los activos sonoros finales, listos para desplegarse en cada formato y punto de contacto.',
       },
     ],
-  },
-  extras: {
-    eyebrow: 'Complementos',
-    headline: 'Amplía tu sistema sonoro.',
-    items: [
-      { name: 'Adaptaciones adicionales', price: '200€' },
-      { name: 'Pieza sonora individual', price: '400€' },
-      { name: 'Nuevos canales o formatos', price: '300€' },
-      { name: 'Mantenimiento sonoro mensual', price: '150€ / mes' },
-      { name: 'Consultoría estratégica de identidad sonora', price: '300€' },
+    servicesEyebrow: 'Servicios individuales',
+    servicesHeadline: 'A la carta.',
+    services: [
+      { name: 'Adaptaciones adicionales' },
+      { name: 'Pieza sonora individual' },
+      { name: 'Nuevos canales o formatos' },
+      { name: 'Mantenimiento sonoro mensual' },
+      { name: 'Consultoría estratégica de identidad sonora' },
     ],
   },
   work: {

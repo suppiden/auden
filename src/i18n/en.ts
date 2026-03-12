@@ -42,73 +42,55 @@ export const en = {
       },
     ],
   },
-  packages: {
-    eyebrow: 'Offer',
-    headline: 'Three tiers of sonic identity.',
-    items: [
+  identity: {
+    eyebrow: 'Our offer',
+    headline: 'Auden Sonic Identity.',
+    description:
+      'Our flagship product. A complete sonic identity built from scratch, following the Auden Sonic Method — from brand research to final delivery.',
+    includes: [
+      'Original audio logo + variations',
+      'Complete sonic brand document',
+      'Mood, emotion & sonic character',
+      'Strategic sonic identity guide',
+      'Full commercial usage rights',
+    ],
+    cta: 'Start a project',
+    methodEyebrow: 'Auden Sonic Method',
+    methodHeadline: 'How we work.',
+    phases: [
       {
-        tier: '01',
-        name: 'Sonic Branding',
-        price: '800€',
-        positioning: 'For brands that need a clear, professional sonic signature for digital content.',
-        result: 'A distinct audio identity that reinforces brand recognition.',
-        includes: [
-          'Original audio logo (2–4 sec)',
-          '1 functional variation',
-          'Essential sonic mood',
-          'Core emotion & character',
-          'Basic usage document',
-          'Commercial digital usage rights',
-          '1 revision round',
-        ],
+        number: '01',
+        name: 'Brand Decode',
+        description:
+          'We study your brand, audience, and competitive landscape to understand exactly what your sound needs to communicate.',
       },
       {
-        tier: '02',
-        name: 'Sonic Identity Pro',
-        price: '1,500€',
-        positioning: 'For active brands producing content and campaigns at regular frequency.',
-        result: 'A complete sonic system for advertising and social media.',
-        includes: [
-          'Audio logo + 2 variations',
-          'Music bed (10–20 sec)',
-          'Sonic adaptation for 1 channel',
-          'Defined sonic mood',
-          'Mini usage guide',
-          'Expanded commercial rights',
-          '2 revision rounds',
-        ],
-        featured: true,
+        number: '02',
+        name: 'Sonic Territory',
+        description:
+          'We map the sonic landscape of your category and define the distinctive territory your brand will own.',
       },
       {
-        tier: '03',
-        name: 'Strategic Sonic Branding',
-        price: '2,500€',
-        positioning:
-          'For brands seeking coherence, long-term positioning, and full scalability.',
-        result: 'A comprehensive sonic identity built to last and scale.',
-        includes: [
-          'Full audio logo + variations',
-          'Complete sonic brand system',
-          'Music bed, transition & ending',
-          'Strategic mood, emotion, energy, timbre & tone',
-          'Adaptations for 2–3 formats',
-          'Strategic sonic identity guide',
-          'Full commercial usage rights',
-          '3 revision rounds',
-          '1 month of light refinement support',
-        ],
+        number: '03',
+        name: 'Sonic Blueprint',
+        description:
+          'We design the complete sonic architecture — mood, tonality, emotion, and all signature sonic elements.',
+      },
+      {
+        number: '04',
+        name: 'Sonic Production',
+        description:
+          'We produce and deliver all final sonic assets, ready to deploy across every format and touchpoint.',
       },
     ],
-  },
-  extras: {
-    eyebrow: 'Add-ons',
-    headline: 'Extend your sonic system.',
-    items: [
-      { name: 'Additional adaptations', price: '200€' },
-      { name: 'Individual sonic piece', price: '400€' },
-      { name: 'New channels or formats', price: '300€' },
-      { name: 'Monthly sonic maintenance', price: '150€ / month' },
-      { name: 'Strategic identity consultancy', price: '300€' },
+    servicesEyebrow: 'Individual services',
+    servicesHeadline: 'À la carte.',
+    services: [
+      { name: 'Additional adaptations' },
+      { name: 'Individual sonic piece' },
+      { name: 'New channels or formats' },
+      { name: 'Monthly sonic maintenance' },
+      { name: 'Strategic identity consultancy' },
     ],
   },
   work: {

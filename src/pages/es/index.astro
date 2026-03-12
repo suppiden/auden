@@ -5,7 +5,7 @@ import Footer from '../../components/Footer.astro';
 import Hero from '../../sections/Hero.astro';
 import Offer from '../../sections/Offer.astro';
 import Packages from '../../sections/Packages.astro';
-import Extras from '../../sections/Extras.astro';
+import Marquee from '../../components/Marquee.astro';
 import Portfolio from '../../sections/Portfolio.astro';
 import Contact from '../../sections/Contact.astro';
 import { getTranslations } from '../../i18n/utils';
@@ -19,9 +19,9 @@ const alternateUrl = 'https://auden.studio/';
   <Nav t={t} />
   <main id="main-content">
     <Hero t={t} />
+    <Marquee />
     <Offer t={t} />
     <Packages t={t} />
-    <Extras t={t} />
     <Portfolio t={t} />
     <Contact t={t} />
   </main>

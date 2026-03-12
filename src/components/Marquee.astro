@@ -1,0 +1,36 @@
+---
+const items = [
+  'Sonic Branding',
+  'Audio Identity',
+  'Brand Sound',
+  'Sonic Design',
+  'Music Direction',
+  'Sound Strategy',
+  'Sonic Architecture',
+  'Sonic Territory',
+];
+---
+
+<div
+  class="overflow-hidden border-y border-border select-none py-3.5"
+  aria-hidden="true"
+>
+  <!-- Duplicate the list to create seamless loop -->
+  <div class="marquee-track flex whitespace-nowrap items-center">
+    {[...Array(2)].map(() => (
+      <span class="inline-flex items-center shrink-0">
+        {items.map((item) => (
+          <>
+            <span class="inline-block px-7 text-[10px] font-medium tracking-[0.25em] uppercase text-mid">
+              {item}
+            </span>
+            <span
+              class="text-xs shrink-0"
+              style="color: rgb(var(--color-fire)); line-height: 1;"
+            >✦</span>
+          </>
+        ))}
+      </span>
+    ))}
+  </div>
+</div>
