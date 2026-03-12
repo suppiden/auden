@@ -21,6 +21,9 @@ dist/
 # Reference / scratch files
 pagina-referencia.txt
 
+# Licensed fonts (do not distribute)
+Helvetica Neue LT Pro/
+
 # OS
 .DS_Store
 Thumbs.db
