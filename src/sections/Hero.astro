@@ -99,18 +99,29 @@ const { t } = Astro.props;
     </div>
   </div>
 
-  <!-- Scroll indicator -->
+  <!-- Sound wave EQ indicator + scroll hint -->
   <div
-    class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+    class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
     style="z-index: 10;"
     aria-hidden="true"
   >
+    <!-- Mini EQ bars -->
+    <div class="flex items-end gap-[3px] h-5">
+      <div class="w-[2px] bg-fire/60 rounded-full wave-bar" style="height: 40%; --duration: 0.8s; --delay: 0s;"></div>
+      <div class="w-[2px] bg-fire/60 rounded-full wave-bar" style="height: 70%; --duration: 1.1s; --delay: 0.1s;"></div>
+      <div class="w-[2px] bg-fire/60 rounded-full wave-bar" style="height: 100%; --duration: 0.9s; --delay: 0.2s;"></div>
+      <div class="w-[2px] bg-fire/60 rounded-full wave-bar" style="height: 55%; --duration: 1.3s; --delay: 0.15s;"></div>
+      <div class="w-[2px] bg-fire/60 rounded-full wave-bar" style="height: 80%; --duration: 1.0s; --delay: 0.05s;"></div>
+    </div>
     <span class="text-[9px] tracking-[0.3em] uppercase text-cream/25 font-medium">Scroll</span>
-    <div class="relative w-px h-10 overflow-hidden" style="background: rgb(255 255 255 / 0.08);">
+    <div class="relative w-px h-8 overflow-hidden" style="background: rgb(255 255 255 / 0.08);">
       <div
         class="absolute inset-x-0 top-0 h-1/2"
         style="background: rgb(var(--color-fire)); animation: scroll-line 1.8s ease-in-out infinite;"
       ></div>
     </div>
   </div>
+
+  <!-- Color-shifting gradient line at bottom -->
+  <div class="absolute bottom-0 left-0 right-0 h-[2px]" style="z-index: 10; background: linear-gradient(90deg, transparent, rgb(var(--color-fire)), #7B3FA0, rgb(var(--color-fire)), transparent); animation: gradient-shift 4s linear infinite; background-size: 200% 100%;" aria-hidden="true"></div>
 </section>

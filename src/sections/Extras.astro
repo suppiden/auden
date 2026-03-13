@@ -8,13 +8,23 @@ interface Props {
 const { t } = Astro.props;
 ---
 
-<section id="extras" class="py-28 md:py-36 px-6 md:px-10 bg-cream" aria-labelledby="extras-headline">
-  <div class="max-w-8xl mx-auto">
+<section id="extras" class="relative py-28 md:py-36 px-6 md:px-10 bg-cream overflow-hidden" aria-labelledby="extras-headline">
+  <!-- Morphing blob SVG background -->
+  <svg
+    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+    style="width: 600px; height: 600px; opacity: 0.04;"
+    viewBox="0 0 200 200"
+    aria-hidden="true"
+  >
+    <path id="morph-blob" fill="rgb(var(--color-charcoal))" />
+  </svg>
+
+  <div class="max-w-8xl mx-auto relative" style="z-index: 1;">
     <div class="grid md:grid-cols-2 gap-16 md:gap-24 items-start">
       <!-- Left: header -->
       <div data-reveal>
         <p class="section-eyebrow mb-5">{t.extras.eyebrow}</p>
-        <h2 id="extras-headline" class="section-headline">
+        <h2 id="extras-headline" class="section-headline" data-scramble>
           {t.extras.headline}
         </h2>
       </div>
@@ -22,8 +32,8 @@ const { t } = Astro.props;
       <!-- Right: list -->
       <ul class="divide-y divide-border" aria-label="Available add-ons" data-reveal-stagger>
         {t.extras.items.map((item) => (
-          <li class="flex items-center justify-between py-5 gap-6">
-            <span class="text-sm md:text-base text-charcoal">{item.name}</span>
+          <li class="flex items-center justify-between py-5 gap-6 group">
+            <span class="text-sm md:text-base text-charcoal group-hover:text-fire transition-colors duration-300">{item.name}</span>
             <span class="text-sm font-medium text-charcoal whitespace-nowrap">{item.price}</span>
           </li>
         ))}
@@ -31,3 +41,47 @@ const { t } = Astro.props;
     </div>
   </div>
 </section>
+
+<script>
+  // ── Morphing blob animation ──────────────────────────────────────
+  const blob = document.getElementById('morph-blob');
+  if (blob) {
+    let t = 0;
+
+    function blobPoint(angle: number, time: number): [number, number] {
+      const r = 70 + Math.sin(angle * 3 + time) * 15
+                   + Math.sin(angle * 5 - time * 0.7) * 10
+                   + Math.sin(angle * 2 + time * 1.3) * 8;
+      const x = 100 + Math.cos(angle) * r;
+      const y = 100 + Math.sin(angle) * r;
+      return [x, y];
+    }
+
+    function updateBlob() {
+      t += 0.008;
+      const points = 8;
+      const angleStep = (Math.PI * 2) / points;
+      let d = '';
+
+      for (let i = 0; i <= points; i++) {
+        const angle = i * angleStep;
+        const [x, y] = blobPoint(angle, t);
+        const nextAngle = (i + 1) * angleStep;
+        const [nx, ny] = blobPoint(nextAngle, t);
+
+        if (i === 0) {
+          d += `M ${x} ${y} `;
+        }
+
+        // Smooth curves using quadratic bezier
+        const cpAngle = angle + angleStep * 0.5;
+        const [cpx, cpy] = blobPoint(cpAngle, t);
+        d += `Q ${cpx} ${cpy} ${nx} ${ny} `;
+      }
+      d += 'Z';
+      blob!.setAttribute('d', d);
+      requestAnimationFrame(updateBlob);
+    }
+    requestAnimationFrame(updateBlob);
+  }
+</script>

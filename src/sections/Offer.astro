@@ -8,12 +8,20 @@ interface Props {
 const { t } = Astro.props;
 ---
 
-<section id="offer" class="py-28 md:py-36 px-6 md:px-10 bg-cream" aria-labelledby="offer-headline">
-  <div class="max-w-8xl mx-auto">
+<section id="offer" class="relative py-28 md:py-36 px-6 md:px-10 bg-cream overflow-hidden" aria-labelledby="offer-headline">
+  <!-- SiriWave canvas background -->
+  <canvas
+    id="siri-wave-canvas"
+    class="absolute inset-0 w-full h-full pointer-events-none"
+    style="opacity: 0.07; z-index: 0;"
+    aria-hidden="true"
+  ></canvas>
+
+  <div class="max-w-8xl mx-auto relative" style="z-index: 1;">
     <!-- Header -->
     <div class="max-w-2xl mb-20 md:mb-28" data-reveal>
       <p class="section-eyebrow mb-5">{t.offer.eyebrow}</p>
-      <h2 id="offer-headline" class="section-headline mb-8">
+      <h2 id="offer-headline" class="section-headline mb-8" data-reveal-text>
         {t.offer.headline}
       </h2>
       <p class="text-base md:text-lg text-mid leading-relaxed max-w-xl">
@@ -21,24 +29,145 @@ const { t } = Astro.props;
       </p>
     </div>
 
-    <!-- Numbered services list -->
+    <!-- Numbered pillars with 3D flip on scroll -->
     <ol class="border-t border-border">
       {t.offer.pillars.map((pillar, i) => (
         <li
-          class="group border-b border-border py-8 md:py-10 flex items-start gap-8 px-2 hover:bg-charcoal/5 transition-colors duration-300 cursor-default"
-          data-reveal
+          class="group border-b border-border py-8 md:py-10 flex items-start gap-8 px-2 hover:bg-charcoal/5 transition-colors duration-300 cursor-default overflow-hidden"
+          data-pillar
         >
-          <span class="text-[10px] tracking-[0.2em] text-mid mt-1.5 w-6 shrink-0">
+          <span class="text-[10px] tracking-[0.2em] text-mid mt-2 w-6 shrink-0 group-hover:text-fire transition-colors duration-300 font-medium">
             {String(i + 1).padStart(2, '0')}
           </span>
-          <div class="flex-1">
-            <h3 class="font-serif text-xl text-charcoal">{pillar.title}</h3>
-            <p class="text-sm text-mid mt-2 leading-relaxed overflow-hidden max-h-0 group-hover:max-h-24 transition-all duration-500 ease-in-out">
+          <div class="flex-1 overflow-hidden" style="perspective: 900px;">
+            <h3
+              class="text-xl md:text-2xl lg:text-3xl font-black text-charcoal tracking-tight"
+              style="transform: rotateY(90deg); transform-origin: left center; transition: none;"
+              data-pillar-title
+            >
+              {pillar.title}
+            </h3>
+            <p
+              class="text-sm text-mid mt-3 leading-relaxed max-w-lg opacity-0 translate-y-4"
+              data-pillar-body
+            >
               {pillar.body}
             </p>
           </div>
+          <span class="text-mid opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm mt-2" aria-hidden="true">&rarr;</span>
         </li>
       ))}
     </ol>
   </div>
 </section>
+
+<!-- Scroll-velocity text strip -->
+<div class="overflow-hidden bg-charcoal py-7 border-y border-cream/10" data-velocity-wrap>
+  <div data-scroll-velocity class="whitespace-nowrap will-change-transform">
+    <span class="inline-block text-[clamp(3rem,10vw,8rem)] font-black tracking-tighter uppercase text-cream/[0.07] select-none" aria-hidden="true">
+      SOUND&nbsp;&#10038;&nbsp;IDENTITY&nbsp;&#10038;&nbsp;BRAND&nbsp;&#10038;&nbsp;RECOGNITION&nbsp;&#10038;&nbsp;MEMORY&nbsp;&#10038;&nbsp;EMOTION&nbsp;&#10038;&nbsp;SOUND&nbsp;&#10038;&nbsp;IDENTITY&nbsp;&#10038;&nbsp;BRAND&nbsp;&#10038;&nbsp;RECOGNITION&nbsp;&#10038;&nbsp;MEMORY&nbsp;&#10038;&nbsp;EMOTION&nbsp;&#10038;&nbsp;
+    </span>
+  </div>
+</div>
+
+<script>
+  // ── SiriWave-style canvas animation ──────────────────────────────
+  const siriCanvas = document.getElementById('siri-wave-canvas') as HTMLCanvasElement | null;
+  if (siriCanvas) {
+    const ctx = siriCanvas.getContext('2d')!;
+    let w = 0, h = 0;
+
+    function resizeSiri() {
+      const rect = siriCanvas!.parentElement!.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio, 2);
+      w = rect.width;
+      h = rect.height;
+      siriCanvas!.width = w * dpr;
+      siriCanvas!.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resizeSiri();
+    window.addEventListener('resize', resizeSiri);
+
+    const waves = [
+      { color: '255, 77, 0',   amp: 90,  freq: 0.006, speed: 0.012, phase: 0, width: 2.5 },
+      { color: '123, 63, 160', amp: 65,  freq: 0.010, speed: 0.018, phase: 2, width: 2 },
+      { color: '255, 77, 0',   amp: 45,  freq: 0.016, speed: 0.022, phase: 4, width: 1.5 },
+      { color: '123, 63, 160', amp: 35,  freq: 0.020, speed: 0.015, phase: 1, width: 1.5 },
+      { color: '255, 120, 50', amp: 55,  freq: 0.013, speed: 0.025, phase: 3, width: 1 },
+    ];
+
+    function drawSiri() {
+      ctx.clearRect(0, 0, w, h);
+      const cy = h * 0.5;
+
+      waves.forEach(wave => {
+        wave.phase += wave.speed;
+        ctx.beginPath();
+        ctx.moveTo(0, cy);
+
+        for (let x = 0; x <= w; x += 3) {
+          // Envelope: peaks in center, fades at edges
+          const env = Math.sin(Math.PI * x / w);
+          const y = cy + Math.sin(x * wave.freq + wave.phase) * wave.amp * env;
+          ctx.lineTo(x, y);
+        }
+
+        ctx.strokeStyle = `rgba(${wave.color}, 0.45)`;
+        ctx.lineWidth = wave.width;
+        ctx.stroke();
+      });
+
+      requestAnimationFrame(drawSiri);
+    }
+    requestAnimationFrame(drawSiri);
+  }
+
+  // ── 3D pillar rotation on scroll ─────────────────────────────────
+  document.querySelectorAll<HTMLElement>('[data-pillar]').forEach(li => {
+    const title = li.querySelector<HTMLElement>('[data-pillar-title]');
+    const body = li.querySelector<HTMLElement>('[data-pillar-body]');
+    if (!title) return;
+
+    function updatePillar() {
+      const rect = li.getBoundingClientRect();
+      const viewH = window.innerHeight;
+      // 0 when element enters viewport from bottom, 1 when it reaches mid-screen
+      const p = Math.max(0, Math.min(1, (viewH - rect.top) / (viewH * 0.6)));
+
+      // RotateY from 90° → 0° as you scroll
+      const rot = 90 - p * 90;
+      title!.style.transform = `rotateY(${rot}deg)`;
+      title!.style.opacity = `${p}`;
+
+      // Body fades in and slides up after title
+      if (body) {
+        const bp = Math.max(0, Math.min(1, (p - 0.4) * 2.5));
+        body.style.opacity = `${bp}`;
+        body.style.transform = `translateY(${(1 - bp) * 20}px)`;
+      }
+
+      requestAnimationFrame(updatePillar);
+    }
+    requestAnimationFrame(updatePillar);
+  });
+
+  // ── Scroll-velocity horizontal text ──────────────────────────────
+  const velocityEl = document.querySelector<HTMLElement>('[data-scroll-velocity]');
+  if (velocityEl) {
+    let lastY = window.scrollY;
+    let velocity = 0;
+    let posX = 0;
+
+    function tickVelocity() {
+      const currentY = window.scrollY;
+      const delta = currentY - lastY;
+      lastY = currentY;
+      velocity += (delta - velocity) * 0.08;
+      posX -= velocity * 1.5;
+      velocityEl!.style.transform = `translateX(${posX}px)`;
+      requestAnimationFrame(tickVelocity);
+    }
+    requestAnimationFrame(tickVelocity);
+  }
+</script>
