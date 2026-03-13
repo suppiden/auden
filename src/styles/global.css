@@ -333,3 +333,65 @@ body::after {
   0%   { background-position: 0% 50%; }
   100% { background-position: 200% 50%; }
 }
+
+/* ─── Sonar ripple rings (logo sections) ───────────────────────── */
+@keyframes sonar-expand {
+  0%   { transform: scale(0.3); opacity: 0.25; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+.sonar-ring {
+  position: absolute;
+  width: clamp(16rem, 50vw, 40rem);
+  height: clamp(16rem, 50vw, 40rem);
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 77, 0, 0.3);
+  animation: sonar-expand 4s ease-out infinite;
+}
+.sonar-ring--1 { animation-delay: 0s; }
+.sonar-ring--2 { animation-delay: 1.3s; }
+.sonar-ring--3 { animation-delay: 2.6s; }
+
+/* Footer variant — smaller, subtler */
+@keyframes sonar-expand-footer {
+  0%   { transform: scale(0.5); opacity: 0.15; }
+  100% { transform: scale(3); opacity: 0; }
+}
+.sonar-ring-footer {
+  position: absolute;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 50%;
+  border: 1px solid rgb(var(--color-fire) / 0.12);
+  animation: sonar-expand-footer 5s ease-out infinite;
+}
+.sonar-ring-footer--1 { animation-delay: 0s; }
+.sonar-ring-footer--2 { animation-delay: 2s; }
+
+/* ─── Logo pulse (breathing animation) ─────────────────────────── */
+@keyframes logo-breathe {
+  0%, 100% { filter: brightness(0.45); }
+  50%      { filter: brightness(0.85); }
+}
+.logo-pulse {
+  animation: logo-breathe 4s ease-in-out infinite;
+}
+/* Glow lives on the container, not the image (avoids rectangular drop-shadow) */
+[data-logo-reveal] {
+  transition: filter 0.3s ease;
+}
+@keyframes logo-glow {
+  0%, 100% { box-shadow: 0 0 0 transparent; }
+  50%      { box-shadow: 0 0 120px rgba(255, 77, 0, 0.12); }
+}
+[data-logo-reveal] {
+  animation: logo-glow 4s ease-in-out infinite;
+  border-radius: 50%;
+}
+
+/* ─── Nav EQ bars — appear on scroll ───────────────────────────── */
+.nav-eq {
+  transition: opacity 0.4s ease;
+}
+[data-nav].is-scrolled .nav-eq {
+  opacity: 1;
+}

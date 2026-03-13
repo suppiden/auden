@@ -157,9 +157,9 @@ const alternateLang = isEn ? 'es' : 'en';
         logoImgs.forEach(img => { img.style.height = atTop ? '2.25rem' : '1.75rem'; });
         if (nav) {
           if (!atTop) {
-            nav.classList.add('bg-cream/95', 'backdrop-blur-sm', 'border-b', 'border-border');
+            nav.classList.add('bg-cream/95', 'backdrop-blur-sm', 'border-b', 'border-border', 'is-scrolled');
           } else {
-            nav.classList.remove('bg-cream/95', 'backdrop-blur-sm', 'border-b', 'border-border');
+            nav.classList.remove('bg-cream/95', 'backdrop-blur-sm', 'border-b', 'border-border', 'is-scrolled');
           }
         }
       }, { passive: true });

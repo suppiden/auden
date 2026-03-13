@@ -102,7 +102,7 @@ const { t } = Astro.props;
     </div>
 
     <!-- ② Auden Sonic Method ──────────────────────────────────── -->
-    <div class="mb-24 md:mb-32">
+    <div>
       <div class="mb-12" data-reveal>
         <p class="text-xs font-medium tracking-[0.2em] uppercase text-mid mb-5">
           {t.identity.methodEyebrow}
@@ -132,39 +132,37 @@ const { t } = Astro.props;
       </div>
     </div>
 
-    <!-- ③ Individual services ─────────────────────────────────── -->
-    <div>
-      <div class="mb-10" data-reveal>
-        <p class="text-xs font-medium tracking-[0.2em] uppercase text-mid mb-5">
-          {t.identity.servicesEyebrow}
-        </p>
-        <h3
-          class="text-3xl md:text-4xl font-black leading-tight text-cream tracking-tight"
-          data-reveal-text
-        >
-          {t.identity.servicesHeadline}
-        </h3>
-      </div>
-
-      <ol class="border-t border-cream/10">
-        {t.identity.services.map((service, i) => (
-          <li
-            class="border-b border-cream/10 py-6 md:py-7 flex items-center gap-8 group hover:bg-cream/5 transition-colors duration-300 px-2 cursor-default"
-            data-reveal-wipe
-            style={`transition-delay: ${i * 0.06}s`}
-          >
-            <span class="text-[10px] tracking-[0.2em] text-mid w-6 shrink-0 group-hover:text-fire transition-colors duration-300">
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            <span class="text-base text-cream/75 font-medium flex-1">{service.name}</span>
-            <span class="text-mid opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm" aria-hidden="true">&rarr;</span>
-          </li>
-        ))}
-      </ol>
-    </div>
-
   </div>
 </section>
+
+<!-- ── Logo Reveal: sonic pulse section — always dark for impact ── -->
+<div class="relative py-36 md:py-52 overflow-hidden" style="background: #000;" aria-hidden="true">
+  <!-- Sonar ripples emanating from logo -->
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+    <div class="sonar-ring sonar-ring--1"></div>
+    <div class="sonar-ring sonar-ring--2"></div>
+    <div class="sonar-ring sonar-ring--3"></div>
+  </div>
+
+  <!-- Waveform canvas over logo -->
+  <canvas
+    id="logo-wave-canvas"
+    class="absolute inset-0 w-full h-full pointer-events-none"
+    style="z-index: 3;"
+    aria-hidden="true"
+  ></canvas>
+
+  <!-- Logo — rendered as CSS text to avoid PNG background issues -->
+  <div class="relative flex items-center justify-center" style="z-index: 2;" data-logo-reveal>
+    <!-- _black.png = white text on black bg → black bg merges with #000 section -->
+    <img
+      src="/auden_u_palabra_black.png"
+      alt=""
+      class="logo-pulse"
+      style="width: clamp(18rem, 55vw, 50rem); opacity: 0.25;"
+    />
+  </div>
+</div>
 
 <script>
   // ── Frequency bars canvas animation ──────────────────────────────
@@ -190,24 +188,16 @@ const { t } = Astro.props;
 
     function drawBars() {
       ctx.clearRect(0, 0, w, h);
-
       const barW = w / BAR_COUNT;
       const maxH = h * 0.65;
 
       for (let i = 0; i < BAR_COUNT; i++) {
-        // Smooth interpolation toward target
         bars[i] += (targets[i] - bars[i]) * 0.03;
-
-        // Randomly update targets for organic movement
-        if (Math.random() < 0.025) {
-          targets[i] = Math.random();
-        }
+        if (Math.random() < 0.025) targets[i] = Math.random();
 
         const barH = bars[i] * maxH;
         const x = i * barW;
         const y = h - barH;
-
-        // Gradient from fire orange to purple across the bars
         const t = i / BAR_COUNT;
         const r = Math.round(255 - t * 132);
         const g = Math.round(77 - t * 14);
@@ -216,7 +206,6 @@ const { t } = Astro.props;
         ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.55)`;
         ctx.fillRect(x + 1, y, barW - 2, barH);
       }
-
       requestAnimationFrame(drawBars);
     }
     requestAnimationFrame(drawBars);
@@ -226,17 +215,81 @@ const { t } = Astro.props;
   const parallaxOrbs = document.querySelectorAll<HTMLElement>('[data-parallax-orb]');
   if (parallaxOrbs.length > 0) {
     function updateOrbs() {
-      const scrollY = window.scrollY;
       parallaxOrbs.forEach(orb => {
         const speed = parseFloat(orb.dataset.speed || '0.03');
         const section = orb.closest('section');
         if (!section) return;
         const rect = section.getBoundingClientRect();
-        const sectionScroll = -rect.top;
-        orb.style.transform = `translateY(${sectionScroll * speed * 10}px)`;
+        orb.style.transform = `translateY(${-rect.top * speed * 10}px)`;
       });
       requestAnimationFrame(updateOrbs);
     }
     requestAnimationFrame(updateOrbs);
+  }
+
+  // ── Logo reveal: scroll-driven scale + waveform canvas ─────────
+  const logoReveal = document.querySelector<HTMLElement>('[data-logo-reveal]');
+  if (logoReveal) {
+    function updateLogoReveal() {
+      const rect = logoReveal!.parentElement!.getBoundingClientRect();
+      const viewH = window.innerHeight;
+      const p = Math.max(0, Math.min(1, (viewH - rect.top) / (viewH * 0.8)));
+      const scale = 0.7 + p * 0.3;
+      const opacity = p;
+      logoReveal!.style.transform = `scale(${scale})`;
+      logoReveal!.style.opacity = `${opacity}`;
+      requestAnimationFrame(updateLogoReveal);
+    }
+    requestAnimationFrame(updateLogoReveal);
+  }
+
+  // ── Logo section waveform canvas ───────────────────────────────
+  const logoWaveCanvas = document.getElementById('logo-wave-canvas') as HTMLCanvasElement | null;
+  if (logoWaveCanvas) {
+    const ctx = logoWaveCanvas.getContext('2d')!;
+    let w = 0, h = 0;
+
+    function resizeLogoWave() {
+      const rect = logoWaveCanvas!.parentElement!.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio, 2);
+      w = rect.width;
+      h = rect.height;
+      logoWaveCanvas!.width = w * dpr;
+      logoWaveCanvas!.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resizeLogoWave();
+    window.addEventListener('resize', resizeLogoWave);
+
+    let phase = 0;
+    function drawLogoWave() {
+      ctx.clearRect(0, 0, w, h);
+      phase += 0.008;
+      const cy = h * 0.5;
+
+      // Draw multiple horizontal waveforms through the logo area
+      const waveConfigs = [
+        { amp: 45, freq: 0.007, color: '255, 77, 0', alpha: 0.35, lineW: 4, offset: 0 },
+        { amp: 32, freq: 0.013, color: '123, 63, 160', alpha: 0.28, lineW: 3, offset: 1.5 },
+        { amp: 55, freq: 0.004, color: '255, 100, 30', alpha: 0.20, lineW: 6, offset: 3 },
+        { amp: 22, freq: 0.019, color: '200, 60, 120', alpha: 0.18, lineW: 2, offset: 4.5 },
+      ];
+
+      waveConfigs.forEach(wc => {
+        ctx.beginPath();
+        ctx.moveTo(0, cy);
+        for (let x = 0; x <= w; x += 3) {
+          const env = Math.sin(Math.PI * x / w);
+          const y = cy + Math.sin(x * wc.freq + phase + wc.offset) * wc.amp * env;
+          ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = `rgba(${wc.color}, ${wc.alpha})`;
+        ctx.lineWidth = wc.lineW;
+        ctx.stroke();
+      });
+
+      requestAnimationFrame(drawLogoWave);
+    }
+    requestAnimationFrame(drawLogoWave);
   }
 </script>
