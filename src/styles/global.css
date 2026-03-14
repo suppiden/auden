@@ -395,3 +395,33 @@ body::after {
 [data-nav].is-scrolled .nav-eq {
   opacity: 1;
 }
+
+/* ─── Custom scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgb(var(--color-cream)); }
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--color-fire) / 0.35);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgb(var(--color-fire) / 0.65); }
+html { scrollbar-width: thin; scrollbar-color: rgba(255, 77, 0, 0.35) rgb(var(--color-cream)); }
+
+/* ─── Text outline / hollow text utility ──────────────────────── */
+.text-outline {
+  -webkit-text-stroke: 1.5px rgb(var(--color-charcoal));
+  color: transparent;
+}
+.dark .text-outline {
+  -webkit-text-stroke-color: rgb(var(--color-cream));
+}
+
+/* ─── Velocity strip outlined text ────────────────────────────── */
+.velocity-text {
+  -webkit-text-stroke: 2px rgba(255, 77, 0, 0.12);
+  color: transparent;
+}
+
+/* ─── Nav blend-mode helpers ──────────────────────────────────── */
+[data-nav].is-scrolled .nav-logo {
+  height: 1.75rem;
+}

@@ -16,30 +16,30 @@ const { t } = Astro.props;
   <nav
     class="max-w-8xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between"
     aria-label="Main navigation"
+    style="color: #fff; mix-blend-mode: difference;"
   >
-    <!-- Logo -->
+    <!-- Logo — always white, blend-mode: difference handles inversion -->
     <a href={t.lang === 'es' ? '/es/' : '/'} class="flex items-center gap-3" aria-label="Auden home" data-logo>
-      <img src="/auden_u_palabra_white.png" alt="Auden" class="hidden dark:block nav-logo" style="height: 2.25rem; transition: height 0.4s cubic-bezier(0.16,1,0.3,1);" />
-      <img src="/auden_u_palabra_black.png" alt="Auden" class="block dark:hidden nav-logo" style="height: 2.25rem; transition: height 0.4s cubic-bezier(0.16,1,0.3,1);" />
+      <img src="/auden_u_palabra_white.png" alt="Auden" class="nav-logo" style="height: 2.25rem; transition: height 0.4s cubic-bezier(0.16,1,0.3,1); filter: invert(0);" />
       <!-- Mini EQ indicator next to logo -->
       <span class="flex items-end gap-[2px] h-3 opacity-0 nav-eq" aria-hidden="true">
-        <span class="w-[2px] rounded-full wave-bar" style="height: 35%; background: rgb(var(--color-fire)); --duration: 0.7s; --delay: 0s;"></span>
-        <span class="w-[2px] rounded-full wave-bar" style="height: 65%; background: rgb(var(--color-fire)); --duration: 1.0s; --delay: 0.08s;"></span>
-        <span class="w-[2px] rounded-full wave-bar" style="height: 100%; background: rgb(var(--color-fire)); --duration: 0.85s; --delay: 0.16s;"></span>
-        <span class="w-[2px] rounded-full wave-bar" style="height: 50%; background: rgb(var(--color-fire)); --duration: 1.1s; --delay: 0.12s;"></span>
+        <span class="w-[2px] rounded-full wave-bar" style="height: 35%; background: #FF4D00; --duration: 0.7s; --delay: 0s;"></span>
+        <span class="w-[2px] rounded-full wave-bar" style="height: 65%; background: #FF4D00; --duration: 1.0s; --delay: 0.08s;"></span>
+        <span class="w-[2px] rounded-full wave-bar" style="height: 100%; background: #FF4D00; --duration: 0.85s; --delay: 0.16s;"></span>
+        <span class="w-[2px] rounded-full wave-bar" style="height: 50%; background: #FF4D00; --duration: 1.1s; --delay: 0.12s;"></span>
       </span>
     </a>
 
-    <!-- Desktop links -->
-    <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-mid">
+    <!-- Desktop links — white text, difference blend handles inversion -->
+    <ul class="hidden md:flex items-center gap-8 text-sm font-medium" style="color: rgba(255,255,255,0.7);">
       <li>
-        <a href="#offer" class="nav-link hover:text-charcoal transition-colors pb-0.5">{t.nav.offer}</a>
+        <a href="#offer" class="nav-link hover:text-white transition-colors pb-0.5">{t.nav.offer}</a>
       </li>
       <li>
-        <a href="#work" class="nav-link hover:text-charcoal transition-colors pb-0.5">{t.nav.work}</a>
+        <a href="#work" class="nav-link hover:text-white transition-colors pb-0.5">{t.nav.work}</a>
       </li>
       <li>
-        <a href="#contact" class="nav-link hover:text-charcoal transition-colors pb-0.5">{t.nav.contact}</a>
+        <a href="#contact" class="nav-link hover:text-white transition-colors pb-0.5">{t.nav.contact}</a>
       </li>
     </ul>
 
@@ -47,7 +47,8 @@ const { t } = Astro.props;
     <div class="flex items-center gap-5">
       <a
         href={t.nav.langSwitchHref}
-        class="text-xs font-medium tracking-widest uppercase text-mid hover:text-charcoal transition-colors"
+        class="text-xs font-medium tracking-widest uppercase hover:text-white transition-colors"
+        style="color: rgba(255,255,255,0.6);"
         aria-label={`Switch to ${t.nav.langSwitch}`}
       >
         {t.nav.langSwitch}
@@ -55,22 +56,21 @@ const { t } = Astro.props;
 
       <!-- Theme toggle -->
       <button
-        class="flex items-center justify-center w-8 h-8 text-mid hover:text-charcoal transition-colors"
+        class="flex items-center justify-center w-8 h-8 hover:text-white transition-colors"
+        style="color: rgba(255,255,255,0.6);"
         aria-label="Toggle theme"
         data-theme-toggle
       >
-        <!-- Sun: shown in dark mode (click to go light) -->
         <svg data-sun-icon class="hidden w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="4"/>
           <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
         </svg>
-        <!-- Moon: shown in light mode (click to go dark) -->
         <svg data-moon-icon class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
         </svg>
       </button>
 
-      <a href="#contact" class="hidden md:inline-flex btn-primary text-xs py-2.5 px-5">
+      <a href="#contact" class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 text-xs font-medium tracking-wide border border-white/40 hover:bg-white hover:text-black transition-colors duration-200">
         {t.nav.contact}
       </a>
 
@@ -81,21 +81,22 @@ const { t } = Astro.props;
         aria-expanded="false"
         data-menu-toggle
       >
-        <span class="block w-5 h-px bg-charcoal transition-all" data-line></span>
-        <span class="block w-5 h-px bg-charcoal transition-all" data-line></span>
+        <span class="block w-5 h-px bg-white transition-all" data-line></span>
+        <span class="block w-5 h-px bg-white transition-all" data-line></span>
       </button>
     </div>
   </nav>
 
-  <!-- Mobile menu -->
+  <!-- Mobile menu — outside blend-mode context -->
   <div
-    class="md:hidden hidden bg-cream border-t border-border px-6 py-6 flex flex-col gap-6"
+    class="md:hidden hidden px-6 py-6 flex flex-col gap-6"
+    style="background: #1A1A1A;"
     data-mobile-menu
   >
-    <a href="#offer" class="text-base font-medium text-charcoal" data-mobile-link>{t.nav.offer}</a>
-    <a href="#work" class="text-base font-medium text-charcoal" data-mobile-link>{t.nav.work}</a>
-    <a href="#contact" class="text-base font-medium text-charcoal" data-mobile-link>{t.nav.contact}</a>
-    <a href="#contact" class="btn-primary text-center mt-2">{t.nav.contact}</a>
+    <a href="#offer" class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>{t.nav.offer}</a>
+    <a href="#work" class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>{t.nav.work}</a>
+    <a href="#contact" class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>{t.nav.contact}</a>
+    <a href="#contact" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white text-black text-sm font-medium tracking-wide hover:bg-white/90 transition-colors mt-2">{t.nav.contact}</a>
   </div>
 </header>
 

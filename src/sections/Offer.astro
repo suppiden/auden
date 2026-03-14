@@ -23,14 +23,14 @@ const { t } = Astro.props;
       <p class="section-eyebrow mb-6" data-reveal>{t.offer.eyebrow}</p>
       <h2
         id="offer-headline"
-        class="font-black leading-[0.90] tracking-tighter text-charcoal"
+        class="font-black leading-[0.90] tracking-tighter text-charcoal uppercase"
         style="font-size: clamp(3rem, 10vw, 11rem);"
       >
         {t.offer.headline}
       </h2>
     </div>
 
-    <p class="text-base md:text-lg text-mid leading-relaxed max-w-2xl mb-16 md:mb-24" data-reveal>
+    <p class="text-base md:text-lg text-mid leading-relaxed max-w-2xl mb-16 md:mb-24" data-reveal style="position: relative; z-index: 25;">
       {t.offer.body}
     </p>
 
@@ -69,7 +69,7 @@ const { t } = Astro.props;
 <!-- Scroll-velocity text strip -->
 <div class="overflow-hidden bg-charcoal py-7 border-y border-cream/10" data-velocity-wrap>
   <div data-scroll-velocity class="whitespace-nowrap will-change-transform">
-    <span class="inline-block text-[clamp(3rem,10vw,8rem)] font-black tracking-tighter uppercase text-cream/[0.07] select-none" aria-hidden="true">
+    <span class="inline-block text-[clamp(3rem,10vw,8rem)] font-black tracking-tighter uppercase select-none velocity-text" aria-hidden="true">
       SOUND&nbsp;&#10038;&nbsp;IDENTITY&nbsp;&#10038;&nbsp;BRAND&nbsp;&#10038;&nbsp;RECOGNITION&nbsp;&#10038;&nbsp;MEMORY&nbsp;&#10038;&nbsp;EMOTION&nbsp;&#10038;&nbsp;SOUND&nbsp;&#10038;&nbsp;IDENTITY&nbsp;&#10038;&nbsp;BRAND&nbsp;&#10038;&nbsp;RECOGNITION&nbsp;&#10038;&nbsp;MEMORY&nbsp;&#10038;&nbsp;EMOTION&nbsp;&#10038;&nbsp;
     </span>
   </div>

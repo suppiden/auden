@@ -156,11 +156,7 @@ const alternateLang = isEn ? 'es' : 'en';
         const atTop = window.scrollY < 20;
         logoImgs.forEach(img => { img.style.height = atTop ? '2.25rem' : '1.75rem'; });
         if (nav) {
-          if (!atTop) {
-            nav.classList.add('bg-cream/95', 'backdrop-blur-sm', 'border-b', 'border-border', 'is-scrolled');
-          } else {
-            nav.classList.remove('bg-cream/95', 'backdrop-blur-sm', 'border-b', 'border-border', 'is-scrolled');
-          }
+          nav.classList.toggle('is-scrolled', !atTop);
         }
       }, { passive: true });
 
@@ -174,6 +170,46 @@ const alternateLang = isEn ? 'es' : 'en';
       document.querySelectorAll(
         '[data-reveal], [data-reveal-stagger], [data-reveal-text], [data-reveal-wipe]'
       ).forEach(el => io.observe(el));
+
+      // ── Masked split-line text reveal ────────────────────────────────
+      document.querySelectorAll<HTMLElement>('[data-split-reveal]').forEach(el => {
+        const text = el.textContent?.trim() ?? '';
+        const words = text.split(/\s+/);
+        el.innerHTML = '';
+        el.setAttribute('aria-label', text);
+
+        words.forEach((word, i) => {
+          const mask = document.createElement('span');
+          mask.style.cssText = 'display: inline-block; overflow: hidden; vertical-align: top;';
+
+          const inner = document.createElement('span');
+          inner.textContent = word;
+          inner.style.cssText = `display: inline-block; transform: translateY(110%); transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: ${i * 0.06}s;`;
+          inner.classList.add('split-word');
+
+          mask.appendChild(inner);
+          el.appendChild(mask);
+
+          // Add whitespace between words
+          if (i < words.length - 1) {
+            el.appendChild(document.createTextNode('\u00A0'));
+          }
+        });
+      });
+
+      // Observe split-reveal elements
+      const splitIO = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.querySelectorAll<HTMLElement>('.split-word').forEach(w => {
+              w.style.transform = 'translateY(0)';
+            });
+            splitIO.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll('[data-split-reveal]').forEach(el => splitIO.observe(el));
     </script>
   </body>
 </html>
