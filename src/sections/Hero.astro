@@ -13,13 +13,23 @@ const { t } = Astro.props;
   class="relative flex flex-col items-center justify-center min-h-screen px-6 md:px-10 pt-16 overflow-hidden"
   aria-labelledby="hero-headline"
 >
-  <!-- Video — grayscale + brightness for duotone base (no contrast filter for perf) -->
+  <!-- Poster fallback — always visible so there's no blank flash while video loads -->
+  <img
+    src="/banner.jpeg"
+    alt=""
+    class="absolute inset-0 w-full h-full object-cover"
+    style="opacity: 0.75; filter: grayscale(1) brightness(0.7);"
+    aria-hidden="true"
+  />
+
+  <!-- Video — fades in over the poster once loaded -->
   <video
     class="absolute inset-0 w-full h-full object-cover"
-    style="opacity: 0.75; filter: grayscale(1) brightness(0.7); will-change: transform; transform: translateZ(0);"
+    style="opacity: 0; filter: grayscale(1) brightness(0.7); will-change: transform; transform: translateZ(0); transition: opacity 0.8s ease;"
     autoplay muted loop playsinline
-    poster="/banner.jpeg"
+    preload="auto"
     aria-hidden="true"
+    data-hero-video
   >
     <source src="/animacion_hd.mp4" type="video/mp4" />
   </video>
@@ -112,3 +122,18 @@ const { t } = Astro.props;
   <!-- Color-shifting gradient line at bottom -->
   <div class="absolute bottom-0 left-0 right-0 h-[2px]" style="z-index: 10; background: linear-gradient(90deg, transparent, rgb(var(--color-fire)), #7B3FA0, rgb(var(--color-fire)), transparent); animation: gradient-shift 4s linear infinite; background-size: 200% 100%;" aria-hidden="true"></div>
 </section>
+
+<script>
+  // Fade video in once it can play — poster image stays visible underneath
+  const heroVideo = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  if (heroVideo) {
+    function showVideo() {
+      heroVideo!.style.opacity = '0.75';
+    }
+    if (heroVideo.readyState >= 3) {
+      showVideo();
+    } else {
+      heroVideo.addEventListener('canplay', showVideo, { once: true });
+    }
+  }
+</script>

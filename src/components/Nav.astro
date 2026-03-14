@@ -45,14 +45,15 @@ const { t } = Astro.props;
 
     <!-- Right side -->
     <div class="flex items-center gap-5">
-      <a
+      <!-- Language switcher hidden per client request -->
+      <!-- <a
         href={t.nav.langSwitchHref}
         class="text-xs font-medium tracking-widest uppercase hover:text-white transition-colors"
         style="color: rgba(255,255,255,0.6);"
         aria-label={`Switch to ${t.nav.langSwitch}`}
       >
         {t.nav.langSwitch}
-      </a>
+      </a> -->
 
       <!-- Theme toggle -->
       <button
