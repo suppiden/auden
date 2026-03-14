@@ -171,7 +171,7 @@
   [data-reveal-wipe].is-visible { clip-path: inset(0 0% 0 0); }
 }
 
-/* ─── Film grain ────────────────────────────────────────────────── */
+/* ─── Film grain — GPU-promoted to avoid scroll repaints ────────── */
 body::after {
   content: '';
   position: fixed;
@@ -179,8 +179,10 @@ body::after {
   pointer-events: none;
   z-index: 9998;
   opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  background-size: 220px 220px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* ─── Custom cursor (mouse only) ────────────────────────────────── */

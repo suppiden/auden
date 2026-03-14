@@ -76,11 +76,13 @@ const { t } = Astro.props;
 </div>
 
 <script>
-  // ── 3D SiriWave — flows OVER the text ────────────────────────────
+  // ── 3D SiriWave — visibility-gated ──────────────────────────────
   const siriCanvas = document.getElementById('siri-wave-canvas') as HTMLCanvasElement | null;
   if (siriCanvas) {
     const ctx = siriCanvas.getContext('2d')!;
     let w = 0, h = 0;
+    let siriVisible = false;
+    let siriRafId = 0;
 
     function resizeSiri() {
       const rect = siriCanvas!.parentElement!.getBoundingClientRect();
@@ -94,7 +96,6 @@ const { t } = Astro.props;
     resizeSiri();
     window.addEventListener('resize', resizeSiri);
 
-    // Check dark mode for color adaptation
     function isDark() {
       return document.documentElement.classList.contains('dark');
     }
@@ -118,9 +119,9 @@ const { t } = Astro.props;
     ];
 
     function drawSiri() {
+      if (!siriVisible) return;
       ctx.clearRect(0, 0, w, h);
 
-      // Vertical center - offset slightly toward top third
       const cy = h * 0.38;
       const dark = isDark();
 
@@ -129,12 +130,11 @@ const { t } = Astro.props;
         const [cr, cg, cb] = colors[idx];
         const baseAlpha = dark ? 0.50 : 0.30;
 
-        // Draw glow pass (thick, blurred)
+        // Glow pass
         ctx.beginPath();
         ctx.moveTo(0, cy);
-        for (let x = 0; x <= w; x += 3) {
+        for (let x = 0; x <= w; x += 4) {
           const env = Math.sin(Math.PI * x / w);
-          // Add secondary harmonic for more organic shape
           const y = cy
             + Math.sin(x * wave.freq + wave.phase) * wave.amp * env
             + Math.sin(x * wave.freq * 2.3 + wave.phase * 0.7) * wave.amp * 0.2 * env;
@@ -145,10 +145,10 @@ const { t } = Astro.props;
         ctx.lineCap = 'round';
         ctx.stroke();
 
-        // Draw sharp pass (thin, crisp)
+        // Sharp pass
         ctx.beginPath();
         ctx.moveTo(0, cy);
-        for (let x = 0; x <= w; x += 3) {
+        for (let x = 0; x <= w; x += 4) {
           const env = Math.sin(Math.PI * x / w);
           const y = cy
             + Math.sin(x * wave.freq + wave.phase) * wave.amp * env
@@ -161,53 +161,64 @@ const { t } = Astro.props;
         ctx.stroke();
       });
 
-      requestAnimationFrame(drawSiri);
+      siriRafId = requestAnimationFrame(drawSiri);
     }
-    requestAnimationFrame(drawSiri);
+
+    // Only animate when section is visible
+    const siriSection = siriCanvas.closest('section')!;
+    new IntersectionObserver(([e]) => {
+      siriVisible = e.isIntersecting;
+      if (siriVisible) siriRafId = requestAnimationFrame(drawSiri);
+    }, { threshold: 0 }).observe(siriSection);
   }
 
-  // ── 3D pillar rotation on scroll ─────────────────────────────────
-  document.querySelectorAll<HTMLElement>('[data-pillar]').forEach(li => {
-    const title = li.querySelector<HTMLElement>('[data-pillar-title]');
-    const body = li.querySelector<HTMLElement>('[data-pillar-body]');
-    if (!title) return;
-
-    function updatePillar() {
-      const rect = li.getBoundingClientRect();
+  // ── 3D pillar rotation — scroll-driven (not rAF) ──────────────────
+  const pillars = document.querySelectorAll<HTMLElement>('[data-pillar]');
+  if (pillars.length) {
+    function updatePillars() {
       const viewH = window.innerHeight;
-      const p = Math.max(0, Math.min(1, (viewH - rect.top) / (viewH * 0.6)));
-
-      const rot = 90 - p * 90;
-      title!.style.transform = `rotateY(${rot}deg)`;
-      title!.style.opacity = `${p}`;
-
-      if (body) {
-        const bp = Math.max(0, Math.min(1, (p - 0.4) * 2.5));
-        body.style.opacity = `${bp}`;
-        body.style.transform = `translateY(${(1 - bp) * 20}px)`;
-      }
-
-      requestAnimationFrame(updatePillar);
+      pillars.forEach(li => {
+        const title = li.querySelector<HTMLElement>('[data-pillar-title]');
+        const body = li.querySelector<HTMLElement>('[data-pillar-body]');
+        if (!title) return;
+        const rect = li.getBoundingClientRect();
+        // Skip if far off-screen
+        if (rect.bottom < -100 || rect.top > viewH + 100) return;
+        const p = Math.max(0, Math.min(1, (viewH - rect.top) / (viewH * 0.6)));
+        title.style.transform = `rotateY(${90 - p * 90}deg)`;
+        title.style.opacity = `${p}`;
+        if (body) {
+          const bp = Math.max(0, Math.min(1, (p - 0.4) * 2.5));
+          body.style.opacity = `${bp}`;
+          body.style.transform = `translateY(${(1 - bp) * 20}px)`;
+        }
+      });
     }
-    requestAnimationFrame(updatePillar);
-  });
+    window.addEventListener('scroll', updatePillars, { passive: true });
+    updatePillars();
+  }
 
-  // ── Scroll-velocity horizontal text ──────────────────────────────
+  // ── Scroll-velocity horizontal text — scroll-driven ────────────────
   const velocityEl = document.querySelector<HTMLElement>('[data-scroll-velocity]');
   if (velocityEl) {
     let lastY = window.scrollY;
     let velocity = 0;
     let posX = 0;
+    let ticking = false;
 
-    function tickVelocity() {
-      const currentY = window.scrollY;
-      const delta = currentY - lastY;
-      lastY = currentY;
-      velocity += (delta - velocity) * 0.08;
-      posX -= velocity * 1.5;
-      velocityEl!.style.transform = `translateX(${posX}px)`;
-      requestAnimationFrame(tickVelocity);
-    }
-    requestAnimationFrame(tickVelocity);
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          const currentY = window.scrollY;
+          const delta = currentY - lastY;
+          lastY = currentY;
+          velocity += (delta - velocity) * 0.12;
+          posX -= velocity * 1.5;
+          velocityEl!.style.transform = `translateX(${posX}px)`;
+          ticking = false;
+        });
+      }
+    }, { passive: true });
   }
 </script>

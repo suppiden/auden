@@ -13,17 +13,17 @@ const { t } = Astro.props;
   class="relative py-28 md:py-36 px-6 md:px-10 bg-charcoal overflow-hidden"
   aria-labelledby="identity-headline"
 >
-  <!-- Floating gradient orbs (parallax on scroll) -->
+  <!-- Floating gradient orbs — pre-blurred via radial-gradient (no blur filter) -->
   <div
-    class="absolute top-0 right-0 w-[520px] h-[520px] rounded-full pointer-events-none"
-    style="background: radial-gradient(circle, #FF4D00 0%, transparent 65%); opacity: 0.12; filter: blur(90px);"
+    class="absolute top-0 right-0 w-[700px] h-[700px] rounded-full pointer-events-none"
+    style="background: radial-gradient(circle, rgba(255,77,0,0.12) 0%, transparent 50%); will-change: transform;"
     aria-hidden="true"
     data-parallax-orb
     data-speed="0.04"
   ></div>
   <div
-    class="absolute bottom-0 left-0 w-[420px] h-[420px] rounded-full pointer-events-none"
-    style="background: radial-gradient(circle, #7B3FA0 0%, transparent 65%); opacity: 0.12; filter: blur(90px);"
+    class="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full pointer-events-none"
+    style="background: radial-gradient(circle, rgba(123,63,160,0.12) 0%, transparent 50%); will-change: transform;"
     aria-hidden="true"
     data-parallax-orb
     data-speed="-0.03"
@@ -165,11 +165,12 @@ const { t } = Astro.props;
 </div>
 
 <script>
-  // ── Frequency bars canvas animation ──────────────────────────────
+  // ── Frequency bars canvas — visibility-gated ───────────────────────
   const freqCanvas = document.getElementById('freq-bars-canvas') as HTMLCanvasElement | null;
   if (freqCanvas) {
     const ctx = freqCanvas.getContext('2d')!;
     let w = 0, h = 0;
+    let freqVisible = false;
     const BAR_COUNT = 80;
     const bars: number[] = Array.from({ length: BAR_COUNT }, () => Math.random() * 0.3);
     const targets: number[] = Array.from({ length: BAR_COUNT }, () => Math.random());
@@ -187,6 +188,7 @@ const { t } = Astro.props;
     window.addEventListener('resize', resizeFreq);
 
     function drawBars() {
+      if (!freqVisible) return;
       ctx.clearRect(0, 0, w, h);
       const barW = w / BAR_COUNT;
       const maxH = h * 0.65;
@@ -208,10 +210,15 @@ const { t } = Astro.props;
       }
       requestAnimationFrame(drawBars);
     }
-    requestAnimationFrame(drawBars);
+
+    const freqSection = freqCanvas.closest('section')!;
+    new IntersectionObserver(([e]) => {
+      freqVisible = e.isIntersecting;
+      if (freqVisible) requestAnimationFrame(drawBars);
+    }, { threshold: 0 }).observe(freqSection);
   }
 
-  // ── Parallax orbs on scroll ────────────────────────────────────
+  // ── Parallax orbs — scroll-driven (not rAF) ──────────────────────
   const parallaxOrbs = document.querySelectorAll<HTMLElement>('[data-parallax-orb]');
   if (parallaxOrbs.length > 0) {
     function updateOrbs() {
@@ -222,32 +229,32 @@ const { t } = Astro.props;
         const rect = section.getBoundingClientRect();
         orb.style.transform = `translateY(${-rect.top * speed * 10}px)`;
       });
-      requestAnimationFrame(updateOrbs);
     }
-    requestAnimationFrame(updateOrbs);
+    window.addEventListener('scroll', updateOrbs, { passive: true });
+    updateOrbs();
   }
 
-  // ── Logo reveal: scroll-driven scale + waveform canvas ─────────
+  // ── Logo reveal — scroll-driven (not rAF) ─────────────────────────
   const logoReveal = document.querySelector<HTMLElement>('[data-logo-reveal]');
   if (logoReveal) {
     function updateLogoReveal() {
       const rect = logoReveal!.parentElement!.getBoundingClientRect();
       const viewH = window.innerHeight;
+      if (rect.bottom < -100 || rect.top > viewH + 100) return;
       const p = Math.max(0, Math.min(1, (viewH - rect.top) / (viewH * 0.8)));
-      const scale = 0.7 + p * 0.3;
-      const opacity = p;
-      logoReveal!.style.transform = `scale(${scale})`;
-      logoReveal!.style.opacity = `${opacity}`;
-      requestAnimationFrame(updateLogoReveal);
+      logoReveal!.style.transform = `scale(${0.7 + p * 0.3})`;
+      logoReveal!.style.opacity = `${p}`;
     }
-    requestAnimationFrame(updateLogoReveal);
+    window.addEventListener('scroll', updateLogoReveal, { passive: true });
+    updateLogoReveal();
   }
 
-  // ── Logo section waveform canvas ───────────────────────────────
+  // ── Logo waveform canvas — visibility-gated ────────────────────────
   const logoWaveCanvas = document.getElementById('logo-wave-canvas') as HTMLCanvasElement | null;
   if (logoWaveCanvas) {
     const ctx = logoWaveCanvas.getContext('2d')!;
     let w = 0, h = 0;
+    let logoWaveVisible = false;
 
     function resizeLogoWave() {
       const rect = logoWaveCanvas!.parentElement!.getBoundingClientRect();
@@ -262,23 +269,23 @@ const { t } = Astro.props;
     window.addEventListener('resize', resizeLogoWave);
 
     let phase = 0;
+    const waveConfigs = [
+      { amp: 45, freq: 0.007, color: '255, 77, 0', alpha: 0.35, lineW: 4, offset: 0 },
+      { amp: 32, freq: 0.013, color: '123, 63, 160', alpha: 0.28, lineW: 3, offset: 1.5 },
+      { amp: 55, freq: 0.004, color: '255, 100, 30', alpha: 0.20, lineW: 6, offset: 3 },
+      { amp: 22, freq: 0.019, color: '200, 60, 120', alpha: 0.18, lineW: 2, offset: 4.5 },
+    ];
+
     function drawLogoWave() {
+      if (!logoWaveVisible) return;
       ctx.clearRect(0, 0, w, h);
       phase += 0.008;
       const cy = h * 0.5;
 
-      // Draw multiple horizontal waveforms through the logo area
-      const waveConfigs = [
-        { amp: 45, freq: 0.007, color: '255, 77, 0', alpha: 0.35, lineW: 4, offset: 0 },
-        { amp: 32, freq: 0.013, color: '123, 63, 160', alpha: 0.28, lineW: 3, offset: 1.5 },
-        { amp: 55, freq: 0.004, color: '255, 100, 30', alpha: 0.20, lineW: 6, offset: 3 },
-        { amp: 22, freq: 0.019, color: '200, 60, 120', alpha: 0.18, lineW: 2, offset: 4.5 },
-      ];
-
       waveConfigs.forEach(wc => {
         ctx.beginPath();
         ctx.moveTo(0, cy);
-        for (let x = 0; x <= w; x += 3) {
+        for (let x = 0; x <= w; x += 4) {
           const env = Math.sin(Math.PI * x / w);
           const y = cy + Math.sin(x * wc.freq + phase + wc.offset) * wc.amp * env;
           ctx.lineTo(x, y);
@@ -290,6 +297,11 @@ const { t } = Astro.props;
 
       requestAnimationFrame(drawLogoWave);
     }
-    requestAnimationFrame(drawLogoWave);
+
+    const logoSection = logoWaveCanvas.closest('[aria-hidden]') || logoWaveCanvas.parentElement!;
+    new IntersectionObserver(([e]) => {
+      logoWaveVisible = e.isIntersecting;
+      if (logoWaveVisible) requestAnimationFrame(drawLogoWave);
+    }, { threshold: 0 }).observe(logoSection);
   }
 </script>
