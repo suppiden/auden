@@ -100,7 +100,7 @@ export const en = {
   },
   contact: {
     eyebrow: 'Start a project',
-    headline: 'Let\'s talk.',
+    headline: 'Shape your sound.',
     body: 'Tell us about your brand and what you\'re looking to achieve. We\'ll get back to you within 48 hours.',
     fields: {
       name: 'Name',

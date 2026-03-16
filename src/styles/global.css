@@ -102,6 +102,32 @@
            hover:bg-charcoal hover:text-cream transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal;
   }
 
+  /* Hero buttons — neon fire aesthetic on dark video */
+  .hero-btn-primary {
+    @apply inline-flex items-center px-7 py-3 text-xs font-medium tracking-[0.15em] uppercase;
+    color: #fff;
+    border: 1px solid rgb(255 77 0);
+    background: rgb(255 77 0 / 0.1);
+    box-shadow: 0 0 12px rgb(255 77 0 / 0.15), inset 0 0 12px rgb(255 77 0 / 0.06);
+    transition: background 0.3s, box-shadow 0.3s, color 0.3s;
+  }
+  .hero-btn-primary:hover {
+    background: rgb(255 77 0);
+    color: #000;
+    box-shadow: 0 0 24px rgb(255 77 0 / 0.4), inset 0 0 12px rgb(255 77 0 / 0.1);
+  }
+
+  .hero-btn-ghost {
+    @apply inline-flex items-center px-7 py-3 text-xs font-medium tracking-[0.15em] uppercase;
+    color: rgb(255 255 255 / 0.6);
+    border: 1px solid rgb(255 255 255 / 0.15);
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .hero-btn-ghost:hover {
+    color: #fff;
+    border-color: rgb(255 255 255 / 0.5);
+  }
+
   .divider { @apply border-t border-border; }
 
   .form-field {
@@ -320,15 +346,6 @@ body::after {
   text-shadow: 0 0 40px rgba(255, 77, 0, 0.2);
 }
 
-/* ─── Waveform (legacy) ─────────────────────────────────────────── */
-@keyframes wave-pulse {
-  0%, 100% { transform: scaleY(1); opacity: 0.4; }
-  50%       { transform: scaleY(1.8); opacity: 0.9; }
-}
-.wave-bar {
-  animation: wave-pulse var(--duration, 1.2s) ease-in-out infinite;
-  animation-delay: var(--delay, 0s);
-}
 
 /* ─── Gradient shift (hero bottom line) ────────────────────────── */
 @keyframes gradient-shift {
@@ -390,13 +407,6 @@ body::after {
   border-radius: 50%;
 }
 
-/* ─── Nav EQ bars — appear on scroll ───────────────────────────── */
-.nav-eq {
-  transition: opacity 0.4s ease;
-}
-[data-nav].is-scrolled .nav-eq {
-  opacity: 1;
-}
 
 /* ─── Custom scrollbar ─────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
@@ -426,4 +436,104 @@ html { scrollbar-width: thin; scrollbar-color: rgba(255, 77, 0, 0.35) rgb(var(--
 /* ─── Nav blend-mode helpers ──────────────────────────────────── */
 [data-nav].is-scrolled .nav-logo {
   height: 1.75rem;
+}
+
+/* ─── Intro Splash ─────────────────────────────────────────────── */
+#intro-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #080808;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#intro-splash.intro-done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Grid stacking — both images in same cell, perfectly centered */
+.intro-inner {
+  display: grid;
+  place-items: center;
+}
+
+.intro-asset {
+  grid-row: 1;
+  grid-column: 1;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* ── Isotipo (U) ── */
+.intro-isotipo {
+  width: clamp(6rem, 18vw, 12rem);
+  filter:
+    drop-shadow(0 0 8px rgba(255, 77, 0, 0.8))
+    drop-shadow(0 0 24px rgba(255, 77, 0, 0.5))
+    drop-shadow(0 0 60px rgba(255, 77, 0, 0.25))
+    drop-shadow(0 0 100px rgba(255, 60, 0, 0.15));
+}
+.intro-isotipo.is-active {
+  opacity: 1;
+  animation: intro-pulse 1.2s ease-in-out 3;
+}
+.intro-isotipo.is-exit {
+  opacity: 0;
+  transform: scale(1.4);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ── Wordmark (auden) ── */
+.intro-wordmark {
+  width: clamp(14rem, 40vw, 30rem);
+  filter:
+    drop-shadow(0 0 8px rgba(255, 77, 0, 0.8))
+    drop-shadow(0 0 24px rgba(255, 77, 0, 0.5))
+    drop-shadow(0 0 60px rgba(255, 77, 0, 0.25))
+    drop-shadow(0 0 100px rgba(255, 60, 0, 0.15));
+  transform: scale(0.85);
+}
+.intro-wordmark.is-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Flash overlay on transition ── */
+#intro-splash.intro-flash::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 77, 0, 0.2) 0%, transparent 60%);
+  animation: intro-flash-fade 0.6s ease-out forwards;
+  pointer-events: none;
+}
+
+/* ── Keyframes ── */
+@keyframes intro-pulse {
+  0%   {
+    transform: scale(1);
+    filter: drop-shadow(0 0 8px rgba(255, 77, 0, 0.8)) drop-shadow(0 0 24px rgba(255, 77, 0, 0.5)) drop-shadow(0 0 60px rgba(255, 77, 0, 0.25));
+  }
+  50%  {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 16px rgba(255, 77, 0, 1)) drop-shadow(0 0 40px rgba(255, 77, 0, 0.7)) drop-shadow(0 0 80px rgba(255, 77, 0, 0.4)) drop-shadow(0 0 120px rgba(255, 60, 0, 0.2));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 8px rgba(255, 77, 0, 0.8)) drop-shadow(0 0 24px rgba(255, 77, 0, 0.5)) drop-shadow(0 0 60px rgba(255, 77, 0, 0.25));
+  }
+}
+
+@keyframes intro-flash-fade {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Skip intro for reduced-motion users */
+@media (prefers-reduced-motion: reduce) {
+  #intro-splash { display: none; }
 }

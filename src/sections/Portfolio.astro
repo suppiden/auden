@@ -58,12 +58,6 @@ const hasWork = portfolio.length > 0;
     ) : (
       <!-- Empty state — shows while portfolio is being built -->
       <div class="border border-border p-16 md:p-24 flex flex-col items-center justify-center text-center gap-6">
-        <!-- Placeholder waveform -->
-        <div class="flex items-end gap-1 h-10 opacity-20" aria-hidden="true">
-          {[40, 70, 90, 55, 80, 45, 95, 60].map((h) => (
-            <div class="w-1 bg-charcoal rounded-t-sm" style={`height: ${h}%`} />
-          ))}
-        </div>
         <p class="text-sm text-mid">{t.work.empty}</p>
       </div>
     )}

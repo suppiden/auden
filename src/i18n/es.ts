@@ -102,7 +102,7 @@ export const es: Translations = {
   },
   contact: {
     eyebrow: 'Inicia un proyecto',
-    headline: 'Hablemos.',
+    headline: 'Dale forma a tu sonido.',
     body: 'Cuéntanos sobre tu marca y lo que quieres conseguir. Te responderemos en menos de 48 horas.',
     fields: {
       name: 'Nombre',

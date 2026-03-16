@@ -13,23 +13,13 @@ const { t } = Astro.props;
   class="relative flex flex-col items-center justify-center min-h-screen px-6 md:px-10 pt-16 overflow-hidden"
   aria-labelledby="hero-headline"
 >
-  <!-- Poster fallback — always visible so there's no blank flash while video loads -->
-  <img
-    src="/banner.jpeg"
-    alt=""
-    class="absolute inset-0 w-full h-full object-cover"
-    style="opacity: 0.75; filter: grayscale(1) brightness(0.7);"
-    aria-hidden="true"
-  />
-
-  <!-- Video — fades in over the poster once loaded -->
+  <!-- Video background -->
   <video
     class="absolute inset-0 w-full h-full object-cover"
-    style="opacity: 0; filter: grayscale(1) brightness(0.7); will-change: transform; transform: translateZ(0); transition: opacity 0.8s ease;"
+    style="opacity: 0.75; filter: grayscale(1) brightness(0.7); will-change: transform; transform: translateZ(0);"
     autoplay muted loop playsinline
     preload="auto"
     aria-hidden="true"
-    data-hero-video
   >
     <source src="/animacion_hd.mp4" type="video/mp4" />
   </video>
@@ -49,20 +39,6 @@ const { t } = Astro.props;
   <!-- Dark overlay -->
   <div class="absolute inset-0 bg-charcoal/50" style="z-index: 3;" aria-hidden="true"></div>
 
-  <!-- Logo watermark — brand presence -->
-  <div
-    class="absolute bottom-16 right-8 md:right-16 pointer-events-none select-none"
-    style="z-index: 4;"
-    aria-hidden="true"
-  >
-    <img
-      src="/auden_u_palabra_white.png"
-      alt=""
-      class="w-28 md:w-44 lg:w-56"
-      style="mix-blend-mode: screen; opacity: 0.12;"
-    />
-  </div>
-
   <!-- Content -->
   <div class="relative text-center" style="z-index: 10; max-width: 72rem;">
     <p
@@ -76,7 +52,6 @@ const { t } = Astro.props;
     <h1
       id="hero-headline"
       class="text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] font-black leading-none tracking-tighter text-cream mb-8 uppercase"
-      data-scramble
     >
       {t.hero.headline}
     </h1>
@@ -86,36 +61,18 @@ const { t } = Astro.props;
     </p>
 
     <div class="flex flex-wrap items-center justify-center gap-4" data-reveal>
-      <a href={t.hero.ctaHref} class="btn-primary">{t.hero.cta}</a>
+      <a
+        href={t.hero.ctaHref}
+        class="hero-btn-primary"
+      >
+        {t.hero.cta}
+      </a>
       <a
         href={t.hero.secondaryHref}
-        class="inline-flex items-center gap-2 px-7 py-3.5 border border-cream/25 text-cream text-sm font-medium tracking-wide hover:border-cream/50 hover:bg-cream/8 transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cream"
+        class="hero-btn-ghost"
       >
         {t.hero.secondary}
       </a>
-    </div>
-  </div>
-
-  <!-- Sound wave EQ indicator + scroll hint -->
-  <div
-    class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
-    style="z-index: 10;"
-    aria-hidden="true"
-  >
-    <!-- Mini EQ bars -->
-    <div class="flex items-end gap-[3px] h-5">
-      <div class="w-[2px] bg-fire/60 rounded-full wave-bar" style="height: 40%; --duration: 0.8s; --delay: 0s;"></div>
-      <div class="w-[2px] bg-fire/60 rounded-full wave-bar" style="height: 70%; --duration: 1.1s; --delay: 0.1s;"></div>
-      <div class="w-[2px] bg-fire/60 rounded-full wave-bar" style="height: 100%; --duration: 0.9s; --delay: 0.2s;"></div>
-      <div class="w-[2px] bg-fire/60 rounded-full wave-bar" style="height: 55%; --duration: 1.3s; --delay: 0.15s;"></div>
-      <div class="w-[2px] bg-fire/60 rounded-full wave-bar" style="height: 80%; --duration: 1.0s; --delay: 0.05s;"></div>
-    </div>
-    <span class="text-[9px] tracking-[0.3em] uppercase text-cream/25 font-medium">Scroll</span>
-    <div class="relative w-px h-8 overflow-hidden" style="background: rgb(255 255 255 / 0.08);">
-      <div
-        class="absolute inset-x-0 top-0 h-1/2"
-        style="background: rgb(var(--color-fire)); animation: scroll-line 1.8s ease-in-out infinite;"
-      ></div>
     </div>
   </div>
 
@@ -123,17 +80,3 @@ const { t } = Astro.props;
   <div class="absolute bottom-0 left-0 right-0 h-[2px]" style="z-index: 10; background: linear-gradient(90deg, transparent, rgb(var(--color-fire)), #7B3FA0, rgb(var(--color-fire)), transparent); animation: gradient-shift 4s linear infinite; background-size: 200% 100%;" aria-hidden="true"></div>
 </section>
 
-<script>
-  // Fade video in once it can play — poster image stays visible underneath
-  const heroVideo = document.querySelector<HTMLVideoElement>('[data-hero-video]');
-  if (heroVideo) {
-    function showVideo() {
-      heroVideo!.style.opacity = '0.75';
-    }
-    if (heroVideo.readyState >= 3) {
-      showVideo();
-    } else {
-      heroVideo.addEventListener('canplay', showVideo, { once: true });
-    }
-  }
-</script>

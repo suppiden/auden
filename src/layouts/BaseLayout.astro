@@ -58,6 +58,24 @@ const alternateLang = isEn ? 'es' : 'en';
     </script>
   </head>
   <body>
+    <!-- ── Intro Splash ─────────────────────────────────────────────── -->
+    <div id="intro-splash" aria-hidden="true">
+      <div class="intro-inner">
+        <img
+          id="intro-isotipo"
+          src="/auden_isotipo_white.png"
+          alt=""
+          class="intro-asset intro-isotipo"
+        />
+        <img
+          id="intro-wordmark"
+          src="/auden_logo_white.png"
+          alt=""
+          class="intro-asset intro-wordmark"
+        />
+      </div>
+    </div>
+
     <div class="cursor-dot" aria-hidden="true"></div>
     <div class="cursor-ring" aria-hidden="true"></div>
 
@@ -91,47 +109,6 @@ const alternateLang = isEn ? 'es' : 'en';
           el.addEventListener('mouseleave', () => document.body.classList.remove('is-hovering'));
         });
       }
-
-      // ── Text scramble ─────────────────────────────────────────────
-      function scramble(el: HTMLElement, duration = 1500) {
-        const chars    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#?%&';
-        const original = el.textContent ?? '';
-        el.setAttribute('aria-label', original);
-        let start: number | null = null;
-
-        function step(ts: number) {
-          if (!start) start = ts;
-          const p        = Math.min((ts - start) / duration, 1);
-          const revealed = Math.floor(p * original.length);
-          el.textContent = original.split('').map((c, i) => {
-            if (c === ' ' || c === '.' || c === ',' || c === '—') return c;
-            if (i < revealed) return c;
-            return chars[Math.floor(Math.random() * chars.length)];
-          }).join('');
-          if (p < 1) requestAnimationFrame(step);
-          else el.textContent = original;
-        }
-        requestAnimationFrame(step);
-      }
-
-      // Scramble on page load for hero
-      document.querySelectorAll<HTMLElement>('#home [data-scramble]').forEach(el => {
-        setTimeout(() => scramble(el), 400);
-      });
-
-      // Scramble on scroll-reveal for other sections
-      const scrambleIO = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            scramble(e.target as HTMLElement, 1200);
-            scrambleIO.unobserve(e.target);
-          }
-        });
-      }, { threshold: 0.3 });
-
-      document.querySelectorAll<HTMLElement>('[data-scramble]:not(#home [data-scramble])').forEach(el => {
-        scrambleIO.observe(el);
-      });
 
       // ── 3D tilt ───────────────────────────────────────────────────
       document.querySelectorAll<HTMLElement>('[data-tilt]').forEach(el => {
@@ -210,6 +187,37 @@ const alternateLang = isEn ? 'es' : 'en';
       }, { threshold: 0.15 });
 
       document.querySelectorAll('[data-split-reveal]').forEach(el => splitIO.observe(el));
+
+      // ── Intro splash orchestration ──────────────────────────────────
+      const splash = document.getElementById('intro-splash');
+      if (splash) {
+        const iso = document.getElementById('intro-isotipo')!;
+        const word = document.getElementById('intro-wordmark')!;
+
+        // Phase 1: Isotipo fades in + starts pulsing (CSS handles the pulse)
+        requestAnimationFrame(() => {
+          iso.classList.add('is-active');
+        });
+
+        // Phase 2: After 3 pulses (~3.6s), flash + swap to wordmark
+        setTimeout(() => {
+          iso.classList.add('is-exit');
+          splash.classList.add('intro-flash');
+          setTimeout(() => {
+            word.classList.add('is-active');
+          }, 250);
+        }, 3700);
+
+        // Phase 3: Fade out overlay
+        setTimeout(() => {
+          splash.classList.add('intro-done');
+        }, 5000);
+
+        // Remove from DOM
+        setTimeout(() => {
+          splash.remove();
+        }, 5800);
+      }
     </script>
   </body>
 </html>

@@ -118,11 +118,23 @@ const { t } = Astro.props;
       [200, 60, 120],  // magenta accent
     ];
 
+    // Anchor waves to the headline's vertical center
+    const offerHeadline = document.getElementById('offer-headline');
+
+    function getWaveCenter(): number {
+      if (offerHeadline && siriCanvas) {
+        const sectionRect = siriCanvas.parentElement!.getBoundingClientRect();
+        const headRect = offerHeadline.getBoundingClientRect();
+        return (headRect.top - sectionRect.top) + headRect.height * 0.5;
+      }
+      return h * 0.28;
+    }
+
     function drawSiri() {
       if (!siriVisible) return;
       ctx.clearRect(0, 0, w, h);
 
-      const cy = h * 0.38;
+      const cy = getWaveCenter();
       const dark = isDark();
 
       waves.forEach((wave, idx) => {
