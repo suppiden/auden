@@ -36,15 +36,15 @@ const { t } = Astro.props;
     aria-hidden="true"
   ></div>
 
-  <!-- Dark overlay -->
-  <div class="absolute inset-0 bg-charcoal/50" style="z-index: 3;" aria-hidden="true"></div>
+  <!-- Dark overlay — lighter in center for black logo contrast -->
+  <div class="absolute inset-0" style="z-index: 3; background: radial-gradient(ellipse 60% 50% at 50% 45%, rgba(26,26,26,0.2) 0%, rgba(26,26,26,0.55) 100%);" aria-hidden="true"></div>
 
   <!-- Content -->
   <div class="relative text-center" style="z-index: 10; max-width: 72rem;">
     <h1 id="hero-headline" class="mb-4">
       <img
         id="hero-wordmark"
-        src="/auden_logo_white.png"
+        src="/auden_logo_black.png"
         alt="AUDEN"
         style="width: clamp(16rem, 50vw, 40rem); display: inline-block;"
       />
