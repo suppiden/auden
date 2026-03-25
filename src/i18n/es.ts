@@ -10,6 +10,7 @@ export const es: Translations = {
   },
   nav: {
     offer: 'Nuestra oferta',
+    about: 'Sobre nosotros',
     work: 'Trabajo',
     contact: 'Contacto',
     langSwitch: 'English',
@@ -17,13 +18,16 @@ export const es: Translations = {
   },
   hero: {
     eyebrow: 'Agencia de Sonic Branding',
+    title: 'AUDEN',
     headline: 'El sonido como identidad.',
     subheadline:
       'Creamos identidades sonoras originales para marcas que quieren ser reconocidas sin necesidad de ser vistas.',
     cta: 'Iniciar un proyecto',
-    ctaHref: '#contact',
+    ctaHref: 'https://k1ttvgo8.forms.app/auden',
     secondary: 'Ver nuestro trabajo',
     secondaryHref: '#work',
+    about: 'Sobre nosotros',
+    aboutHref: '#offer',
   },
   offer: {
     eyebrow: 'Lo que hacemos',
@@ -119,6 +123,17 @@ export const es: Translations = {
     success: 'Mensaje enviado. Nos pondremos en contacto contigo.',
     error: 'Algo salió mal. Por favor inténtalo de nuevo o usa el enlace de abajo.',
     externalCta: '¿Prefieres un formulario? Rellénalo aquí.',
+  },
+  extras: {
+    eyebrow: 'Servicios individuales',
+    headline: 'A la carta.',
+    items: [
+      { name: 'Adaptaciones adicionales', price: 'Consultar' },
+      { name: 'Pieza sonora individual', price: 'Consultar' },
+      { name: 'Nuevos canales o formatos', price: 'Consultar' },
+      { name: 'Mantenimiento sonoro mensual', price: 'Consultar' },
+      { name: 'Consultoría estratégica de identidad sonora', price: 'Consultar' },
+    ],
   },
   footer: {
     tagline: 'El sonido como identidad.',

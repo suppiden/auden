@@ -33,26 +33,17 @@ const { t } = Astro.props;
 
     <!-- ① Auden Sonic Identity ─────────────────────────────────── -->
     <div class="mb-24 md:mb-32">
-      <!-- Ghost "02" -->
-      <div class="relative">
-        <span
-          class="absolute -right-4 md:right-0 -top-6 font-black leading-none tracking-tighter select-none pointer-events-none"
-          style="font-size: clamp(6rem, 18vw, 16rem); color: rgb(var(--color-cream)); opacity: 0.04;"
-          aria-hidden="true"
-        >02</span>
-
-        <div class="relative" data-reveal>
-          <p class="text-xs font-medium tracking-[0.2em] uppercase text-mid mb-5">
-            {t.identity.eyebrow}
-          </p>
-          <h2
-            id="identity-headline"
-            class="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] text-cream mb-10 tracking-tight uppercase"
-            data-split-reveal
-          >
-            {t.identity.headline}
-          </h2>
-        </div>
+      <div data-reveal>
+        <p class="text-xs font-medium tracking-[0.2em] uppercase text-mid mb-5">
+          {t.identity.eyebrow}
+        </p>
+        <h2
+          id="identity-headline"
+          class="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] text-cream mb-10 tracking-tight uppercase"
+          data-split-reveal
+        >
+          {t.identity.headline}
+        </h2>
       </div>
 
       <!-- Glassmorphism product card -->
@@ -67,7 +58,9 @@ const { t } = Astro.props;
               {t.identity.description}
             </p>
             <a
-              href="#contact"
+              href={t.hero.ctaHref}
+              target="_blank"
+              rel="noopener noreferrer"
               class="inline-flex items-center gap-2 px-7 py-3.5 bg-cream text-charcoal text-sm font-medium tracking-wide hover:bg-accent hover:text-cream transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cream relative overflow-hidden group"
             >
               <span class="relative z-10">{t.identity.cta}</span>

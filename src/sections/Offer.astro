@@ -9,15 +9,15 @@ const { t } = Astro.props;
 ---
 
 <section id="offer" class="relative py-20 md:py-28 px-6 md:px-10 bg-cream overflow-hidden" aria-labelledby="offer-headline">
-  <!-- 3D SiriWave canvas — layered OVER the text -->
+  <!-- 3D SiriWave canvas — behind the text for subtlety -->
   <canvas
     id="siri-wave-canvas"
     class="absolute inset-0 w-full h-full pointer-events-none"
-    style="z-index: 20;"
+    style="z-index: 1;"
     aria-hidden="true"
   ></canvas>
 
-  <div class="max-w-8xl mx-auto relative" style="z-index: 1;">
+  <div class="max-w-8xl mx-auto relative" style="z-index: 10;">
     <!-- MASSIVE headline — always visible so waves flow OVER the letters -->
     <div class="mb-12 md:mb-20">
       <p class="section-eyebrow mb-6" data-reveal>{t.offer.eyebrow}</p>
@@ -30,7 +30,7 @@ const { t } = Astro.props;
       </h2>
     </div>
 
-    <p class="text-base md:text-lg text-mid leading-relaxed max-w-2xl mb-16 md:mb-24" data-reveal style="position: relative; z-index: 25;">
+    <p class="text-base md:text-lg text-mid leading-relaxed max-w-2xl mb-16 md:mb-24" data-reveal>
       {t.offer.body}
     </p>
 
@@ -70,7 +70,7 @@ const { t } = Astro.props;
 <div class="overflow-hidden bg-charcoal py-7 border-y border-cream/10" data-velocity-wrap>
   <div data-scroll-velocity class="whitespace-nowrap will-change-transform">
     <span class="inline-block text-[clamp(3rem,10vw,8rem)] font-black tracking-tighter uppercase select-none velocity-text" aria-hidden="true">
-      SOUND&nbsp;&#10038;&nbsp;IDENTITY&nbsp;&#10038;&nbsp;BRAND&nbsp;&#10038;&nbsp;RECOGNITION&nbsp;&#10038;&nbsp;MEMORY&nbsp;&#10038;&nbsp;EMOTION&nbsp;&#10038;&nbsp;SOUND&nbsp;&#10038;&nbsp;IDENTITY&nbsp;&#10038;&nbsp;BRAND&nbsp;&#10038;&nbsp;RECOGNITION&nbsp;&#10038;&nbsp;MEMORY&nbsp;&#10038;&nbsp;EMOTION&nbsp;&#10038;&nbsp;
+      SOUND&nbsp;&bull;&nbsp;IDENTITY&nbsp;&bull;&nbsp;BRAND&nbsp;&bull;&nbsp;RECOGNITION&nbsp;&bull;&nbsp;MEMORY&nbsp;&bull;&nbsp;EMOTION&nbsp;&bull;&nbsp;SOUND&nbsp;&bull;&nbsp;IDENTITY&nbsp;&bull;&nbsp;BRAND&nbsp;&bull;&nbsp;RECOGNITION&nbsp;&bull;&nbsp;MEMORY&nbsp;&bull;&nbsp;EMOTION&nbsp;&bull;&nbsp;
     </span>
   </div>
 </div>
@@ -140,7 +140,7 @@ const { t } = Astro.props;
       waves.forEach((wave, idx) => {
         wave.phase += wave.speed;
         const [cr, cg, cb] = colors[idx];
-        const baseAlpha = dark ? 0.50 : 0.30;
+        const baseAlpha = dark ? 0.25 : 0.15;
 
         // Glow pass
         ctx.beginPath();

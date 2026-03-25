@@ -478,7 +478,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(255, 77, 0, 0.35) rgb(var(--
 }
 .intro-isotipo.is-active {
   opacity: 1;
-  animation: intro-pulse 1.6s ease-in-out 2;
+  animation: intro-pulse 1.2s ease-in-out 1;
 }
 .intro-isotipo.is-exit {
   opacity: 0;

@@ -8,6 +8,7 @@ export const en = {
   },
   nav: {
     offer: 'Our offer',
+    about: 'About us',
     work: 'Work',
     contact: 'Contact',
     langSwitch: 'Español',
@@ -15,13 +16,16 @@ export const en = {
   },
   hero: {
     eyebrow: 'Sonic Branding Agency',
+    title: 'AUDEN',
     headline: 'Sound as identity.',
     subheadline:
       'We create original sonic identities for brands that want to be recognized without being seen.',
     cta: 'Start a project',
-    ctaHref: '#contact',
+    ctaHref: 'https://k1ttvgo8.forms.app/auden',
     secondary: 'See our work',
     secondaryHref: '#work',
+    about: 'About us',
+    aboutHref: '#offer',
   },
   offer: {
     eyebrow: 'What we do',
@@ -117,6 +121,17 @@ export const en = {
     success: 'Message sent. We\'ll be in touch.',
     error: 'Something went wrong. Please try again or use the link below.',
     externalCta: 'Prefer a form? Fill it out here.',
+  },
+  extras: {
+    eyebrow: 'Individual services',
+    headline: 'À la carte.',
+    items: [
+      { name: 'Additional adaptations', price: 'On request' },
+      { name: 'Individual sonic piece', price: 'On request' },
+      { name: 'New channels or formats', price: 'On request' },
+      { name: 'Monthly sonic maintenance', price: 'On request' },
+      { name: 'Strategic identity consultancy', price: 'On request' },
+    ],
   },
   footer: {
     tagline: 'Sound as identity.',

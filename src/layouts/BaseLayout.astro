@@ -199,24 +199,24 @@ const alternateLang = isEn ? 'es' : 'en';
           iso.classList.add('is-active');
         });
 
-        // Phase 2: After 2 pulses (~3.2s), flash + swap to wordmark
+        // Phase 2: After 1 pulse (~1.2s), flash + swap to wordmark
         setTimeout(() => {
           iso.classList.add('is-exit');
           splash.classList.add('intro-flash');
           setTimeout(() => {
             word.classList.add('is-active');
-          }, 300);
-        }, 3400);
+          }, 250);
+        }, 1300);
 
         // Phase 3: Fade out overlay
         setTimeout(() => {
           splash.classList.add('intro-done');
-        }, 4800);
+        }, 2800);
 
         // Remove from DOM
         setTimeout(() => {
           splash.remove();
-        }, 5600);
+        }, 3500);
       }
     </script>
   </body>
