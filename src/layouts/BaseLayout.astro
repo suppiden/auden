@@ -239,10 +239,10 @@ const alternateLang = isEn ? 'es' : 'en';
               word.style.opacity = '0';
               setTimeout(() => {
                 splash.remove();
-                // Wipe white→black from left to right
+                // Transition hero logo: white → black
                 if (heroWord) {
                   setTimeout(() => {
-                    heroWord.style.clipPath = 'inset(0 0 0 100%)';
+                    heroWord.style.filter = 'brightness(0)';
                     const glow = document.getElementById('hero-logo-glow');
                     if (glow) glow.style.opacity = '1';
                   }, 300);
