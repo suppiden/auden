@@ -105,7 +105,7 @@ export const en = {
   contact: {
     eyebrow: 'Start a project',
     headline: 'Shape your sound.',
-    body: 'Tell us about your brand and what you\'re looking to achieve. We\'ll get back to you within 48 hours.',
+    body: 'Tell us about your brand and what you\'re looking to achieve. We\'ll get back to you as soon as possible.',
     fields: {
       name: 'Name',
       namePlaceholder: 'Your name',
