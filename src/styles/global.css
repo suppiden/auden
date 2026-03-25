@@ -433,7 +433,15 @@ html { scrollbar-width: thin; scrollbar-color: rgba(255, 77, 0, 0.35) rgb(var(--
   color: transparent;
 }
 
-/* ─── Nav blend-mode helpers ──────────────────────────────────── */
+/* ─── Nav — frosted dark backdrop when scrolled ──────────────── */
+[data-nav] {
+  transition: background 0.3s ease, backdrop-filter 0.3s ease;
+}
+[data-nav].is-scrolled {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
 [data-nav].is-scrolled .nav-logo {
   height: 1.75rem;
 }

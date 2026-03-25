@@ -41,11 +41,13 @@ const { t } = Astro.props;
 
   <!-- Content -->
   <div class="relative text-center" style="z-index: 10; max-width: 72rem;">
-    <h1
-      id="hero-headline"
-      class="text-7xl sm:text-8xl md:text-9xl lg:text-[12rem] font-black leading-none tracking-tighter text-cream mb-4 uppercase"
-    >
-      {t.hero.title}
+    <h1 id="hero-headline" class="mb-4">
+      <img
+        id="hero-wordmark"
+        src="/auden_logo_white.png"
+        alt="AUDEN"
+        style="width: clamp(16rem, 50vw, 40rem); display: inline-block;"
+      />
     </h1>
 
     <p

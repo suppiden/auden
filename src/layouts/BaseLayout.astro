@@ -193,13 +193,14 @@ const alternateLang = isEn ? 'es' : 'en';
       if (splash) {
         const iso = document.getElementById('intro-isotipo')!;
         const word = document.getElementById('intro-wordmark')!;
+        const heroWord = document.getElementById('hero-wordmark');
 
-        // Phase 1: Isotipo fades in + starts pulsing (CSS handles the pulse)
+        // Phase 1: Isotipo fades in + starts pulsing
         requestAnimationFrame(() => {
           iso.classList.add('is-active');
         });
 
-        // Phase 2: After 1 pulse (~1.2s), flash + swap to wordmark
+        // Phase 2: After 1 pulse, flash + swap to wordmark
         setTimeout(() => {
           iso.classList.add('is-exit');
           splash.classList.add('intro-flash');
@@ -208,15 +209,32 @@ const alternateLang = isEn ? 'es' : 'en';
           }, 250);
         }, 1300);
 
-        // Phase 3: Fade out overlay
+        // Phase 3: Fly wordmark to hero position + fade background
         setTimeout(() => {
-          splash.classList.add('intro-done');
-        }, 2800);
+          if (heroWord) {
+            const from = word.getBoundingClientRect();
+            const to = heroWord.getBoundingClientRect();
+            const dx = (to.left + to.width / 2) - (from.left + from.width / 2);
+            const dy = (to.top + to.height / 2) - (from.top + from.height / 2);
+            const s = to.width / from.width;
 
-        // Remove from DOM
-        setTimeout(() => {
-          splash.remove();
-        }, 3500);
+            word.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease';
+            word.style.transform = `translate(${dx}px, ${dy}px) scale(${s})`;
+            word.style.filter = 'none';
+          }
+
+          // Fade splash background, allow interaction
+          splash.style.transition = 'background 0.6s ease';
+          splash.style.background = 'transparent';
+          splash.style.pointerEvents = 'none';
+
+          // After fly animation, fade wordmark out + remove
+          setTimeout(() => {
+            word.style.transition = 'opacity 0.25s ease';
+            word.style.opacity = '0';
+            setTimeout(() => splash.remove(), 300);
+          }, 750);
+        }, 2300);
       }
     </script>
   </body>
