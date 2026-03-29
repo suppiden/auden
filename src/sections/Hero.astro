@@ -10,222 +10,90 @@ const { t } = Astro.props;
 
 <section
   id="home"
-  class="relative min-h-screen overflow-hidden"
-  style="background: #111;"
+  class="relative flex flex-col items-center justify-center md:justify-start min-h-screen px-6 md:px-10 pt-16 md:pt-[8vh] overflow-hidden"
   aria-labelledby="hero-headline"
 >
-  <!-- ── Diagonal repeating text ────────────────────────────────── -->
-  <div class="hero-diag" aria-hidden="true">
-    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
-    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
-    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
-    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
-    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
-    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
-    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
-    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
-    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
-    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
-  </div>
+  <!-- Video background -->
+  <video
+    class="absolute inset-0 w-full h-full object-cover"
+    style="opacity: 0.75; filter: grayscale(1) brightness(0.7); will-change: transform; transform: translateZ(0);"
+    autoplay muted loop playsinline
+    preload="auto"
+    aria-hidden="true"
+  >
+    <source src="/animacion_hd.mp4" type="video/mp4" />
+  </video>
 
-  <!-- ── Fire glow behind the U ───────────────────────────────── -->
-  <div class="hero-u-glow" aria-hidden="true"></div>
-
-  <!-- ── Vertical label ─────────────────────────────────────────── -->
-  <div class="hero-vertical" data-reveal-wipe aria-hidden="true">
-    <span>{t.hero.headline}</span>
-  </div>
-
-  <!-- ── Content ────────────────────────────────────────────────── -->
-  <div class="relative flex flex-col min-h-screen px-4 md:px-10 pt-16 md:pt-24 pb-8 md:pb-10" style="z-index: 10;">
-
-    <!-- Logo wordmark — fills the viewport -->
-    <div class="flex-1 flex items-center justify-center">
-      <h1 id="hero-headline" class="relative w-full">
-        <img
-          id="hero-wordmark"
-          src="/auden_logo_white.png"
-          alt="AUDEN"
-          class="hero-logo"
-        />
-      </h1>
-    </div>
-
-    <!-- Bottom: coordinates + links + CTA -->
-    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6" style="z-index: 20;">
-      <div>
-        <p class="hero-coord" data-reveal>
-          01 ———— {t.hero.headline}
-        </p>
-        <div class="flex flex-wrap gap-x-6 gap-y-2 mt-3" data-reveal>
-          <a href={t.hero.secondaryHref} class="hero-link">
-            <span class="hero-dot"></span>
-            {t.hero.secondary}
-          </a>
-          <a href={t.hero.aboutHref} class="hero-link">
-            <span class="hero-dot"></span>
-            {t.hero.about}
-          </a>
-        </div>
-      </div>
-      <div data-reveal>
-        <a
-          href={t.hero.ctaHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hero-btn-primary"
-        >
-          {t.hero.cta}
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bottom gradient line -->
+  <!-- Gradient orbs — pre-blurred radial gradients (no blur filter) -->
   <div
-    class="absolute bottom-0 left-0 right-0 h-[2px]"
-    style="z-index: 10; background: linear-gradient(90deg, transparent, rgb(var(--color-fire)), #7B3FA0, rgb(var(--color-fire)), transparent); animation: gradient-shift 4s linear infinite; background-size: 200% 100%;"
+    class="absolute -bottom-32 -left-32 w-[800px] h-[800px] rounded-full pointer-events-none orb-drift"
+    style="background: radial-gradient(circle, rgba(255,77,0,0.35) 0%, rgba(255,77,0,0) 55%); z-index: 3; will-change: transform;"
     aria-hidden="true"
   ></div>
+  <div
+    class="absolute -top-32 -right-32 w-[700px] h-[700px] rounded-full pointer-events-none orb-drift-2"
+    style="background: radial-gradient(circle, rgba(123,63,160,0.28) 0%, rgba(123,63,160,0) 55%); z-index: 3; will-change: transform;"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Dark overlay -->
+  <div class="absolute inset-0 bg-charcoal/50" style="z-index: 3;" aria-hidden="true"></div>
+
+  <!-- Content -->
+  <div class="relative text-center" style="z-index: 10; max-width: 72rem;">
+    <h1 id="hero-headline" class="relative mb-4">
+      <span
+        id="hero-logo-glow"
+        class="absolute inset-0 -inset-x-20 -inset-y-10 pointer-events-none"
+        style="background: radial-gradient(ellipse, rgba(245,244,240,0.25) 0%, transparent 70%); opacity: 0; transition: opacity 1.2s ease;"
+        aria-hidden="true"
+      ></span>
+      <img
+        id="hero-wordmark"
+        src="/auden_logo_white.png"
+        alt="AUDEN"
+        class="relative"
+        style="width: clamp(16rem, 50vw, 40rem); display: inline-block; transition: filter 1.2s ease;"
+      />
+    </h1>
+
+    <p
+      class="text-xl sm:text-2xl md:text-3xl font-light tracking-wide text-cream/70 mb-6 uppercase"
+      style="letter-spacing: 0.15em;"
+      data-reveal
+    >
+      {t.hero.headline}
+    </p>
+
+    <p class="text-sm md:text-base text-cream/50 max-w-md mx-auto leading-relaxed mb-12" data-reveal>
+      {t.hero.subheadline}
+    </p>
+
+    <div class="flex flex-wrap items-center justify-center gap-4" data-reveal>
+      <a
+        href={t.hero.ctaHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hero-btn-primary"
+      >
+        {t.hero.cta}
+      </a>
+      <a
+        href={t.hero.secondaryHref}
+        class="hero-btn-ghost"
+      >
+        {t.hero.secondary}
+      </a>
+      <a
+        href={t.hero.aboutHref}
+        class="hero-btn-ghost"
+      >
+        {t.hero.about}
+      </a>
+    </div>
+  </div>
+
+  <!-- Color-shifting gradient line at bottom -->
+  <div class="absolute bottom-0 left-0 right-0 h-[2px]" style="z-index: 10; background: linear-gradient(90deg, transparent, rgb(var(--color-fire)), #7B3FA0, rgb(var(--color-fire)), transparent); animation: gradient-shift 4s linear infinite; background-size: 200% 100%;" aria-hidden="true"></div>
 </section>
 
-<style>
-  /* ── Logo — massive, almost full width ───────────────────────── */
-  .hero-logo {
-    width: 92%;
-    max-width: none;
-    display: block;
-    margin: 0 auto;
-    mix-blend-mode: screen;
-    position: relative;
-    z-index: 2;
-  }
-
-  /* ── Fire glow behind the U position ─────────────────────────── */
-  .hero-u-glow {
-    position: absolute;
-    /* U is the 2nd letter in "auden", roughly 18–30% from left */
-    left: 23%;
-    top: 45%;
-    transform: translate(-50%, -50%);
-    width: min(500px, 35vw);
-    height: min(600px, 50vh);
-    background: radial-gradient(
-      ellipse 100% 120% at 50% 50%,
-      rgba(255, 77, 0, 0.35) 0%,
-      rgba(255, 77, 0, 0.15) 30%,
-      rgba(255, 77, 0, 0.05) 50%,
-      transparent 70%
-    );
-    pointer-events: none;
-    z-index: 1;
-    animation: u-ambient 4s ease-in-out infinite;
-  }
-
-  @keyframes u-ambient {
-    0%, 100% { opacity: 1; }
-    50%      { opacity: 1.3; transform: translate(-50%, -50%) scale(1.08); }
-  }
-
-  /* ── Coordinate line ──────────────────────────────────────────── */
-  .hero-coord {
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgb(255, 77, 0);
-  }
-
-  /* ── Text links with fire dots ────────────────────────────────── */
-  .hero-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.45);
-    transition: color 0.3s;
-  }
-  .hero-link:hover {
-    color: #fff;
-  }
-
-  .hero-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: rgb(255, 77, 0);
-    display: inline-block;
-    flex-shrink: 0;
-  }
-
-  /* ── Vertical label ───────────────────────────────────────────── */
-  .hero-vertical {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 15;
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    background: rgb(245, 244, 240);
-    color: rgb(26, 26, 26);
-    font-weight: 900;
-    font-size: clamp(0.85rem, 1.5vw, 1.35rem);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 2.5rem 0.65rem;
-    line-height: 1;
-  }
-
-  /* ── Diagonal repeating text ──────────────────────────────────── */
-  .hero-diag {
-    position: absolute;
-    top: 0;
-    right: -10%;
-    width: 80%;
-    height: 100%;
-    overflow: hidden;
-    z-index: 1;
-    pointer-events: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1.2rem;
-    transform: rotate(-28deg) translate(15%, -10%);
-    -webkit-mask-image: radial-gradient(ellipse 55% 50% at 70% 30%, rgba(0,0,0,0.7) 0%, transparent 60%);
-    mask-image: radial-gradient(ellipse 55% 50% at 70% 30%, rgba(0,0,0,0.7) 0%, transparent 60%);
-  }
-
-  .hero-diag-line {
-    white-space: nowrap;
-    font-size: 0.6rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.04);
-    font-weight: 500;
-  }
-
-  /* ── Mobile ───────────────────────────────────────────────────── */
-  @media (max-width: 768px) {
-    .hero-logo {
-      width: 96%;
-    }
-    .hero-vertical {
-      top: auto;
-      bottom: 28%;
-      right: 0;
-      transform: none;
-      font-size: 0.7rem;
-      padding: 1.5rem 0.5rem;
-    }
-    .hero-diag {
-      display: none;
-    }
-    .hero-u-glow {
-      left: 25%;
-      width: 60vw;
-      height: 40vh;
-    }
-  }
-</style>
