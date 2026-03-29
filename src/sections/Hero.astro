@@ -10,77 +10,64 @@ const { t } = Astro.props;
 
 <section
   id="home"
-  class="relative flex flex-col min-h-screen overflow-hidden"
+  class="relative min-h-screen overflow-hidden"
   style="background: #111;"
   aria-labelledby="hero-headline"
 >
-  <!-- ── Glowing arc + ambient light ──────────────────────────────── -->
-
-  <!-- Main ambient glow (the "sun" behind the arc) -->
-  <div
-    class="absolute pointer-events-none"
-    style="width: 1100px; height: 1100px; top: -20%; right: 5%; background: radial-gradient(circle, rgba(255,77,0,0.35) 0%, rgba(255,77,0,0.15) 25%, rgba(255,77,0,0.04) 50%, transparent 70%); z-index: 1;"
-    aria-hidden="true"
-  ></div>
-
-  <!-- Secondary warm glow -->
-  <div
-    class="absolute pointer-events-none"
-    style="width: 700px; height: 700px; top: -5%; right: 18%; background: radial-gradient(circle, rgba(255,120,40,0.2) 0%, transparent 55%); z-index: 1;"
-    aria-hidden="true"
-  ></div>
-
-  <!-- The arc ring -->
-  <div class="hero-arc" aria-hidden="true">
-    <div class="hero-arc-ring"></div>
+  <!-- ── Diagonal repeating text ────────────────────────────────── -->
+  <div class="hero-diag" aria-hidden="true">
+    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
+    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
+    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
+    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
+    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
+    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
+    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
+    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
+    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
+    <p class="hero-diag-line">{t.hero.subheadline} &middot; {t.hero.subheadline} &middot; {t.hero.subheadline}</p>
   </div>
 
-  <!-- Subtle bottom-left purple accent -->
+  <!-- ── Ambient glow behind the U ──────────────────────────────── -->
   <div
     class="absolute pointer-events-none"
-    style="width: 500px; height: 500px; bottom: -10%; left: -5%; background: radial-gradient(circle, rgba(123,63,160,0.1) 0%, transparent 55%); z-index: 1;"
+    style="width: 500px; height: 500px; top: 25%; left: 15%; background: radial-gradient(circle, rgba(255,77,0,0.15) 0%, rgba(255,77,0,0.05) 35%, transparent 60%); z-index: 1;"
     aria-hidden="true"
   ></div>
 
-  <!-- ── Content ──────────────────────────────────────────────────── -->
-  <div class="relative flex flex-col justify-between flex-1 px-6 md:px-10 pt-20 md:pt-24 pb-10" style="z-index: 10;">
+  <!-- ── Vertical label ─────────────────────────────────────────── -->
+  <div class="hero-vertical" data-reveal-wipe aria-hidden="true">
+    <span>{t.hero.headline}</span>
+  </div>
 
-    <!-- Top-left: tagline -->
-    <div>
-      <p
-        class="text-lg sm:text-xl md:text-2xl font-light tracking-wide uppercase"
-        style="color: rgba(245,244,240,0.65); letter-spacing: 0.15em;"
-        data-reveal
-      >
-        {t.hero.headline}
-      </p>
-    </div>
+  <!-- ── Content ────────────────────────────────────────────────── -->
+  <div class="relative flex flex-col min-h-screen px-6 md:px-10 pt-20 md:pt-28 pb-8 md:pb-10" style="z-index: 10;">
 
-    <!-- Center: logo wordmark (positioned slightly right to intersect with arc) -->
-    <div class="flex items-center justify-center my-auto py-8 md:py-0 md:pr-[5%]">
-      <h1 id="hero-headline" class="relative">
-        <span
-          id="hero-logo-glow"
-          class="absolute inset-0 -inset-x-24 -inset-y-12 pointer-events-none"
-          style="background: radial-gradient(ellipse, rgba(245,244,240,0.12) 0%, transparent 70%); opacity: 0; transition: opacity 1.2s ease;"
-          aria-hidden="true"
-        ></span>
-        <img
-          id="hero-wordmark"
-          src="/auden_logo_white.png"
-          alt="AUDEN"
-          class="relative"
-          style="width: clamp(20rem, 55vw, 50rem); display: inline-block; transition: filter 1.2s ease; mix-blend-mode: screen; opacity: 0.85;"
-        />
+    <!-- Giant AUDEN text, centered vertically -->
+    <div class="flex-1 flex items-center">
+      <h1 id="hero-headline" class="hero-title" data-reveal>
+        <span id="hero-wordmark" class="hero-title-inner"><span>a</span><span class="hero-u">u</span><span>d</span><span>e</span><span>n</span></span>
       </h1>
     </div>
 
-    <!-- Bottom-left: description + buttons -->
-    <div>
-      <p class="text-sm md:text-base leading-relaxed max-w-sm mb-6" style="color: rgba(245,244,240,0.4);" data-reveal>
-        {t.hero.subheadline}
-      </p>
-      <div class="flex flex-wrap gap-3" data-reveal>
+    <!-- Bottom: coordinates + links + CTA -->
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+      <div>
+        <p class="hero-coord" data-reveal>
+          01 ———— {t.hero.headline}
+        </p>
+        <div class="flex flex-wrap gap-x-6 gap-y-2 mt-3" data-reveal>
+          <a href={t.hero.secondaryHref} class="hero-link">
+            <span class="hero-dot"></span>
+            {t.hero.secondary}
+          </a>
+          <a href={t.hero.aboutHref} class="hero-link">
+            <span class="hero-dot"></span>
+            {t.hero.about}
+          </a>
+        </div>
+      </div>
+      <div data-reveal>
         <a
           href={t.hero.ctaHref}
           target="_blank"
@@ -89,77 +76,158 @@ const { t } = Astro.props;
         >
           {t.hero.cta}
         </a>
-        <a href={t.hero.secondaryHref} class="hero-btn-ghost">{t.hero.secondary}</a>
-        <a href={t.hero.aboutHref} class="hero-btn-ghost">{t.hero.about}</a>
       </div>
     </div>
   </div>
 
   <!-- Bottom gradient line -->
-  <div class="absolute bottom-0 left-0 right-0 h-[2px]" style="z-index: 10; background: linear-gradient(90deg, transparent, rgb(var(--color-fire)), #7B3FA0, rgb(var(--color-fire)), transparent); animation: gradient-shift 4s linear infinite; background-size: 200% 100%;" aria-hidden="true"></div>
+  <div
+    class="absolute bottom-0 left-0 right-0 h-[2px]"
+    style="z-index: 10; background: linear-gradient(90deg, transparent, rgb(var(--color-fire)), #7B3FA0, rgb(var(--color-fire)), transparent); animation: gradient-shift 4s linear infinite; background-size: 200% 100%;"
+    aria-hidden="true"
+  ></div>
 </section>
 
 <style>
-  /* ── Glowing arc ring ─────────────────────────────────────────── */
-  .hero-arc {
-    position: absolute;
-    /* Positioned so the left crescent of the circle is visible */
-    top: -30%;
-    right: -10%;
-    width: clamp(550px, 70vw, 1000px);
-    height: clamp(550px, 70vw, 1000px);
-    z-index: 2;
-    pointer-events: none;
+  /* ── Giant title ──────────────────────────────────────────────── */
+  .hero-title {
+    font-weight: 900;
+    font-size: clamp(5.5rem, 17vw, 16rem);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    color: #fff;
+    text-transform: lowercase;
   }
 
-  .hero-arc-ring {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: 1.5px solid rgba(255, 77, 0, 0.5);
-    background: radial-gradient(circle at 40% 50%, rgba(255, 77, 0, 0.06) 0%, transparent 60%);
-    box-shadow:
-      /* Tight inner glow */
-      inset 0 0 60px rgba(255, 77, 0, 0.12),
-      inset 0 0 120px rgba(255, 77, 0, 0.06),
-      /* Main outer glow */
-      0 0 40px rgba(255, 77, 0, 0.15),
-      0 0 80px rgba(255, 77, 0, 0.1),
-      0 0 180px rgba(255, 77, 0, 0.06),
-      0 0 350px rgba(255, 77, 0, 0.03);
-    animation: arc-breathe 8s ease-in-out infinite;
+  .hero-title-inner {
+    display: inline-block;
   }
 
-  @keyframes arc-breathe {
+  /* ── Glowing U ────────────────────────────────────────────────── */
+  .hero-u {
+    color: rgb(255, 77, 0);
+    text-shadow:
+      0 0 10px rgba(255, 77, 0, 1),
+      0 0 30px rgba(255, 77, 0, 0.8),
+      0 0 60px rgba(255, 77, 0, 0.5),
+      0 0 120px rgba(255, 77, 0, 0.3),
+      0 0 200px rgba(255, 77, 0, 0.12);
+    animation: u-glow 4s ease-in-out infinite;
+  }
+
+  @keyframes u-glow {
     0%, 100% {
-      border-color: rgba(255, 77, 0, 0.5);
-      box-shadow:
-        inset 0 0 60px rgba(255, 77, 0, 0.12),
-        inset 0 0 120px rgba(255, 77, 0, 0.06),
-        0 0 40px rgba(255, 77, 0, 0.15),
-        0 0 80px rgba(255, 77, 0, 0.1),
-        0 0 180px rgba(255, 77, 0, 0.06),
-        0 0 350px rgba(255, 77, 0, 0.03);
+      text-shadow:
+        0 0 10px rgba(255, 77, 0, 1),
+        0 0 30px rgba(255, 77, 0, 0.8),
+        0 0 60px rgba(255, 77, 0, 0.5),
+        0 0 120px rgba(255, 77, 0, 0.3),
+        0 0 200px rgba(255, 77, 0, 0.12);
     }
     50% {
-      border-color: rgba(255, 77, 0, 0.7);
-      box-shadow:
-        inset 0 0 80px rgba(255, 77, 0, 0.18),
-        inset 0 0 160px rgba(255, 77, 0, 0.1),
-        0 0 60px rgba(255, 77, 0, 0.22),
-        0 0 120px rgba(255, 77, 0, 0.15),
-        0 0 250px rgba(255, 77, 0, 0.08),
-        0 0 450px rgba(255, 77, 0, 0.04);
+      text-shadow:
+        0 0 15px rgba(255, 77, 0, 1),
+        0 0 40px rgba(255, 77, 0, 0.85),
+        0 0 80px rgba(255, 77, 0, 0.6),
+        0 0 150px rgba(255, 77, 0, 0.35),
+        0 0 250px rgba(255, 77, 0, 0.18);
     }
   }
 
-  /* ── Mobile adjustments ───────────────────────────────────────── */
+  /* ── Coordinate line ──────────────────────────────────────────── */
+  .hero-coord {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgb(255, 77, 0);
+  }
+
+  /* ── Text links with fire dots ────────────────────────────────── */
+  .hero-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+    transition: color 0.3s;
+  }
+  .hero-link:hover {
+    color: #fff;
+  }
+
+  .hero-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgb(255, 77, 0);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  /* ── Vertical label ───────────────────────────────────────────── */
+  .hero-vertical {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    background: rgb(245, 244, 240);
+    color: rgb(26, 26, 26);
+    font-weight: 900;
+    font-size: clamp(0.85rem, 1.5vw, 1.35rem);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2.5rem 0.65rem;
+    line-height: 1;
+  }
+
+  /* ── Diagonal repeating text ──────────────────────────────────── */
+  .hero-diag {
+    position: absolute;
+    top: 0;
+    right: -10%;
+    width: 80%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.2rem;
+    transform: rotate(-28deg) translate(15%, -10%);
+    -webkit-mask-image: radial-gradient(ellipse 55% 50% at 70% 30%, rgba(0,0,0,0.7) 0%, transparent 60%);
+    mask-image: radial-gradient(ellipse 55% 50% at 70% 30%, rgba(0,0,0,0.7) 0%, transparent 60%);
+  }
+
+  .hero-diag-line {
+    white-space: nowrap;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.04);
+    font-weight: 500;
+  }
+
+  /* ── Mobile ───────────────────────────────────────────────────── */
   @media (max-width: 768px) {
-    .hero-arc {
-      top: -20%;
-      right: -25%;
-      width: 450px;
-      height: 450px;
+    .hero-vertical {
+      top: auto;
+      bottom: 30%;
+      right: 0;
+      transform: none;
+      font-size: 0.7rem;
+      padding: 1.5rem 0.5rem;
+    }
+    .hero-diag {
+      display: none;
+    }
+    .hero-title {
+      font-size: clamp(3.8rem, 20vw, 6rem);
     }
   }
 </style>
