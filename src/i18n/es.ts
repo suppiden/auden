@@ -20,6 +20,7 @@ export const es: Translations = {
     eyebrow: 'Agencia de Sonic Branding',
     title: 'AUDEN',
     headline: 'El sonido como identidad.',
+    tagline: 'Audio Branding y Sonido para Campañas',
     subheadline:
       'Creamos identidades sonoras originales para marcas que quieren ser reconocidas sin necesidad de ser vistas.',
     cta: 'Iniciar un proyecto',
@@ -32,6 +33,8 @@ export const es: Translations = {
   offer: {
     eyebrow: 'Lo que hacemos',
     headline: 'El sonido es tu activo de marca más infrautilizado.',
+    intro:
+      'Auden diseña identidades sonoras y sonido para campañas que ayudan a las marcas a ser reconocibles a través del audio.',
     body: 'Las grandes marcas se recuerdan por cómo suenan. Una identidad sonora distintiva genera reconocimiento instantáneo, construye memoria emocional y transmite calidad antes de que se pronuncie una palabra. Auden diseña ese sistema: desde la primera nota hasta la arquitectura sonora completa de tu marca.',
     pillars: [
       {
@@ -52,13 +55,13 @@ export const es: Translations = {
     eyebrow: 'Nuestra oferta',
     headline: 'Auden Sonic Identity.',
     description:
-      'Nuestro producto estrella. Una identidad sonora completa creada desde cero, siguiendo el Auden Sonic Method — desde la investigación de marca hasta la entrega final.',
+      'Una identidad sonora completa creada desde cero utilizando el Auden Sonic Method — traduciendo la estrategia de marca en sonido a través de experiencias digitales y campañas.',
     includes: [
       'Audio logo original + variaciones',
-      'Documento completo de marca sonora',
+      'Music bed para campañas',
       'Mood, emoción y carácter sonoro',
       'Guía estratégica de identidad sonora',
-      'Derechos de uso comercial completos',
+      'Derechos de uso comercial',
     ],
     cta: 'Iniciar un proyecto',
     methodEyebrow: 'Auden Sonic Method',
@@ -68,35 +71,45 @@ export const es: Translations = {
         number: '01',
         name: 'Brand Decode',
         description:
-          'Estudiamos tu marca, audiencia y entorno competitivo para entender exactamente qué debe comunicar tu sonido.',
+          'Comprensión de los fundamentos de la marca incluyendo valores, posicionamiento, audiencia objetivo y tono emocional.',
+        points: [] as string[],
       },
       {
         number: '02',
         name: 'Sonic Territory',
         description:
-          'Mapeamos el paisaje sonoro de tu categoría y definimos el territorio distintivo que tu marca va a ocupar.',
+          'Exploramos el paisaje sonoro alrededor de tu marca para definir un territorio sonoro distintivo para tu marca.',
+        points: [
+          'Análisis del paisaje sonoro',
+          'Escucha competitiva',
+          'Definición de una dirección sonora',
+        ],
       },
       {
         number: '03',
         name: 'Sonic Blueprint',
         description:
-          'Diseñamos la arquitectura sonora completa: mood, tonalidad, emoción y todos los elementos sonoros de firma.',
+          'El Sonic Blueprint es el documento estratégico que define cómo suena la marca y cómo debe utilizarse su identidad sonora en los diferentes puntos de contacto. Traduce el trabajo creativo en directrices claras para que la marca pueda aplicar el sonido de forma consistente en campañas, productos digitales y experiencias de marca.',
+        points: [] as string[],
       },
       {
         number: '04',
         name: 'Sonic Production',
         description:
-          'Producimos y entregamos todos los activos sonoros finales, listos para desplegarse en cada formato y punto de contacto.',
+          'Producimos y entregamos los activos sonoros finales, listos para ser utilizados en campañas, plataformas digitales y experiencias de marca.',
+        points: [
+          'Audio logo final y variaciones',
+          'Activos sonoros listos para campañas',
+          'Formatos optimizados para diferentes plataformas',
+        ],
       },
     ],
-    servicesEyebrow: 'Servicios individuales',
-    servicesHeadline: 'A la carta.',
+    servicesEyebrow: 'Sonido para campañas',
+    servicesHeadline: 'Auden Sound for Campaigns.',
     services: [
-      { name: 'Adaptaciones adicionales' },
-      { name: 'Pieza sonora individual' },
-      { name: 'Nuevos canales o formatos' },
-      { name: 'Mantenimiento sonoro mensual' },
-      { name: 'Consultoría estratégica de identidad sonora' },
+      { name: 'Campaign Sound Production' },
+      { name: 'Sonic Mood Playlist' },
+      { name: 'Brand Sound Toolkit' },
     ],
   },
   work: {
@@ -125,14 +138,35 @@ export const es: Translations = {
     externalCta: '¿Prefieres un formulario? Rellénalo aquí.',
   },
   extras: {
-    eyebrow: 'Servicios individuales',
-    headline: 'A la carta.',
+    eyebrow: 'Sonido para campañas',
+    headline: 'Auden Sound for Campaigns.',
     items: [
-      { name: 'Adaptaciones adicionales', price: 'Consultar' },
-      { name: 'Pieza sonora individual', price: 'Consultar' },
-      { name: 'Nuevos canales o formatos', price: 'Consultar' },
-      { name: 'Mantenimiento sonoro mensual', price: 'Consultar' },
-      { name: 'Consultoría estratégica de identidad sonora', price: 'Consultar' },
+      {
+        name: 'Campaign Sound Production',
+        includes: [
+          'Creación de sonido original',
+          'Diseño de sonido',
+          'Efectos de sonido',
+          'Transiciones',
+          'Producción de audio final lista para campañas',
+        ],
+      },
+      {
+        name: 'Sonic Mood Playlist',
+        includes: [
+          'Playlist alineada con el mood de la marca',
+          'Referencias musicales para campañas y contenido',
+          'Transiciones de pistas suaves y profesionales',
+        ],
+      },
+      {
+        name: 'Brand Sound Toolkit',
+        includes: [
+          'Stingers de marca',
+          'Whooshes y transiciones',
+          'Pequeños elementos sonoros para contenido digital',
+        ],
+      },
     ],
   },
   footer: {

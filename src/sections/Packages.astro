@@ -112,6 +112,20 @@ const { t } = Astro.props;
             >{phase.number}</span>
             <h4 class="text-xl font-black text-cream mb-3 tracking-tight">{phase.name}</h4>
             <p class="text-sm text-mid leading-relaxed">{phase.description}</p>
+            {phase.points.length > 0 && (
+              <ul class="mt-4 flex flex-col gap-2">
+                {phase.points.map((point) => (
+                  <li class="flex items-start gap-2.5 text-sm text-cream/55">
+                    <span
+                      class="mt-[7px] w-1 h-1 rounded-full flex-shrink-0"
+                      style="background: rgb(var(--color-fire));"
+                      aria-hidden="true"
+                    />
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         ))}
       </div>
