@@ -433,17 +433,32 @@ html { scrollbar-width: thin; scrollbar-color: rgba(255, 77, 0, 0.35) rgb(var(--
   color: transparent;
 }
 
-/* ─── Nav — frosted dark backdrop when scrolled ──────────────── */
+/* ─── Nav — dark text initially, frosted dark backdrop when scrolled ── */
 [data-nav] {
   transition: background 0.3s ease, backdrop-filter 0.3s ease;
 }
+.nav-links { color: rgba(26,26,26,0.85); font-weight: 500; }
+.nav-contact-btn { border-color: rgba(26,26,26,0.5); font-weight: 500; }
+.nav-contact-btn:hover { background: #1a1a1a; color: #f5f4f0; }
+
+.dark [data-nav]:not(.is-scrolled) nav { color: #fff; }
+.dark .nav-links { color: rgba(255,255,255,0.7); }
+.dark .nav-contact-btn { border-color: rgba(255,255,255,0.4); }
+.dark .nav-contact-btn:hover { background: #fff; color: #000; }
+.dark [data-nav]:not(.is-scrolled) .nav-logo { filter: invert(0) !important; }
+
 [data-nav].is-scrolled {
   background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
+[data-nav].is-scrolled nav { color: #fff; }
+[data-nav].is-scrolled .nav-links { color: rgba(255,255,255,0.7); }
+[data-nav].is-scrolled .nav-contact-btn { border-color: rgba(255,255,255,0.4); }
+[data-nav].is-scrolled .nav-contact-btn:hover { background: #fff; color: #000; }
 [data-nav].is-scrolled .nav-logo {
   height: 1.75rem;
+  filter: invert(0) !important;
 }
 
 /* ─── Intro Splash ─────────────────────────────────────────────── */

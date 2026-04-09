@@ -55,7 +55,7 @@ const alternateLang = isEn ? 'es' : 'en';
     <link rel="preload" href="/auden_logo_white.png" as="image" />
 
     <script is:inline>
-      const theme = localStorage.getItem('theme') ?? 'dark';
+      const theme = localStorage.getItem('theme') ?? 'light';
       document.documentElement.classList.toggle('dark', theme === 'dark');
     </script>
   </head>
@@ -242,7 +242,7 @@ const alternateLang = isEn ? 'es' : 'en';
                 // Transition hero logo: white → black
                 if (heroWord) {
                   setTimeout(() => {
-                    heroWord.style.filter = 'brightness(0)';
+                    heroWord.classList.add('hero-logo-ready');
                     const glow = document.getElementById('hero-logo-glow');
                     if (glow) glow.style.opacity = '1';
                   }, 300);

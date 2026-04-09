@@ -10,6 +10,8 @@ export interface PortfolioItem {
   cover?: string;
   /** Optional audio preview URL */
   audioUrl?: string;
+  /** Optional YouTube embed URL */
+  videoUrl?: string;
   /** Optional external case study link */
   caseStudyUrl?: string;
   year: number;
@@ -20,12 +22,28 @@ export interface PortfolioItem {
  * The section renders gracefully with zero, one, or many items.
  */
 export const portfolio: PortfolioItem[] = [
-  // {
-  //   id: 'example-brand',
-  //   client: 'Example Brand',
-  //   category: 'Sonic Branding',
-  //   description: 'A minimal sonic identity for a digital-first consumer brand.',
-  //   cover: '/portfolio/example-brand.jpg',
-  //   year: 2025,
-  // },
+  {
+    id: 'project-1',
+    client: 'Project 1',
+    category: 'Sonic Branding',
+    description: 'A sonic identity shaped around presence and recognition.',
+    videoUrl: 'https://www.youtube.com/embed/gJZ66MGXdmo',
+    year: 2025,
+  },
+  {
+    id: 'project-2',
+    client: 'Project 2',
+    category: 'Sonic Branding',
+    description: 'Sound design rooted in brand strategy and emotional recall.',
+    videoUrl: 'https://www.youtube.com/embed/3aAK9RnQxBc',
+    year: 2025,
+  },
+  {
+    id: 'project-3',
+    client: 'Project 3',
+    category: 'Sonic Branding',
+    description: 'An auditory signature built for consistency across touchpoints.',
+    videoUrl: 'https://www.youtube.com/embed/KtoV6BfEb14',
+    year: 2025,
+  },
 ];

@@ -22,7 +22,7 @@ export const en = {
     subheadline:
       'We create original sonic identities for brands that want to be recognized without being seen.',
     cta: 'Start a project',
-    ctaHref: 'https://k1ttvgo8.forms.app/auden',
+    ctaHref: 'https://eez6xtvk.forms.app/auden-1',
     secondary: 'See our work',
     secondaryHref: '#work',
     about: 'About us',
@@ -134,6 +134,8 @@ export const en = {
     success: 'Message sent. We\'ll be in touch.',
     error: 'Something went wrong. Please try again or use the link below.',
     externalCta: 'Prefer a form? Fill it out here.',
+    emailLabel: 'Prefer email?',
+    emailAddress: 'hello@audensonic.com',
   },
   extras: {
     eyebrow: 'Sound for campaigns',

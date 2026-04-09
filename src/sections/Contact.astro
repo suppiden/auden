@@ -7,7 +7,7 @@ interface Props {
 }
 
 const { t } = Astro.props;
-const externalUrl = import.meta.env.PUBLIC_EXTERNAL_FORM_URL || 'https://k1ttvgo8.forms.app/auden';
+const externalUrl = import.meta.env.PUBLIC_EXTERNAL_FORM_URL || 'https://eez6xtvk.forms.app/auden-1';
 ---
 
 <section id="contact" class="py-28 md:py-36 px-6 md:px-10 bg-cream border-t border-border" aria-labelledby="contact-headline">
@@ -18,6 +18,13 @@ const externalUrl = import.meta.env.PUBLIC_EXTERNAL_FORM_URL || 'https://k1ttvgo
         <p class="section-eyebrow mb-5" data-reveal>{t.contact.eyebrow}</p>
         <h2 id="contact-headline" class="section-headline mb-6 uppercase" data-split-reveal>{t.contact.headline}</h2>
         <p class="text-base text-mid leading-relaxed max-w-sm" data-reveal>{t.contact.body}</p>
+        <p class="mt-6 text-sm text-mid" data-reveal>
+          {t.contact.emailLabel}{' '}
+          <a
+            href={`mailto:${t.contact.emailAddress}`}
+            class="text-charcoal underline underline-offset-4 hover:text-mid transition-colors"
+          >{t.contact.emailAddress}</a>
+        </p>
       </div>
 
       <!-- Right: form (React island) -->

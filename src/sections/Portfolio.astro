@@ -22,39 +22,53 @@ const hasWork = portfolio.length > 0;
 
     {hasWork ? (
       <!-- Portfolio grid — renders when items are available -->
-      <ul class="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-border border border-border" role="list">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
         {portfolio.map((item) => (
-          <li class="bg-cream group">
-            <a
-              href={item.caseStudyUrl ?? '#work'}
-              class="block p-8 md:p-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-charcoal"
-              aria-label={`${item.client} — ${item.category}`}
-            >
-              <!-- Cover image placeholder -->
-              {item.cover ? (
+          <article class="group">
+            <!-- Video or cover image -->
+            {item.videoUrl ? (
+              <div class="relative w-full aspect-video mb-6 overflow-hidden rounded-sm border border-border/30">
+                <iframe
+                  src={item.videoUrl}
+                  title={item.client}
+                  width="800"
+                  height="450"
+                  class="absolute inset-0 w-full h-full"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                  loading="lazy"
+                />
+              </div>
+            ) : item.cover ? (
+              <a
+                href={item.caseStudyUrl ?? '#work'}
+                class="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-charcoal"
+                aria-label={`${item.client} — ${item.category}`}
+              >
                 <img
                   src={item.cover}
                   alt={item.client}
                   width="800"
                   height="500"
-                  class="w-full aspect-video object-cover mb-8 grayscale group-hover:grayscale-0 transition-all duration-500"
+                  class="w-full aspect-video object-cover mb-6 grayscale group-hover:grayscale-0 transition-all duration-500 rounded-sm"
                   loading="lazy"
                 />
-              ) : (
-                <div
-                  class="w-full aspect-video bg-border mb-8 flex items-center justify-center"
-                  aria-hidden="true"
-                >
-                  <span class="text-xs tracking-[0.2em] uppercase text-mid">Visual TBC</span>
-                </div>
-              )}
-              <p class="text-[10px] font-medium tracking-[0.2em] uppercase text-mid mb-2">{item.category} · {item.year}</p>
-              <h3 class="text-lg font-serif text-charcoal mb-2">{item.client}</h3>
-              <p class="text-sm text-mid leading-relaxed">{item.description}</p>
-            </a>
-          </li>
+              </a>
+            ) : (
+              <div
+                class="w-full aspect-video bg-border mb-6 flex items-center justify-center rounded-sm"
+                aria-hidden="true"
+              >
+                <span class="text-xs tracking-[0.2em] uppercase text-mid">Visual TBC</span>
+              </div>
+            )}
+            <p class="text-[10px] font-medium tracking-[0.2em] uppercase text-mid mb-2">{item.category} · {item.year}</p>
+            <h3 class="text-lg font-serif text-charcoal mb-1">{item.client}</h3>
+            <p class="text-sm text-mid leading-relaxed">{item.description}</p>
+          </article>
         ))}
-      </ul>
+      </div>
     ) : (
       <!-- Empty state — shows while portfolio is being built -->
       <div class="border border-border p-16 md:p-24 flex flex-col items-center justify-center text-center gap-6">

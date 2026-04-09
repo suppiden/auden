@@ -24,7 +24,7 @@ export const es: Translations = {
     subheadline:
       'Creamos identidades sonoras originales para marcas que quieren ser reconocidas sin necesidad de ser vistas.',
     cta: 'Iniciar un proyecto',
-    ctaHref: 'https://k1ttvgo8.forms.app/auden',
+    ctaHref: 'https://eez6xtvk.forms.app/auden-1',
     secondary: 'Ver nuestro trabajo',
     secondaryHref: '#work',
     about: 'Sobre nosotros',
@@ -136,6 +136,8 @@ export const es: Translations = {
     success: 'Mensaje enviado. Nos pondremos en contacto contigo.',
     error: 'Algo salió mal. Por favor inténtalo de nuevo o usa el enlace de abajo.',
     externalCta: '¿Prefieres un formulario? Rellénalo aquí.',
+    emailLabel: '¿Prefieres email?',
+    emailAddress: 'hello@audensonic.com',
   },
   extras: {
     eyebrow: 'Sonido para campañas',
