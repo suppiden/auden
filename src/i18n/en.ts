@@ -110,6 +110,15 @@ export const en = {
       { name: 'Brand Sound Toolkit' },
     ],
   },
+  touchpoints: {
+    eyebrow: 'Where brand sound lives',
+    headline: 'One identity. Every touchpoint.',
+    items: [
+      'Paid ads', 'Social content', 'Brand events', 'Retail spaces', 'Podcasts',
+      'Website & app', 'YouTube', 'Corporate video', 'Product launches', 'TV & radio',
+    ],
+    footer: 'Working with a creative or media agency? We integrate as your sonic production partner.',
+  },
   work: {
     eyebrow: 'Selected work',
     headline: 'Identity in practice.',

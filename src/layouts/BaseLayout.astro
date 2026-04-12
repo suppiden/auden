@@ -55,7 +55,7 @@ const alternateLang = isEn ? 'es' : 'en';
     <link rel="preload" href="/auden_logo_white.png" as="image" />
 
     <script is:inline>
-      const theme = localStorage.getItem('theme') ?? 'light';
+      const theme = localStorage.getItem('theme') ?? 'dark';
       document.documentElement.classList.toggle('dark', theme === 'dark');
       // Pre-set hero logo src for dark mode (before paint)
       if (theme === 'dark') {

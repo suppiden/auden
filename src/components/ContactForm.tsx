@@ -42,8 +42,9 @@ export default function ContactForm({
     const publicKey = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
 
     if (!serviceId || !templateId || !publicKey) {
-      // Integration not configured — show external form
-      setStatus('error');
+      // EmailJS not configured — redirect to external form
+      window.open(externalUrl, '_blank', 'noopener,noreferrer');
+      setStatus('idle');
       return;
     }
 

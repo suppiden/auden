@@ -112,6 +112,15 @@ export const es: Translations = {
       { name: 'Brand Sound Toolkit' },
     ],
   },
+  touchpoints: {
+    eyebrow: 'Donde vive el sonido de marca',
+    headline: 'Una identidad. Cada punto de contacto.',
+    items: [
+      'Anuncios', 'Contenido social', 'Eventos de marca', 'Espacios retail', 'Podcasts',
+      'Web y app', 'YouTube', 'Vídeo corporativo', 'Lanzamientos de producto', 'TV y radio',
+    ],
+    footer: '¿Trabajas con una agencia creativa o de medios? Nos integramos como tu partner de producción sonora.',
+  },
   work: {
     eyebrow: 'Trabajo seleccionado',
     headline: 'Identidad en práctica.',
