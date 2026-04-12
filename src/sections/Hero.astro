@@ -127,6 +127,7 @@ const { t } = Astro.props;
   :global(.dark) #hero-logo-glow { background: radial-gradient(ellipse, rgba(255,77,0,0.15) 0%, transparent 70%); }
 
   /* ── Hero CTA buttons — semi-transparent, slightly rounded ── */
+  /* Light mode: dark text on subtle backgrounds */
   .hero-cta-btn {
     display: inline-flex;
     align-items: center;
@@ -137,27 +138,36 @@ const { t } = Astro.props;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     border-radius: 4px;
-    color: #fff;
+    color: #1a1a1a;
     border: 1px solid rgb(255 77 0);
-    background: rgb(255 77 0 / 0.15);
+    background: rgb(255 77 0 / 0.12);
     backdrop-filter: blur(8px);
-    transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+    transition: background 0.3s, box-shadow 0.3s, transform 0.2s, color 0.3s;
   }
   .hero-cta-btn:hover {
-    background: rgb(255 77 0 / 0.35);
-    box-shadow: 0 0 20px rgb(255 77 0 / 0.2);
+    background: rgb(255 77 0 / 0.25);
+    box-shadow: 0 0 20px rgb(255 77 0 / 0.15);
     transform: translateY(-1px);
   }
   .hero-cta-ghost {
-    border-color: rgb(26 26 26 / 0.35);
-    background: rgb(26 26 26 / 0.05);
-    color: rgb(26 26 26 / 0.75);
+    border-color: rgb(26 26 26 / 0.4);
+    background: rgb(26 26 26 / 0.06);
+    color: rgb(26 26 26 / 0.8);
   }
   .hero-cta-ghost:hover {
-    border-color: rgb(26 26 26 / 0.6);
-    background: rgb(26 26 26 / 0.1);
+    border-color: rgb(26 26 26 / 0.7);
+    background: rgb(26 26 26 / 0.12);
     color: #1a1a1a;
     box-shadow: none;
+  }
+  /* Dark mode: white text on glowing backgrounds */
+  :global(.dark) .hero-cta-btn {
+    color: #fff;
+    background: rgb(255 77 0 / 0.15);
+  }
+  :global(.dark) .hero-cta-btn:hover {
+    background: rgb(255 77 0 / 0.35);
+    box-shadow: 0 0 20px rgb(255 77 0 / 0.2);
   }
   :global(.dark) .hero-cta-ghost {
     border-color: rgb(255 255 255 / 0.2);
