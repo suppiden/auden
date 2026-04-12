@@ -149,14 +149,24 @@ const { t } = Astro.props;
     transform: translateY(-1px);
   }
   .hero-cta-ghost {
+    border-color: rgb(26 26 26 / 0.35);
+    background: rgb(26 26 26 / 0.05);
+    color: rgb(26 26 26 / 0.75);
+  }
+  .hero-cta-ghost:hover {
+    border-color: rgb(26 26 26 / 0.6);
+    background: rgb(26 26 26 / 0.1);
+    color: #1a1a1a;
+    box-shadow: none;
+  }
+  :global(.dark) .hero-cta-ghost {
     border-color: rgb(255 255 255 / 0.2);
     background: rgb(255 255 255 / 0.05);
     color: rgb(255 255 255 / 0.7);
   }
-  .hero-cta-ghost:hover {
+  :global(.dark) .hero-cta-ghost:hover {
     border-color: rgb(255 255 255 / 0.5);
     background: rgb(255 255 255 / 0.1);
     color: #fff;
-    box-shadow: none;
   }
 </style>
