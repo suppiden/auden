@@ -117,6 +117,20 @@ const { t } = Astro.props;
     const isDark = document.documentElement.classList.toggle('dark');
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
     syncThemeIcons();
+
+    // Swap hero logo image for current theme
+    const heroLogo = document.getElementById('hero-wordmark') as HTMLImageElement | null;
+    if (heroLogo) {
+      heroLogo.src = isDark
+        ? (heroLogo.dataset.srcDark || '/auden_logo_white.png')
+        : (heroLogo.dataset.srcLight || '/auden_logo_black.png');
+      // In light mode ensure brightness(0) is applied; in dark mode remove it
+      if (isDark) {
+        heroLogo.classList.remove('hero-logo-ready');
+      } else {
+        heroLogo.classList.add('hero-logo-ready');
+      }
+    }
   });
 
   // Scroll backdrop handled in BaseLayout to co-ordinate with logo scale

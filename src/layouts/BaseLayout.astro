@@ -57,6 +57,13 @@ const alternateLang = isEn ? 'es' : 'en';
     <script is:inline>
       const theme = localStorage.getItem('theme') ?? 'light';
       document.documentElement.classList.toggle('dark', theme === 'dark');
+      // Pre-set hero logo src for dark mode (before paint)
+      if (theme === 'dark') {
+        document.addEventListener('DOMContentLoaded', () => {
+          const h = document.getElementById('hero-wordmark');
+          if (h) h.setAttribute('src', '/auden_logo_white.png');
+        });
+      }
     </script>
   </head>
   <body>
@@ -242,7 +249,13 @@ const alternateLang = isEn ? 'es' : 'en';
                 // Transition hero logo: white → black
                 if (heroWord) {
                   setTimeout(() => {
-                    heroWord.classList.add('hero-logo-ready');
+                    const isDark = document.documentElement.classList.contains('dark');
+                    // In dark mode use white logo as-is; in light mode apply brightness(0)
+                    if (isDark) {
+                      (heroWord as HTMLImageElement).src = '/auden_logo_white.png';
+                    } else {
+                      heroWord.classList.add('hero-logo-ready');
+                    }
                     const glow = document.getElementById('hero-logo-glow');
                     if (glow) glow.style.opacity = '1';
                   }, 300);

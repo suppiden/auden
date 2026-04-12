@@ -442,9 +442,10 @@ html { scrollbar-width: thin; scrollbar-color: rgba(255, 77, 0, 0.35) rgb(var(--
 .nav-contact-btn:hover { background: #1a1a1a; color: #f5f4f0; }
 
 .dark [data-nav]:not(.is-scrolled) nav { color: #fff; }
-.dark .nav-links { color: rgba(255,255,255,0.7); }
-.dark .nav-contact-btn { border-color: rgba(255,255,255,0.4); }
+.dark .nav-links { color: rgba(255,255,255,0.85); }
+.dark .nav-contact-btn { border-color: rgba(255,255,255,0.6); color: #fff; }
 .dark .nav-contact-btn:hover { background: #fff; color: #000; }
+.dark [data-nav] [data-theme-toggle] { color: #fff; }
 .dark [data-nav]:not(.is-scrolled) .nav-logo { filter: invert(0) !important; }
 
 [data-nav].is-scrolled {

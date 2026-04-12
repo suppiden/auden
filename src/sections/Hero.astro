@@ -35,10 +35,12 @@ const { t } = Astro.props;
         style="opacity: 0; transition: opacity 1.2s ease;"
         aria-hidden="true"
       ></span>
-      <!-- Light mode: black logo. Dark mode: white logo via CSS -->
+      <!-- Light mode: black logo. Dark mode: white logo (swapped via JS) -->
       <img
         id="hero-wordmark"
         src="/auden_logo_black.png"
+        data-src-light="/auden_logo_black.png"
+        data-src-dark="/auden_logo_white.png"
         alt="AUDEN"
         class="relative hero-logo"
         style="width: clamp(16rem, 50vw, 40rem); display: inline-block; transition: filter 1.2s ease;"
@@ -104,12 +106,12 @@ const { t } = Astro.props;
       rgba(245,244,240,0.98) 100%
     );
   }
-  /* Logo starts white (from intro splash), then transitions to black via class */
+  /* Logo starts white (from intro splash), then transitions to black via class (light mode only) */
   .hero-logo { transition: filter 1.2s ease; }
   :global(.hero-logo-ready) { filter: brightness(0) !important; }
   #hero-logo-glow { background: radial-gradient(ellipse, rgba(245,244,240,0.6) 0%, transparent 70%); }
 
-  /* ── Dark mode — logo stays white ── */
+  /* ── Dark mode — uses white logo image, no filter needed ── */
   :global(.dark) .hero-video {
     opacity: 0.4;
     filter: brightness(0.4) saturate(0);
@@ -125,5 +127,5 @@ const { t } = Astro.props;
   }
   :global(.dark) .hero-logo,
   :global(.dark) :global(.hero-logo-ready) { filter: none !important; }
-  :global(.dark) #hero-logo-glow { background: radial-gradient(ellipse, rgba(17,17,17,0.6) 0%, transparent 70%); }
+  :global(.dark) #hero-logo-glow { background: radial-gradient(ellipse, rgba(255,77,0,0.15) 0%, transparent 70%); }
 </style>
