@@ -11,22 +11,30 @@ const row1 = items.slice(0, 5);
 const row2 = items.slice(5, 10);
 ---
 
-<section class="py-20 md:py-28 px-6 md:px-10 bg-charcoal" aria-labelledby="touchpoints-headline">
+<section class="py-20 md:py-28 px-6 md:px-10 bg-cream border-t border-border" aria-labelledby="touchpoints-headline">
   <div class="max-w-8xl mx-auto">
     <p class="text-[10px] font-medium tracking-[0.25em] uppercase text-mid mb-5" data-reveal>
       {t.touchpoints.eyebrow}
     </p>
     <h2
       id="touchpoints-headline"
-      class="text-3xl md:text-4xl lg:text-5xl font-black leading-tight text-cream tracking-tight mb-16 md:mb-20"
+      class="text-3xl md:text-4xl lg:text-5xl font-black leading-tight text-charcoal tracking-tight mb-16 md:mb-20"
       data-split-reveal
     >
       {t.touchpoints.headline}
     </h2>
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-8 md:gap-x-12 gap-y-8 mb-14 md:mb-16" data-reveal-stagger>
-      {[...row1, ...row2].map((item) => (
-        <p class="text-sm md:text-base text-cream font-normal">{item}</p>
+    <!-- Row 1 -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-8 md:gap-x-12 gap-y-1 mb-6 md:mb-8" data-reveal-stagger>
+      {row1.map((item) => (
+        <p class="text-sm md:text-base text-charcoal/85 font-normal">{item}</p>
+      ))}
+    </div>
+
+    <!-- Row 2 -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-8 md:gap-x-12 gap-y-1 mb-14 md:mb-16" data-reveal-stagger>
+      {row2.map((item) => (
+        <p class="text-sm md:text-base text-charcoal/85 font-normal">{item}</p>
       ))}
     </div>
 
