@@ -24,26 +24,13 @@ const row2 = items.slice(5, 10);
       {t.touchpoints.headline}
     </h2>
 
-    <!-- Row 1 -->
-    <div class="flex flex-wrap items-center gap-x-6 md:gap-x-10 gap-y-2 mb-6 md:mb-8" data-reveal>
-      {row1.map((item, i) => (
-        <span class="text-base md:text-lg text-cream/85 font-normal">
-          {item}{i < row1.length - 1 && <span class="ml-6 md:ml-10 text-mid/40">&middot;</span>}
-        </span>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-8 md:gap-x-12 gap-y-8 mb-14 md:mb-16" data-reveal-stagger>
+      {[...row1, ...row2].map((item) => (
+        <p class="text-sm md:text-base text-cream font-normal">{item}</p>
       ))}
     </div>
 
-    <!-- Row 2 -->
-    <div class="flex flex-wrap items-center gap-x-6 md:gap-x-10 gap-y-2 mb-14 md:mb-16" data-reveal>
-      {row2.map((item, i) => (
-        <span class="text-base md:text-lg text-cream/85 font-normal">
-          {item}{i < row2.length - 1 && <span class="ml-6 md:ml-10 text-mid/40">&middot;</span>}
-        </span>
-      ))}
-    </div>
-
-    <!-- Footer line -->
-    <p class="text-xs text-mid/60 leading-relaxed max-w-2xl" data-reveal>
+    <p class="text-[11px] text-mid/50 leading-relaxed max-w-2xl" data-reveal>
       {t.touchpoints.footer}
     </p>
   </div>
