@@ -25,19 +25,19 @@ const row2 = items.slice(5, 10);
     </h2>
 
     <!-- Row 1 -->
-    <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mb-4 md:mb-5" data-reveal>
+    <div class="flex flex-wrap items-center gap-x-6 md:gap-x-10 gap-y-2 mb-6 md:mb-8" data-reveal>
       {row1.map((item, i) => (
         <span class="text-base md:text-lg text-cream/85 font-normal">
-          {item}{i < row1.length - 1 && <span class="ml-2 text-mid/40">&middot;</span>}
+          {item}{i < row1.length - 1 && <span class="ml-6 md:ml-10 text-mid/40">&middot;</span>}
         </span>
       ))}
     </div>
 
     <!-- Row 2 -->
-    <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mb-14 md:mb-16" data-reveal>
+    <div class="flex flex-wrap items-center gap-x-6 md:gap-x-10 gap-y-2 mb-14 md:mb-16" data-reveal>
       {row2.map((item, i) => (
         <span class="text-base md:text-lg text-cream/85 font-normal">
-          {item}{i < row2.length - 1 && <span class="ml-2 text-mid/40">&middot;</span>}
+          {item}{i < row2.length - 1 && <span class="ml-6 md:ml-10 text-mid/40">&middot;</span>}
         </span>
       ))}
     </div>
