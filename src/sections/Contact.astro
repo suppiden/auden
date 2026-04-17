@@ -7,7 +7,6 @@ interface Props {
 }
 
 const { t } = Astro.props;
-const externalUrl = import.meta.env.PUBLIC_EXTERNAL_FORM_URL || 'https://eez6xtvk.forms.app/auden-1';
 ---
 
 <section id="contact" class="py-28 md:py-36 px-6 md:px-10 bg-cream border-t border-border" aria-labelledby="contact-headline">
@@ -34,8 +33,6 @@ const externalUrl = import.meta.env.PUBLIC_EXTERNAL_FORM_URL || 'https://eez6xtv
           fields={t.contact.fields}
           successMsg={t.contact.success}
           errorMsg={t.contact.error}
-          externalCta={t.contact.externalCta}
-          externalUrl={externalUrl}
         />
       </div>
     </div>

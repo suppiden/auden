@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-import emailjs from '@emailjs/browser';
 
 interface Props {
   fields: {
@@ -16,18 +15,16 @@ interface Props {
   };
   successMsg: string;
   errorMsg: string;
-  externalCta: string;
-  externalUrl: string;
 }
 
 type Status = 'idle' | 'sending' | 'success' | 'error';
+
+const WEB3FORMS_ACCESS_KEY = '5323e4f1-3524-4c37-8163-e4b15f8b43cf';
 
 export default function ContactForm({
   fields,
   successMsg,
   errorMsg,
-  externalCta,
-  externalUrl,
 }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
   const [status, setStatus] = useState<Status>('idle');
@@ -37,21 +34,23 @@ export default function ContactForm({
     if (status === 'sending') return;
     setStatus('sending');
 
-    const serviceId = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID;
-    const templateId = import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID;
-    const publicKey = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
-
-    if (!serviceId || !templateId || !publicKey) {
-      // EmailJS not configured — redirect to external form
-      window.open(externalUrl, '_blank', 'noopener,noreferrer');
-      setStatus('idle');
-      return;
-    }
+    const formData = new FormData(formRef.current!);
+    formData.append('access_key', WEB3FORMS_ACCESS_KEY);
+    formData.append('subject', 'New contact form submission — Auden');
+    formData.append('from_name', 'Auden Website');
 
     try {
-      await emailjs.sendForm(serviceId, templateId, formRef.current!, publicKey);
-      setStatus('success');
-      formRef.current?.reset();
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStatus('success');
+        formRef.current?.reset();
+      } else {
+        setStatus('error');
+      }
     } catch {
       setStatus('error');
     }
@@ -68,12 +67,15 @@ export default function ContactForm({
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
+      {/* Honeypot anti-spam */}
+      <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+
       <div className="grid sm:grid-cols-2 gap-6">
         <label className="flex flex-col gap-2">
           <span className="text-xs font-medium tracking-[0.15em] uppercase text-mid">{fields.name}</span>
           <input
             type="text"
-            name="from_name"
+            name="name"
             placeholder={fields.namePlaceholder}
             required
             className="form-field"
@@ -84,7 +86,7 @@ export default function ContactForm({
           <span className="text-xs font-medium tracking-[0.15em] uppercase text-mid">{fields.email}</span>
           <input
             type="email"
-            name="from_email"
+            name="email"
             placeholder={fields.emailPlaceholder}
             required
             className="form-field"
@@ -124,7 +126,7 @@ export default function ContactForm({
         </p>
       )}
 
-      <div className="flex flex-col sm:flex-row items-start gap-5 pt-2">
+      <div className="pt-2">
         <button
           type="submit"
           disabled={status === 'sending'}
@@ -132,15 +134,6 @@ export default function ContactForm({
         >
           {status === 'sending' ? fields.sending : fields.submit}
         </button>
-
-        <a
-          href={externalUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm text-mid hover:text-charcoal underline underline-offset-4 transition-colors self-center"
-        >
-          {externalCta}
-        </a>
       </div>
     </form>
   );

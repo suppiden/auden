@@ -436,6 +436,26 @@ html { scrollbar-width: thin; scrollbar-color: rgba(255, 77, 0, 0.35) rgb(var(--
 /* ─── Nav — dark text initially, frosted dark backdrop when scrolled ── */
 [data-nav] {
   transition: background 0.3s ease, backdrop-filter 0.3s ease;
+  padding-top: env(safe-area-inset-top);
+}
+/* Always paint behind the notch so the hero never peeks through */
+[data-nav]::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: env(safe-area-inset-top);
+  background: inherit;
+  backdrop-filter: inherit;
+  -webkit-backdrop-filter: inherit;
+  pointer-events: none;
+}
+[data-nav]:not(.is-scrolled)::before {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.dark [data-nav]:not(.is-scrolled)::before {
+  background: rgba(0, 0, 0, 0.6);
 }
 .nav-links { color: rgba(26,26,26,0.85); font-weight: 500; }
 .nav-contact-btn { border-color: rgba(26,26,26,0.5); font-weight: 500; }
