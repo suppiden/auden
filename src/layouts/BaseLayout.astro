@@ -85,6 +85,11 @@ const alternateLang = isEn ? 'es' : 'en';
       </div>
     </div>
 
+    <!-- ── Intro audio logo — plays once per session ─────────────── -->
+    <audio id="intro-audio" preload="auto" aria-hidden="true">
+      <source src="/audio/auden-logo.mp3" type="audio/mpeg" />
+    </audio>
+
     <div class="cursor-dot" aria-hidden="true"></div>
     <div class="cursor-ring" aria-hidden="true"></div>
 
@@ -197,6 +202,30 @@ const alternateLang = isEn ? 'es' : 'en';
 
       document.querySelectorAll('[data-split-reveal]').forEach(el => splitIO.observe(el));
 
+      // ── Intro audio logo — once per session, autoplay or first-touch ──
+      function playIntroAudio() {
+        if (sessionStorage.getItem('auden-intro-audio-played') === '1') return;
+        const audio = document.getElementById('intro-audio') as HTMLAudioElement | null;
+        if (!audio) return;
+        audio.volume = 0.6;
+        const markPlayed = () => sessionStorage.setItem('auden-intro-audio-played', '1');
+        const attempt = audio.play();
+        if (attempt !== undefined) {
+          attempt.then(markPlayed).catch(() => {
+            // Autoplay blocked — play on first user interaction
+            const unlock = () => {
+              audio.play().then(markPlayed).catch(() => {});
+              ['click', 'touchstart', 'keydown', 'scroll'].forEach(evt =>
+                window.removeEventListener(evt, unlock, true)
+              );
+            };
+            ['click', 'touchstart', 'keydown', 'scroll'].forEach(evt =>
+              window.addEventListener(evt, unlock, { once: true, capture: true, passive: true })
+            );
+          });
+        }
+      }
+
       // ── Intro splash orchestration ──────────────────────────────────
       const splash = document.getElementById('intro-splash');
       if (splash) {
@@ -213,6 +242,9 @@ const alternateLang = isEn ? 'es' : 'en';
         }
 
         function runIntro() {
+          // Audio logo — attempt autoplay, fallback to first user interaction
+          playIntroAudio();
+
           // Phase 1: Isotipo pulse
           requestAnimationFrame(() => iso.classList.add('is-active'));
 
@@ -270,9 +302,16 @@ const alternateLang = isEn ? 'es' : 'en';
           Promise.all([imgReady(iso), imgReady(word)]).then(r => r.every(Boolean)),
           new Promise<false>(r => setTimeout(() => r(false), 2000)),
         ]).then(ok => {
-          if (ok) runIntro();
-          else splash.remove();
+          if (ok) {
+            runIntro();
+          } else {
+            splash.remove();
+            playIntroAudio();
+          }
         });
+      } else {
+        // prefers-reduced-motion skipped the splash — still play the audio logo
+        playIntroAudio();
       }
     </script>
   </body>
