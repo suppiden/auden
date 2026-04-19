@@ -433,50 +433,42 @@ html { scrollbar-width: thin; scrollbar-color: rgba(255, 77, 0, 0.35) rgb(var(--
   color: transparent;
 }
 
-/* ─── Nav — dark text initially, frosted dark backdrop when scrolled ── */
+/* ─── Nav — solid theme-aware background, no bleed-through ───────── */
 [data-nav] {
-  transition: background 0.3s ease, backdrop-filter 0.3s ease;
+  background: #F5F4F0;
   padding-top: env(safe-area-inset-top);
+  transition: box-shadow 0.3s ease;
 }
-/* Always paint behind the notch so the hero never peeks through */
+.dark [data-nav] { background: #1A1A1A; }
+
+/* Solid paint behind the notch — inherits nav's solid background */
 [data-nav]::before {
   content: '';
   position: absolute;
   inset: 0 0 auto 0;
   height: env(safe-area-inset-top);
   background: inherit;
-  backdrop-filter: inherit;
-  -webkit-backdrop-filter: inherit;
   pointer-events: none;
 }
-[data-nav]:not(.is-scrolled)::before {
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-.dark [data-nav]:not(.is-scrolled)::before {
-  background: rgba(0, 0, 0, 0.6);
-}
+
 .nav-links { color: rgba(26,26,26,0.85); font-weight: 500; }
 .nav-contact-btn { border-color: rgba(26,26,26,0.5); font-weight: 500; }
 .nav-contact-btn:hover { background: #1a1a1a; color: #f5f4f0; }
 
-.dark [data-nav]:not(.is-scrolled) nav { color: #fff; }
+.dark [data-nav] nav { color: #fff; }
 .dark .nav-links { color: rgba(255,255,255,0.85); }
 .dark .nav-contact-btn { border-color: rgba(255,255,255,0.6); color: #fff; }
 .dark .nav-contact-btn:hover { background: #fff; color: #000; }
 .dark [data-nav] [data-theme-toggle] { color: #fff; }
-.dark [data-nav]:not(.is-scrolled) .nav-logo { filter: invert(0) !important; }
+.dark [data-nav] .nav-logo { filter: invert(0) !important; }
 
+/* Subtle separator once scrolled */
 [data-nav].is-scrolled {
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
 }
-[data-nav].is-scrolled nav { color: #fff; }
-[data-nav].is-scrolled .nav-links { color: rgba(255,255,255,0.7); }
-[data-nav].is-scrolled .nav-contact-btn { border-color: rgba(255,255,255,0.4); }
-[data-nav].is-scrolled .nav-contact-btn:hover { background: #fff; color: #000; }
+.dark [data-nav].is-scrolled {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
+}
 [data-nav].is-scrolled .nav-logo {
   height: 1.75rem;
   filter: invert(0) !important;
