@@ -3,7 +3,7 @@ import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
-  site: 'https://auden.studio',
+  site: 'https://audensonic.com',
   integrations: [
     react(),
     tailwind({ applyBaseStyles: false }),

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://auden.studio/sitemap.xml
+Sitemap: https://audensonic.com/sitemap.xml

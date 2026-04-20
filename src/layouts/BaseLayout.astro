@@ -32,20 +32,20 @@ const alternateLang = isEn ? 'es' : 'en';
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={t.site.title} />
     <meta property="og:description" content={t.site.description} />
-    <meta property="og:image" content={`https://auden.studio${t.site.ogImage}`} />
+    <meta property="og:image" content={`https://audensonic.com${t.site.ogImage}`} />
     <meta property="og:locale" content={t.lang === 'en' ? 'en_US' : 'es_ES'} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={t.site.title} />
     <meta name="twitter:description" content={t.site.description} />
-    <meta name="twitter:image" content={`https://auden.studio${t.site.ogImage}`} />
+    <meta name="twitter:image" content={`https://audensonic.com${t.site.ogImage}`} />
 
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@graph': [
-        { '@type': 'Organization', '@id': 'https://auden.studio/#org', name: 'Auden', url: 'https://auden.studio', description: 'Sonic branding agency.' },
-        { '@type': 'WebSite', '@id': 'https://auden.studio/#website', url: 'https://auden.studio', name: 'Auden', publisher: { '@id': 'https://auden.studio/#org' } },
-        { '@type': 'Service', '@id': 'https://auden.studio/#service', name: 'Sonic Branding', provider: { '@id': 'https://auden.studio/#org' }, areaServed: 'Worldwide' },
+        { '@type': 'Organization', '@id': 'https://audensonic.com/#org', name: 'Auden', url: 'https://audensonic.com', description: 'Sonic branding agency.' },
+        { '@type': 'WebSite', '@id': 'https://audensonic.com/#website', url: 'https://audensonic.com', name: 'Auden', publisher: { '@id': 'https://audensonic.com/#org' } },
+        { '@type': 'Service', '@id': 'https://audensonic.com/#service', name: 'Sonic Branding', provider: { '@id': 'https://audensonic.com/#org' }, areaServed: 'Worldwide' },
       ],
     })} />
 

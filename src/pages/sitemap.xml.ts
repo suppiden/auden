@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 
-const SITE = 'https://auden.studio';
+const SITE = 'https://audensonic.com';
 
 const pages = [
   { loc: '/', changefreq: 'monthly', priority: '1.0' },
