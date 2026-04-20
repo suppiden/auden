@@ -151,6 +151,26 @@ const alternateLang = isEn ? 'es' : 'en';
         }
       }, { passive: true });
 
+      // ── iOS Safari: pin fixed nav to visualViewport (fixes URL-bar drift bug) ──
+      // Known iOS 26 bug: position:fixed elements drift when the URL bar hides
+      // on scroll. Counteract by translating the nav by visualViewport.offsetTop
+      // on every viewport / scroll event. rAF-throttled to avoid jank.
+      if (nav && window.visualViewport) {
+        const vv = window.visualViewport;
+        let rafId = 0;
+        const pinNav = () => {
+          if (rafId) return;
+          rafId = requestAnimationFrame(() => {
+            rafId = 0;
+            nav.style.transform = `translate3d(0, ${vv.offsetTop}px, 0)`;
+          });
+        };
+        vv.addEventListener('scroll', pinNav);
+        vv.addEventListener('resize', pinNav);
+        window.addEventListener('scroll', pinNav, { passive: true });
+        pinNav();
+      }
+
       // ── Scroll reveals ────────────────────────────────────────────
       const io = new IntersectionObserver((entries) => {
         entries.forEach(e => {
@@ -202,28 +222,31 @@ const alternateLang = isEn ? 'es' : 'en';
 
       document.querySelectorAll('[data-split-reveal]').forEach(el => splitIO.observe(el));
 
-      // ── Intro audio logo — once per session, autoplay or first-touch ──
+      // ── Intro audio logo — plays on every page load, retries until unlocked ──
       function playIntroAudio() {
-        if (sessionStorage.getItem('auden-intro-audio-played') === '1') return;
         const audio = document.getElementById('intro-audio') as HTMLAudioElement | null;
         if (!audio) return;
         audio.volume = 0.6;
-        const markPlayed = () => sessionStorage.setItem('auden-intro-audio-played', '1');
-        const attempt = audio.play();
-        if (attempt !== undefined) {
-          attempt.then(markPlayed).catch(() => {
-            // Autoplay blocked — play on first user interaction
-            const unlock = () => {
-              audio.play().then(markPlayed).catch(() => {});
-              ['click', 'touchstart', 'keydown', 'scroll'].forEach(evt =>
-                window.removeEventListener(evt, unlock, true)
-              );
-            };
-            ['click', 'touchstart', 'keydown', 'scroll'].forEach(evt =>
-              window.addEventListener(evt, unlock, { once: true, capture: true, passive: true })
-            );
-          });
-        }
+
+        let unlocked = false;
+        const events = ['click', 'touchstart', 'pointerdown', 'keydown', 'scroll'] as const;
+
+        const unlock = () => {
+          if (unlocked) return;
+          const attempt = audio.play();
+          if (attempt !== undefined) {
+            attempt.then(() => {
+              unlocked = true;
+              events.forEach(evt => window.removeEventListener(evt, unlock, true));
+            }).catch(() => { /* still blocked — will retry on next interaction */ });
+          }
+        };
+
+        // Attempt autoplay first, then wait for user interaction as fallback
+        unlock();
+        events.forEach(evt =>
+          window.addEventListener(evt, unlock, { capture: true, passive: true })
+        );
       }
 
       // ── Intro splash orchestration ──────────────────────────────────
