@@ -437,12 +437,6 @@ html { scrollbar-width: thin; scrollbar-color: rgba(255, 77, 0, 0.35) rgb(var(--
 [data-nav] {
   transition: background 0.3s ease, backdrop-filter 0.3s ease;
   padding-top: env(safe-area-inset-top);
-  /* iOS Safari: force own compositing layer to stop nav drift when URL bar retracts */
-  transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0);
-  will-change: transform;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
 }
 /* Always paint behind the notch so the hero never peeks through */
 [data-nav]::before {
