@@ -85,10 +85,13 @@ const alternateLang = isEn ? 'es' : 'en';
       </div>
     </div>
 
-    <!-- ── Intro audio logo — plays once per session ─────────────── -->
+    <!-- ── Intro audio logo — disabled for now; browser autoplay policies
+         prevent sound without user interaction. Uncomment to re-enable. ── -->
+    <!--
     <audio id="intro-audio" preload="auto" aria-hidden="true">
       <source src="/audio/auden-logo.mp3" type="audio/mpeg" />
     </audio>
+    -->
 
     <div class="cursor-dot" aria-hidden="true"></div>
     <div class="cursor-ring" aria-hidden="true"></div>
@@ -222,7 +225,10 @@ const alternateLang = isEn ? 'es' : 'en';
 
       document.querySelectorAll('[data-split-reveal]').forEach(el => splitIO.observe(el));
 
-      // ── Intro audio logo — plays on every page load, retries until unlocked ──
+      // ── Intro audio logo — DISABLED. Browser autoplay policies block sound
+      //    without user interaction. Uncomment this block and the <audio> tag
+      //    above to re-enable (plays on every page load, retries on first tap). ──
+      /*
       function playIntroAudio() {
         const audio = document.getElementById('intro-audio') as HTMLAudioElement | null;
         if (!audio) return;
@@ -238,16 +244,16 @@ const alternateLang = isEn ? 'es' : 'en';
             attempt.then(() => {
               unlocked = true;
               events.forEach(evt => window.removeEventListener(evt, unlock, true));
-            }).catch(() => { /* still blocked — will retry on next interaction */ });
+            }).catch(() => { });
           }
         };
 
-        // Attempt autoplay first, then wait for user interaction as fallback
         unlock();
         events.forEach(evt =>
           window.addEventListener(evt, unlock, { capture: true, passive: true })
         );
       }
+      */
 
       // ── Intro splash orchestration ──────────────────────────────────
       const splash = document.getElementById('intro-splash');
@@ -265,8 +271,8 @@ const alternateLang = isEn ? 'es' : 'en';
         }
 
         function runIntro() {
-          // Audio logo — attempt autoplay, fallback to first user interaction
-          playIntroAudio();
+          // Audio logo disabled — see playIntroAudio() block above
+          // playIntroAudio();
 
           // Phase 1: Isotipo pulse
           requestAnimationFrame(() => iso.classList.add('is-active'));
@@ -329,13 +335,11 @@ const alternateLang = isEn ? 'es' : 'en';
             runIntro();
           } else {
             splash.remove();
-            playIntroAudio();
+            // playIntroAudio();
           }
         });
-      } else {
-        // prefers-reduced-motion skipped the splash — still play the audio logo
-        playIntroAudio();
       }
+      // else: prefers-reduced-motion skipped the splash — audio disabled
     </script>
   </body>
 </html>
