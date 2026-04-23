@@ -51,12 +51,31 @@
     --color-accent:  229 227 221;
   }
 
-  html { scroll-behavior: smooth; }
+  /* ── iOS Safari bulletproof scroll lock ──────────────────────────
+     Root elements stay put; all scrolling happens inside
+     #scroll-container. This prevents iOS from retracting the URL bar,
+     so position:fixed nav never drifts (WebKit bug 297779). */
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
 
   body {
     @apply bg-cream text-charcoal antialiased;
     font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
     transition: background-color 0.2s, color 0.2s;
+  }
+
+  #scroll-container {
+    height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    overscroll-behavior: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -65,7 +84,7 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
-    html { scroll-behavior: auto; }
+    #scroll-container { scroll-behavior: auto; }
   }
 }
 
@@ -450,12 +469,12 @@ html { scrollbar-width: thin; scrollbar-color: rgba(255, 77, 0, 0.35) rgb(var(--
   pointer-events: none;
 }
 [data-nav]:not(.is-scrolled)::before {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(18, 32, 58, 0.6);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
 .dark [data-nav]:not(.is-scrolled)::before {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(18, 32, 58, 0.6);
 }
 .nav-links { color: rgba(26,26,26,0.85); font-weight: 500; }
 .nav-contact-btn { border-color: rgba(26,26,26,0.5); font-weight: 500; }
@@ -469,7 +488,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(255, 77, 0, 0.35) rgb(var(--
 .dark [data-nav]:not(.is-scrolled) .nav-logo { filter: invert(0) !important; }
 
 [data-nav].is-scrolled {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(22, 38, 66, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }

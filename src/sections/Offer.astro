@@ -188,6 +188,10 @@ const { t } = Astro.props;
     }, { threshold: 0 }).observe(siriSection);
   }
 
+  // Scroll source: inner container (body is locked for iOS Safari fix)
+  const scroller = document.getElementById('scroll-container');
+  const scrollY  = () => scroller?.scrollTop ?? window.scrollY;
+
   // ── 3D pillar rotation — scroll-driven (not rAF) ──────────────────
   const pillars = document.querySelectorAll<HTMLElement>('[data-pillar]');
   if (pillars.length) {
@@ -210,23 +214,23 @@ const { t } = Astro.props;
         }
       });
     }
-    window.addEventListener('scroll', updatePillars, { passive: true });
+    scroller?.addEventListener('scroll', updatePillars, { passive: true });
     updatePillars();
   }
 
   // ── Scroll-velocity horizontal text — scroll-driven ────────────────
   const velocityEl = document.querySelector<HTMLElement>('[data-scroll-velocity]');
   if (velocityEl) {
-    let lastY = window.scrollY;
+    let lastY = scrollY();
     let velocity = 0;
     let posX = 0;
     let ticking = false;
 
-    window.addEventListener('scroll', () => {
+    scroller?.addEventListener('scroll', () => {
       if (!ticking) {
         ticking = true;
         requestAnimationFrame(() => {
-          const currentY = window.scrollY;
+          const currentY = scrollY();
           const delta = currentY - lastY;
           lastY = currentY;
           velocity += (delta - velocity) * 0.12;

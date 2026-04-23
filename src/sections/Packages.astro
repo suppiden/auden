@@ -148,7 +148,8 @@ const { t } = Astro.props;
         orb.style.transform = `translateY(${-rect.top * speed * 10}px)`;
       });
     }
-    window.addEventListener('scroll', updateOrbs, { passive: true });
+    const scroller = document.getElementById('scroll-container');
+    scroller?.addEventListener('scroll', updateOrbs, { passive: true });
     updateOrbs();
   }
 
