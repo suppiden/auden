@@ -16,11 +16,11 @@ const { t } = Astro.props;
   <nav
     class="max-w-8xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between"
     aria-label="Main navigation"
-    style="color: #1a1a1a; transition: color 0.3s ease;"
+    style="color: #fff; transition: color 0.3s ease;"
   >
-    <!-- Logo — always white, blend-mode: difference handles inversion -->
+    <!-- Logo — white over the dark nav backdrop -->
     <a href={t.lang === 'es' ? '/es/' : '/'} class="flex items-center" aria-label="Auden home" data-logo>
-      <img src="/auden_isotipo_white.png" alt="Auden" class="nav-logo" style="height: 2.25rem; transition: height 0.4s cubic-bezier(0.16,1,0.3,1), filter 0.3s ease; filter: invert(1);" />
+      <img src="/auden_isotipo_white.png" alt="Auden" class="nav-logo" style="height: 2.25rem; transition: height 0.4s cubic-bezier(0.16,1,0.3,1), filter 0.3s ease;" />
     </a>
 
     <!-- Desktop links — white text, difference blend handles inversion -->
@@ -29,7 +29,7 @@ const { t } = Astro.props;
         <a href="#offer" class="nav-link transition-colors pb-0.5">{t.nav.offer}</a>
       </li>
       <li>
-        <a href="#offer" class="nav-link transition-colors pb-0.5">{t.nav.about}</a>
+        <a href="#packages" class="nav-link transition-colors pb-0.5">{t.nav.about}</a>
       </li>
       <li>
         <a href="#work" class="nav-link transition-colors pb-0.5">{t.nav.work}</a>
@@ -90,7 +90,7 @@ const { t } = Astro.props;
     data-mobile-menu
   >
     <a href="#offer" class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>{t.nav.offer}</a>
-    <a href="#offer" class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>{t.nav.about}</a>
+    <a href="#packages" class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>{t.nav.about}</a>
     <a href="#work" class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>{t.nav.work}</a>
     <a href="#contact" class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>{t.nav.contact}</a>
     <a href="#contact" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white text-black text-sm font-medium tracking-wide hover:bg-white/90 transition-colors mt-2">{t.nav.contact}</a>

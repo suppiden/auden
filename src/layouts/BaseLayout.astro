@@ -54,6 +54,15 @@ const alternateLang = isEn ? 'es' : 'en';
     <link rel="preload" href="/auden_isotipo_white.png" as="image" />
     <link rel="preload" href="/auden_logo_white.png" as="image" />
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N5EFP3ND70"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-N5EFP3ND70');
+    </script>
+
     <script is:inline>
       const theme = localStorage.getItem('theme') ?? 'dark';
       document.documentElement.classList.toggle('dark', theme === 'dark');
