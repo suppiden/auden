@@ -8,9 +8,10 @@ interface Props {
 
 const { t } = Astro.props;
 
-const categoryOrder: PortfolioCategory[] = ['concept', 'postProduction', 'studio'];
+const VISIBLE = 3;
+const categoryOrder: PortfolioCategory[] = ['studio', 'concept', 'postProduction'];
 const categories = categoryOrder.filter((cat) => portfolio.some((item) => item.category === cat));
-const defaultCategory: PortfolioCategory = categories[0] ?? 'concept';
+const defaultCategory: PortfolioCategory = categories[0] ?? 'studio';
 const hasWork = portfolio.length > 0;
 ---
 
@@ -31,7 +32,6 @@ const hasWork = portfolio.length > 0;
           class="flex flex-wrap items-center gap-2 md:gap-3 mb-12 md:mb-16"
           role="tablist"
           aria-label="Portfolio categories"
-          data-portfolio-tabs
         >
           {categories.map((cat) => (
             <button
@@ -55,6 +55,7 @@ const hasWork = portfolio.length > 0;
         {categories.map((cat) => {
           const items = portfolio.filter((item) => item.category === cat);
           const isVertical = items[0]?.aspect === 'vertical';
+          const needsCarousel = items.length > VISIBLE;
           const gridClass = isVertical
             ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-10 max-w-4xl mx-auto'
             : 'grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10';
@@ -65,49 +66,87 @@ const hasWork = portfolio.length > 0;
               data-portfolio-panel={cat}
               hidden={cat !== defaultCategory}
             >
-              <div class={gridClass}>
-                {items.map((item) => (
-                  <article class="group">
-                    {item.videoUrl ? (
-                      <div class={`relative w-full ${aspectClass} mb-6 overflow-hidden rounded-sm border border-border/30 bg-charcoal`}>
-                        <iframe
-                          src={`${item.videoUrl}?rel=0&modestbranding=1&playsinline=1`}
-                          title={item.client}
-                          class="absolute inset-0 w-full h-full"
-                          frameborder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowfullscreen
-                          loading="lazy"
-                        />
-                      </div>
-                    ) : item.cover ? (
-                      <a
-                        href={item.caseStudyUrl ?? '#work'}
-                        class="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-charcoal"
-                        aria-label={`${item.client} — ${t.work.categories[item.category]}`}
-                      >
-                        <img
-                          src={item.cover}
-                          alt={item.client}
-                          class={`w-full ${aspectClass} object-cover mb-6 grayscale group-hover:grayscale-0 transition-all duration-500 rounded-sm`}
-                          loading="lazy"
-                        />
-                      </a>
-                    ) : (
-                      <div
-                        class={`w-full ${aspectClass} bg-border mb-6 flex items-center justify-center rounded-sm`}
-                        aria-hidden="true"
-                      >
-                        <span class="text-xs tracking-[0.2em] uppercase text-mid">Visual TBC</span>
-                      </div>
-                    )}
-                    <p class="text-[10px] font-medium tracking-[0.2em] uppercase text-mid mb-2">
-                      {t.work.categories[item.category]} · {item.year}
-                    </p>
-                    <h3 class="text-lg font-serif text-charcoal mb-1">{item.client}</h3>
-                    <p class="text-sm text-mid leading-relaxed">{item.description}</p>
-                  </article>
-                ))}
+              <div
+                class="relative"
+                data-carousel
+                data-carousel-len={items.length}
+                data-carousel-visible={VISIBLE}
+              >
+                <div class={gridClass} data-carousel-track>
+                  {items.map((item, i) => (
+                    <article
+                      data-carousel-item
+                      data-index={i}
+                      hidden={needsCarousel && i >= VISIBLE}
+                      style={`order: ${i};`}
+                      class="group"
+                    >
+                      {item.videoUrl ? (
+                        <div class={`relative w-full ${aspectClass} mb-6 overflow-hidden rounded-sm border border-border/30 bg-charcoal`}>
+                          <iframe
+                            src={`${item.videoUrl}?rel=0&modestbranding=1&playsinline=1`}
+                            title={item.client}
+                            class="absolute inset-0 w-full h-full"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                            loading="lazy"
+                          />
+                        </div>
+                      ) : item.cover ? (
+                        <a
+                          href={item.caseStudyUrl ?? '#work'}
+                          class="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-charcoal"
+                          aria-label={`${item.client} — ${t.work.categories[item.category]}`}
+                        >
+                          <img
+                            src={item.cover}
+                            alt={item.client}
+                            class={`w-full ${aspectClass} object-cover mb-6 grayscale group-hover:grayscale-0 transition-all duration-500 rounded-sm`}
+                            loading="lazy"
+                          />
+                        </a>
+                      ) : (
+                        <div
+                          class={`w-full ${aspectClass} bg-border mb-6 flex items-center justify-center rounded-sm`}
+                          aria-hidden="true"
+                        >
+                          <span class="text-xs tracking-[0.2em] uppercase text-mid">Visual TBC</span>
+                        </div>
+                      )}
+                      <p class="text-[10px] font-medium tracking-[0.2em] uppercase text-mid mb-2">
+                        {t.work.categories[item.category]}
+                      </p>
+                      <h3 class="text-lg font-serif text-charcoal mb-1">{item.client}</h3>
+                      <p class="text-sm text-mid leading-relaxed">{item.description}</p>
+                    </article>
+                  ))}
+                </div>
+
+                {needsCarousel && (
+                  <div class="flex items-center justify-center gap-4 mt-12">
+                    <button
+                      type="button"
+                      data-carousel-prev
+                      aria-label="Previous"
+                      class="w-11 h-11 flex items-center justify-center border border-border text-charcoal hover:border-charcoal hover:bg-charcoal hover:text-cream transition-colors duration-200"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      data-carousel-next
+                      aria-label="Next"
+                      class="w-11 h-11 flex items-center justify-center border border-border text-charcoal hover:border-charcoal hover:bg-charcoal hover:text-cream transition-colors duration-200"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" aria-hidden="true">
+                        <polyline points="9 18 15 12 9 6"/>
+                      </svg>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           );
@@ -122,6 +161,7 @@ const hasWork = portfolio.length > 0;
 </section>
 
 <script>
+  // ── Tabs ──────────────────────────────────────────────────────────
   const tabs = document.querySelectorAll<HTMLButtonElement>('[data-portfolio-tab]');
   const panels = document.querySelectorAll<HTMLElement>('[data-portfolio-panel]');
 
@@ -145,6 +185,44 @@ const hasWork = portfolio.length > 0;
       panels.forEach((panel) => {
         panel.hidden = panel.dataset.portfolioPanel !== target;
       });
+    });
+  });
+
+  // ── Carousel — sliding window of N visible items, circular ───────
+  const carousels = document.querySelectorAll<HTMLElement>('[data-carousel]');
+
+  carousels.forEach((carousel) => {
+    const total = parseInt(carousel.dataset.carouselLen || '0', 10);
+    const visible = parseInt(carousel.dataset.carouselVisible || '3', 10);
+    if (total <= visible) return;
+
+    const items = carousel.querySelectorAll<HTMLElement>('[data-carousel-item]');
+    let start = 0;
+
+    function render() {
+      const visibleSet = new Set<number>();
+      for (let i = 0; i < visible; i++) {
+        visibleSet.add((start + i) % total);
+      }
+      items.forEach((item) => {
+        const idx = parseInt(item.dataset.index || '0', 10);
+        const isVisible = visibleSet.has(idx);
+        item.hidden = !isVisible;
+        if (isVisible) {
+          // Position within the visible window — drives flex `order`
+          const offset = (idx - start + total) % total;
+          item.style.order = String(offset);
+        }
+      });
+    }
+
+    carousel.querySelector('[data-carousel-prev]')?.addEventListener('click', () => {
+      start = (start - visible + total) % total;
+      render();
+    });
+    carousel.querySelector('[data-carousel-next]')?.addEventListener('click', () => {
+      start = (start + visible) % total;
+      render();
     });
   });
 </script>
