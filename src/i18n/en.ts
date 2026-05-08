@@ -123,6 +123,11 @@ export const en = {
     eyebrow: 'Selected work',
     headline: 'Identity in practice.',
     empty: 'Case studies coming soon.',
+    categories: {
+      concept: 'Concept',
+      postProduction: 'Post-Production',
+      studio: 'Studio',
+    },
   },
   contact: {
     eyebrow: 'Start a project',

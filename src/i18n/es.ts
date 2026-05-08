@@ -125,6 +125,11 @@ export const es: Translations = {
     eyebrow: 'Trabajo seleccionado',
     headline: 'Identidad en práctica.',
     empty: 'Próximamente, casos de estudio.',
+    categories: {
+      concept: 'Concept',
+      postProduction: 'Post-Production',
+      studio: 'Studio',
+    },
   },
   contact: {
     eyebrow: 'Inicia un proyecto',

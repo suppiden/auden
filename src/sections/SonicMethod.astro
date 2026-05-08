@@ -1,0 +1,87 @@
+---
+import type { Translations } from '../i18n/en';
+
+interface Props {
+  t: Translations;
+}
+
+const { t } = Astro.props;
+---
+
+<section
+  id="method"
+  class="relative py-28 md:py-36 px-6 md:px-10 bg-charcoal overflow-hidden"
+  aria-labelledby="method-headline"
+>
+  <!-- Floating gradient orb -->
+  <div
+    class="absolute top-0 left-0 w-[600px] h-[600px] rounded-full pointer-events-none"
+    style="background: radial-gradient(circle, rgba(123,63,160,0.12) 0%, transparent 50%); will-change: transform;"
+    aria-hidden="true"
+    data-parallax-orb
+    data-speed="-0.03"
+  ></div>
+
+  <div class="max-w-8xl mx-auto relative" style="z-index: 10;">
+    <div class="mb-12" data-reveal>
+      <p class="text-xs font-medium tracking-[0.2em] uppercase text-mid mb-5">
+        {t.identity.methodEyebrow}
+      </p>
+      <h2
+        id="method-headline"
+        class="text-3xl md:text-4xl font-black leading-tight text-cream tracking-tight uppercase"
+        data-split-reveal
+      >
+        {t.identity.methodHeadline}
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-px bg-cream/8" data-reveal-stagger>
+      {t.identity.phases.map((phase) => (
+        <div
+          class="bg-charcoal p-8 md:p-10 group hover:bg-cream/5 transition-colors duration-300"
+          data-tilt
+        >
+          <span
+            class="text-[10px] font-medium tracking-[0.25em] block mb-6 transition-colors duration-300 group-hover:text-fire"
+            style="color: rgb(var(--color-mid));"
+          >{phase.number}</span>
+          <h3 class="text-xl font-black text-cream mb-3 tracking-tight">{phase.name}</h3>
+          <p class="text-sm text-mid leading-relaxed">{phase.description}</p>
+          {phase.points.length > 0 && (
+            <ul class="mt-4 flex flex-col gap-2">
+              {phase.points.map((point) => (
+                <li class="flex items-start gap-2.5 text-sm text-cream/55">
+                  <span
+                    class="mt-[7px] w-1 h-1 rounded-full flex-shrink-0"
+                    style="background: rgb(var(--color-fire));"
+                    aria-hidden="true"
+                  />
+                  {point}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const parallaxOrbs = document.querySelectorAll<HTMLElement>('#method [data-parallax-orb]');
+  if (parallaxOrbs.length > 0) {
+    function updateOrbs() {
+      parallaxOrbs.forEach(orb => {
+        const speed = parseFloat(orb.dataset.speed || '0.03');
+        const section = orb.closest('section');
+        if (!section) return;
+        const rect = section.getBoundingClientRect();
+        orb.style.transform = `translateY(${-rect.top * speed * 10}px)`;
+      });
+    }
+    const scroller = document.getElementById('scroll-container');
+    scroller?.addEventListener('scroll', updateOrbs, { passive: true });
+    updateOrbs();
+  }
+</script>
