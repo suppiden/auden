@@ -452,6 +452,39 @@ html { scrollbar-width: thin; scrollbar-color: rgba(255, 77, 0, 0.35) rgb(var(--
   color: transparent;
 }
 
+/* ─── Portfolio (always-dark island, fixed in light & dark mode) ── */
+.portfolio-tab--active {
+  background: #F0EFE9;
+  color: #1A1A1A;
+  border-color: #F0EFE9;
+}
+.portfolio-tab--inactive {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.portfolio-tab--inactive:hover {
+  border-color: #F0EFE9;
+  color: #F0EFE9;
+}
+
+.portfolio-carousel-btn {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #F0EFE9;
+  background: transparent;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+.portfolio-carousel-btn:hover {
+  background: #F0EFE9;
+  color: #1A1A1A;
+  border-color: #F0EFE9;
+}
+
 /* ─── Nav — dark text initially, frosted dark backdrop when scrolled ── */
 [data-nav] {
   transition: background 0.3s ease, backdrop-filter 0.3s ease;

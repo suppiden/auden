@@ -70,15 +70,6 @@ const { t } = Astro.props;
   </div>
 </section>
 
-<!-- Scroll-velocity text strip -->
-<div class="overflow-hidden bg-charcoal py-7 border-y border-cream/10" data-velocity-wrap>
-  <div data-scroll-velocity class="whitespace-nowrap will-change-transform">
-    <span class="inline-block text-[clamp(3rem,10vw,8rem)] font-black tracking-tighter uppercase select-none velocity-text" aria-hidden="true">
-      SOUND&nbsp;&bull;&nbsp;IDENTITY&nbsp;&bull;&nbsp;BRAND&nbsp;&bull;&nbsp;RECOGNITION&nbsp;&bull;&nbsp;MEMORY&nbsp;&bull;&nbsp;EMOTION&nbsp;&bull;&nbsp;SOUND&nbsp;&bull;&nbsp;IDENTITY&nbsp;&bull;&nbsp;BRAND&nbsp;&bull;&nbsp;RECOGNITION&nbsp;&bull;&nbsp;MEMORY&nbsp;&bull;&nbsp;EMOTION&nbsp;&bull;&nbsp;
-    </span>
-  </div>
-</div>
-
 <script>
   // ── 3D SiriWave — visibility-gated ──────────────────────────────
   const siriCanvas = document.getElementById('siri-wave-canvas') as HTMLCanvasElement | null;
@@ -216,29 +207,5 @@ const { t } = Astro.props;
     }
     scroller?.addEventListener('scroll', updatePillars, { passive: true });
     updatePillars();
-  }
-
-  // ── Scroll-velocity horizontal text — scroll-driven ────────────────
-  const velocityEl = document.querySelector<HTMLElement>('[data-scroll-velocity]');
-  if (velocityEl) {
-    let lastY = scrollY();
-    let velocity = 0;
-    let posX = 0;
-    let ticking = false;
-
-    scroller?.addEventListener('scroll', () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(() => {
-          const currentY = scrollY();
-          const delta = currentY - lastY;
-          lastY = currentY;
-          velocity += (delta - velocity) * 0.12;
-          posX -= velocity * 1.5;
-          velocityEl!.style.transform = `translateX(${posX}px)`;
-          ticking = false;
-        });
-      }
-    }, { passive: true });
   }
 </script>
