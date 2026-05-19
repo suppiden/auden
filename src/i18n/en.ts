@@ -11,7 +11,7 @@ export const en = {
     about: 'About us',
     work: 'Work',
     contact: 'Contact',
-    langSwitch: 'Español',
+    langSwitch: 'ES',
     langSwitchHref: '/es/',
   },
   hero: {
@@ -154,6 +154,7 @@ export const en = {
   extras: {
     eyebrow: 'Sound for campaigns',
     headline: 'Auden Sound for Campaigns.',
+    includesLabel: 'Includes',
     items: [
       {
         name: 'Campaign Sound Production',

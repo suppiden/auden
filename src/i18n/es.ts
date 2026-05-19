@@ -13,7 +13,7 @@ export const es: Translations = {
     about: 'Sobre nosotros',
     work: 'Trabajo',
     contact: 'Contacto',
-    langSwitch: 'English',
+    langSwitch: 'EN',
     langSwitchHref: '/',
   },
   hero: {
@@ -32,7 +32,7 @@ export const es: Translations = {
   },
   offer: {
     eyebrow: 'Lo que hacemos',
-    headline: 'El sonido es tu activo de marca más infrautilizado.',
+    headline: 'El sonido es tu activo de marca más ignorado.',
     intro:
       'Auden diseña identidades sonoras y sonido para campañas que ayudan a las marcas a ser reconocibles a través del audio.',
     body: 'Las grandes marcas se recuerdan por cómo suenan. Una identidad sonora distintiva genera reconocimiento instantáneo, construye memoria emocional y transmite calidad antes de que se pronuncie una palabra. Auden diseña ese sistema: desde la primera nota hasta la arquitectura sonora completa de tu marca.',
@@ -156,6 +156,7 @@ export const es: Translations = {
   extras: {
     eyebrow: 'Sonido para campañas',
     headline: 'Auden Sound for Campaigns.',
+    includesLabel: 'Incluye',
     items: [
       {
         name: 'Campaign Sound Production',
