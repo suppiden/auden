@@ -20,7 +20,7 @@ export const es: Translations = {
     eyebrow: 'Agencia de Sonic Branding',
     title: 'AUDEN',
     headline: 'El sonido como identidad.',
-    tagline: 'Audio Branding y Sonido para Campañas',
+    tagline: 'Audio Branding y Sonido para Campañ as',
     subheadline:
       'Creamos identidades sonoras originales para marcas que quieren ser reconocidas sin necesidad de ser vistas.',
     cta: 'Iniciar un proyecto',
