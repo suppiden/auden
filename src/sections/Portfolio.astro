@@ -37,6 +37,14 @@ const hasWork = portfolio.length > 0;
           data-split-reveal
         >{t.work.headline}</h2>
       </div>
+      <a
+        href={t.lang === 'es' ? '/es/work/' : '/work/'}
+        class="flex-shrink-0 self-end"
+        style="font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.45); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 0.2rem; transition: color 0.2s, border-color 0.2s;"
+        onmouseover="this.style.color='#F0EFE9'; this.style.borderColor='rgba(240,239,233,0.6)'"
+        onmouseout="this.style.color='rgba(255,255,255,0.45)'; this.style.borderColor='rgba(255,255,255,0.2)'"
+        data-reveal
+      >{t.lang === 'es' ? 'Case studies →' : 'Case studies →'}</a>
     </div>
 
     {hasWork ? (
