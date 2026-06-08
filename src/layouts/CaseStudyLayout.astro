@@ -126,6 +126,17 @@ const defaultJsonLd = {
     }
     .cs-back-link { color: var(--cs-text-muted); }
     .cs-back-link:hover { color: var(--cs-text); }
+
+    /* ── Nav on inner pages — always dark glass, no video behind it ── */
+    [data-nav] {
+      background: rgba(0,0,0,0.80) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+    }
+    [data-nav] nav { color: #fff !important; }
+    [data-nav] .nav-links { color: rgba(255,255,255,0.80) !important; }
+    [data-nav] .nav-contact-btn { border-color: rgba(255,255,255,0.45) !important; color: #fff !important; }
+    [data-nav] .nav-logo { filter: invert(0) !important; }
   </style>
   <body style="background: var(--cs-bg);">
     <div class="cursor-dot" aria-hidden="true"></div>
