@@ -1,0 +1,76 @@
+---
+import CaseStudyLayout from '../../../layouts/CaseStudyLayout.astro';
+import InnerNav from '../../../components/InnerNav.astro';
+import Footer from '../../../components/Footer.astro';
+import { getTranslations } from '../../../i18n/utils';
+import { caseStudies } from '../../../data/caseStudies';
+
+const t = getTranslations('es');
+const canonicalUrl = 'https://audensonic.com/es/work/';
+const alternateUrl = 'https://audensonic.com/work/';
+
+const title = 'Trabajo — Case Studies de Sonic Branding | Auden';
+const description = 'Trabajo seleccionado de Auden — sonic branding, diseño sonoro y scores originales para marcas y films.';
+---
+
+<CaseStudyLayout
+  lang="es"
+  title={title}
+  description={description}
+  canonicalUrl={canonicalUrl}
+  alternateUrl={alternateUrl}
+>
+  <InnerNav t={t} base="/es/" slot="nav" />
+
+  <main id="main-content">
+    <section style="background: #080808; min-height: 100dvh; padding: 9rem 1.5rem 8rem;">
+      <div style="max-width: 72rem; margin: 0 auto;">
+
+        <header style="margin-bottom: 5rem;" data-reveal>
+          <p style="font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgb(255,77,0); margin-bottom: 1.25rem;">Trabajo seleccionado</p>
+          <h1 style="font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900; line-height: 1; letter-spacing: -0.03em; color: #F0EFE9; margin: 0; text-transform: uppercase;">Identidad<br>en práctica.</h1>
+        </header>
+
+        <div style="display: grid; grid-template-columns: 1fr; gap: 2px; background: rgba(240,239,233,0.08);" data-reveal-stagger>
+          {caseStudies.map((cs) => {
+            const c = cs.content.es;
+            const ytThumb = `https://img.youtube.com/vi/${cs.videoId}/maxresdefault.jpg`;
+            return (
+              <a
+                href={`/es/work/${cs.slug}/`}
+                style="display: grid; grid-template-columns: 1fr; background: #080808; text-decoration: none; transition: background 0.3s;"
+                class="cs-card"
+              >
+                <div style="position: relative; aspect-ratio: 16/9; overflow: hidden; background: #111;">
+                  <img
+                    src={ytThumb}
+                    alt={cs.title}
+                    loading="lazy"
+                    style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease;"
+                  />
+                  <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%); pointer-events: none;"></div>
+                  <div style="position: absolute; bottom: 1.5rem; left: 1.5rem;">
+                    <p style="font-size: 0.65rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgb(255,77,0); margin: 0 0 0.4rem;">{cs.category} — {cs.client}</p>
+                    <h2 style="font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 900; color: #F0EFE9; margin: 0; letter-spacing: -0.02em; text-transform: uppercase;">{cs.title}</h2>
+                  </div>
+                </div>
+                <div style="padding: 1.75rem 1.5rem; border-top: 1px solid rgba(240,239,233,0.08);">
+                  <p style="font-size: 0.9rem; line-height: 1.7; color: rgba(240,239,233,0.55); margin: 0 0 1.25rem; max-width: 48rem;">{c.dek}</p>
+                  <span style="font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgb(255,77,0);">Leer case study →</span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <Footer t={t} />
+</CaseStudyLayout>
+
+<style>
+  .cs-card:hover { background: #0D0D0D !important; }
+  .cs-card:hover img { transform: scale(1.04); opacity: 0.85; }
+</style>

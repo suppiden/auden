@@ -1,0 +1,253 @@
+---
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import InnerNav from '../../components/InnerNav.astro';
+import Footer from '../../components/Footer.astro';
+import { getTranslations } from '../../i18n/utils';
+import { getCaseStudy } from '../../data/caseStudies';
+
+const t = getTranslations('en');
+const cs = getCaseStudy('bandit-grand-prix')!;
+const c = cs.content.en;
+
+const canonicalUrl = 'https://audensonic.com/work/bandit-grand-prix/';
+const alternateUrl = 'https://audensonic.com/es/work/bandit-grand-prix/';
+
+const jsonLd = {
+  '@type': 'Article',
+  '@id': `${canonicalUrl}#article`,
+  headline: c.metaTitle,
+  description: c.metaDescription,
+  url: canonicalUrl,
+  inLanguage: 'en',
+  author: { '@id': 'https://audensonic.com/#org' },
+  publisher: { '@id': 'https://audensonic.com/#org' },
+  about: {
+    '@type': 'CreativeWork',
+    name: cs.title,
+    description: c.dek,
+    creator: { '@type': 'Organization', name: 'Auden' },
+    contributor: { '@type': 'Person', name: 'Anjelica Florendo' },
+    genre: 'Sonic Branding',
+    keywords: 'sonic branding, audio branding, sound design, electronic score, Bandit, running',
+  },
+};
+
+const ytThumb = `https://img.youtube.com/vi/${cs.videoId}/maxresdefault.jpg`;
+---
+
+<CaseStudyLayout
+  lang="en"
+  title={c.metaTitle}
+  description={c.metaDescription}
+  canonicalUrl={canonicalUrl}
+  alternateUrl={alternateUrl}
+  jsonLd={jsonLd}
+>
+  <InnerNav t={t} base="/" slot="nav" />
+
+  <main id="main-content">
+
+    <!-- ── HERO ─────────────────────────────────────────────────────── -->
+    <article itemscope itemtype="https://schema.org/Article">
+
+      <header style="background: #080808; padding: 9rem 1.5rem 4rem; text-align: center;">
+        <div style="max-width: 64rem; margin: 0 auto;">
+
+          <!-- Back + breadcrumb -->
+          <nav aria-label="Breadcrumb" style="margin-bottom: 3rem;" data-reveal>
+            <a
+              href="/work/"
+              style="font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(240,239,233,0.4); text-decoration: none; transition: color 0.2s;"
+              onmouseover="this.style.color='rgba(240,239,233,0.85)'"
+              onmouseout="this.style.color='rgba(240,239,233,0.4)'"
+            >{c.backLabel}</a>
+            <ol style="display: none;" aria-hidden="true">
+              <li><a href="/">Auden</a></li>
+              <li><a href="/work/">Work</a></li>
+              <li aria-current="page">{cs.title}</li>
+            </ol>
+          </nav>
+
+          <!-- Eyebrow -->
+          <p
+            style="font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgb(255,77,0); margin-bottom: 1.5rem;"
+            data-reveal
+          >{cs.category} — {cs.client}</p>
+
+          <!-- Title -->
+          <h1
+            itemprop="headline"
+            style="font-size: clamp(3rem, 10vw, 8rem); font-weight: 900; line-height: 0.95; letter-spacing: -0.03em; color: #F0EFE9; margin: 0 0 2rem; text-transform: uppercase;"
+            data-split-reveal
+          >{cs.title}</h1>
+
+          <!-- Dek -->
+          <p
+            itemprop="description"
+            style="font-size: clamp(1rem, 2.5vw, 1.375rem); font-weight: 400; line-height: 1.6; color: rgba(240,239,233,0.6); max-width: 42rem; margin: 0 auto 4rem;"
+            data-reveal
+          >{c.dek}</p>
+        </div>
+
+        <!-- YouTube facade embed — loads iframe only on click -->
+        <div
+          id="yt-facade"
+          style="max-width: 56rem; margin: 0 auto; position: relative; aspect-ratio: 16/9; background: #111; overflow: hidden; cursor: pointer;"
+          role="button"
+          tabindex="0"
+          aria-label={`Play ${cs.title}`}
+          data-video-id={cs.videoId}
+          data-reveal
+        >
+          <img
+            src={ytThumb}
+            alt={`${cs.title} — ${c.dek}`}
+            loading="lazy"
+            style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease, opacity 0.4s ease;"
+          />
+          <!-- Gradient overlay -->
+          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%); pointer-events: none;"></div>
+          <!-- Play button -->
+          <div
+            style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none;"
+            aria-hidden="true"
+          >
+            <div style="width: 5rem; height: 5rem; border-radius: 50%; background: rgba(255,77,0,0.9); display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease, background 0.3s ease; box-shadow: 0 0 60px rgba(255,77,0,0.4);">
+              <svg width="22" height="24" viewBox="0 0 22 24" fill="none" style="margin-left: 3px;">
+                <path d="M2 2l18 10L2 22V2z" fill="#fff"/>
+              </svg>
+            </div>
+          </div>
+          <!-- Duration badge -->
+          <span style="position: absolute; bottom: 1rem; right: 1rem; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.05em; padding: 0.25rem 0.5rem; backdrop-filter: blur(4px);">0:45</span>
+        </div>
+      </header>
+
+      <!-- ── BODY COPY ─────────────────────────────────────────────── -->
+      <section style="background: #080808; padding: 6rem 1.5rem;" aria-label="Case study body">
+        <div style="max-width: 42rem; margin: 0 auto;" itemprop="articleBody">
+          {c.body.map((paragraphs) => (
+            <div style="margin-bottom: 2.5rem;" data-reveal>
+              {paragraphs.map((p) => (
+                <p style="font-size: clamp(1rem, 1.5vw, 1.125rem); line-height: 1.85; color: rgba(240,239,233,0.75); margin: 0 0 1.25rem;">{p}</p>
+              ))}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- ── CLOSING ───────────────────────────────────────────────── -->
+      <section style="background: #0D0D0D; padding: 5rem 1.5rem 6rem; border-top: 1px solid rgba(240,239,233,0.08);" aria-label="Closing statement">
+        <div style="max-width: 52rem; margin: 0 auto; text-align: center;">
+          <blockquote style="margin: 0;" data-reveal>
+            <p style="font-size: clamp(1.25rem, 3.5vw, 2.25rem); font-weight: 900; line-height: 1.2; letter-spacing: -0.02em; color: #F0EFE9; margin: 0 0 1.5rem; text-transform: uppercase;">{c.closing}</p>
+            <p style="font-size: 0.85rem; font-weight: 500; letter-spacing: 0.15em; color: rgb(255,77,0); text-transform: uppercase;">{c.platformLine}</p>
+          </blockquote>
+        </div>
+      </section>
+
+      <!-- ── BEHIND THE CRAFT ─────────────────────────────────────── -->
+      <section style="background: #0F0F0F; padding: 6rem 1.5rem; border-top: 1px solid rgba(240,239,233,0.08);" aria-labelledby="craft-heading">
+        <div style="max-width: 56rem; margin: 0 auto;">
+          <p id="craft-heading" style="font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgb(255,77,0); margin-bottom: 3.5rem;" data-reveal>
+            {c.craftLabel}
+          </p>
+          <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0;" data-reveal-stagger>
+            {c.craft.map((point, i) => (
+              <li style="padding: 2.5rem 0; border-top: 1px solid rgba(240,239,233,0.1); display: grid; grid-template-columns: 3rem 1fr; gap: 2rem; align-items: start;">
+                <span style="font-size: 0.75rem; font-weight: 500; color: rgba(240,239,233,0.3); padding-top: 0.35rem; font-variant-numeric: tabular-nums;">{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <strong style="display: block; font-size: 1rem; font-weight: 700; color: #F0EFE9; margin-bottom: 0.75rem; letter-spacing: -0.01em;">{point.heading}</strong>
+                  <p style="font-size: 0.95rem; line-height: 1.8; color: rgba(240,239,233,0.6); margin: 0;">{point.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <!-- ── CREDITS + DELIVERABLES + ABOUT ───────────────────────── -->
+      <section style="background: #080808; padding: 6rem 1.5rem 8rem; border-top: 1px solid rgba(240,239,233,0.08);" aria-label="Credits and deliverables">
+        <div style="max-width: 56rem; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 5rem;" class="cs-credits-grid">
+
+          <!-- Credits -->
+          <div data-reveal>
+            <p style="font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgb(255,77,0); margin-bottom: 2rem;">{c.creditsLabel}</p>
+            <dl style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem 2.5rem;">
+              {cs.credits.map((credit) => (
+                <div>
+                  <dt style="font-size: 0.65rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(240,239,233,0.35); margin-bottom: 0.35rem;">{credit.role}</dt>
+                  <dd style="font-size: 0.9rem; font-weight: 500; color: #F0EFE9; margin: 0;">{credit.name}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <!-- Deliverables -->
+          <div data-reveal style="border-top: 1px solid rgba(240,239,233,0.1); padding-top: 3rem;">
+            <p style="font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgb(255,77,0); margin-bottom: 1.25rem;">{c.deliverablesLabel}</p>
+            <p style="font-size: 0.9rem; color: rgba(240,239,233,0.6); margin: 0 0 1.5rem; line-height: 1.6;">{c.deliverableItems}</p>
+            {cs.deliverableLink ? (
+              <a
+                href={cs.deliverableLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(255,77,0); text-decoration: none; border-bottom: 1px solid rgba(255,77,0,0.4); padding-bottom: 0.15rem; transition: border-color 0.2s;"
+              >{c.deliverableCta}</a>
+            ) : (
+              <span style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,77,0,0.5);">{c.deliverableCta}</span>
+            )}
+          </div>
+
+          <!-- About Bandit -->
+          <div data-reveal style="border-top: 1px solid rgba(240,239,233,0.1); padding-top: 3rem;">
+            <p style="font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,233,0.35); margin-bottom: 0.75rem;">{c.aboutLabel}</p>
+            <p style="font-size: 0.85rem; line-height: 1.75; color: rgba(240,239,233,0.45); margin: 0;">{c.aboutBody}</p>
+          </div>
+
+        </div>
+      </section>
+
+    </article>
+  </main>
+
+  <Footer t={t} />
+</CaseStudyLayout>
+
+<style>
+  @media (min-width: 768px) {
+    .cs-credits-grid { grid-template-columns: 1fr; }
+  }
+  /* YouTube facade hover */
+  #yt-facade:hover img { transform: scale(1.03); opacity: 0.85; }
+  #yt-facade:hover div > div {
+    transform: scale(1.1) !important;
+    background: rgb(255,77,0) !important;
+  }
+</style>
+
+<script>
+  // YouTube facade: replace thumbnail with iframe on click/keydown
+  const facade = document.getElementById('yt-facade') as HTMLElement | null;
+  if (facade) {
+    function loadVideo() {
+      const videoId = facade!.dataset.videoId;
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+      iframe.title = 'Bandit Grand Prix';
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+      iframe.allowFullscreen = true;
+      iframe.style.cssText = 'position: absolute; inset: 0; width: 100%; height: 100%; border: 0;';
+      facade!.style.cursor = 'default';
+      facade!.innerHTML = '';
+      facade!.appendChild(iframe);
+      facade!.removeEventListener('click', loadVideo);
+      facade!.removeEventListener('keydown', keyHandler);
+    }
+    function keyHandler(e: KeyboardEvent) {
+      if (e.key === 'Enter' || e.key === ' ') loadVideo();
+    }
+    facade.addEventListener('click', loadVideo);
+    facade.addEventListener('keydown', keyHandler);
+  }
+</script>
