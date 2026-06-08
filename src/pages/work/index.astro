@@ -23,42 +23,31 @@ const description = 'Selected case studies from Auden — sonic branding, sound 
   <InnerNav t={t} base="/" slot="nav" />
 
   <main id="main-content">
-    <section style="background: #080808; min-height: 100dvh; padding: 9rem 1.5rem 8rem;">
+    <section class="wl-section">
       <div style="max-width: 72rem; margin: 0 auto;">
 
-        <!-- Header -->
         <header style="margin-bottom: 5rem;" data-reveal>
-          <p style="font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgb(255,77,0); margin-bottom: 1.25rem;">Selected work</p>
-          <h1 style="font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900; line-height: 1; letter-spacing: -0.03em; color: #F0EFE9; margin: 0; text-transform: uppercase;">Identity<br>in practice.</h1>
+          <p class="wl-eyebrow">Selected work</p>
+          <h1 class="wl-headline">Identity<br>in practice.</h1>
         </header>
 
-        <!-- Case study grid -->
-        <div style="display: grid; grid-template-columns: 1fr; gap: 2px; background: rgba(240,239,233,0.08);" data-reveal-stagger>
+        <div class="wl-grid" data-reveal-stagger>
           {caseStudies.map((cs) => {
             const c = cs.content.en;
             const ytThumb = `https://img.youtube.com/vi/${cs.videoId}/maxresdefault.jpg`;
             return (
-              <a
-                href={`/work/${cs.slug}/`}
-                style="display: grid; grid-template-columns: 1fr; background: #080808; text-decoration: none; transition: background 0.3s;"
-                class="cs-card"
-              >
-                <div style="position: relative; aspect-ratio: 16/9; overflow: hidden; background: #111;">
-                  <img
-                    src={ytThumb}
-                    alt={cs.title}
-                    loading="lazy"
-                    style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease;"
-                  />
-                  <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%); pointer-events: none;"></div>
-                  <div style="position: absolute; bottom: 1.5rem; left: 1.5rem;">
-                    <p style="font-size: 0.65rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgb(255,77,0); margin: 0 0 0.4rem;">{cs.category} — {cs.client}</p>
-                    <h2 style="font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 900; color: #F0EFE9; margin: 0; letter-spacing: -0.02em; text-transform: uppercase;">{cs.title}</h2>
+              <a href={`/work/${cs.slug}/`} class="wl-card">
+                <div class="wl-thumb-wrap">
+                  <img src={ytThumb} alt={cs.title} loading="lazy" class="wl-thumb" />
+                  <div class="wl-thumb-overlay" aria-hidden="true"></div>
+                  <div class="wl-thumb-meta">
+                    <p class="wl-thumb-eyebrow">{cs.category} — {cs.client}</p>
+                    <h2 class="wl-thumb-title">{cs.title}</h2>
                   </div>
                 </div>
-                <div style="padding: 1.75rem 1.5rem; border-top: 1px solid rgba(240,239,233,0.08);">
-                  <p style="font-size: 0.9rem; line-height: 1.7; color: rgba(240,239,233,0.55); margin: 0 0 1.25rem; max-width: 48rem;">{c.dek}</p>
-                  <span style="font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgb(255,77,0);">Read case study →</span>
+                <div class="wl-card-body">
+                  <p class="wl-card-dek">{c.dek}</p>
+                  <span class="wl-card-cta">Read case study →</span>
                 </div>
               </a>
             );
@@ -73,6 +62,20 @@ const description = 'Selected case studies from Auden — sonic branding, sound 
 </CaseStudyLayout>
 
 <style>
-  .cs-card:hover { background: #0D0D0D !important; }
-  .cs-card:hover img { transform: scale(1.04); opacity: 0.85; }
+  .wl-section { background: var(--cs-bg); min-height: 100dvh; padding: 9rem 1.5rem 8rem; }
+  .wl-eyebrow { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgb(255,77,0); margin: 0 0 1.25rem; }
+  .wl-headline { font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900; line-height: 1; letter-spacing: -0.03em; color: var(--cs-text); margin: 0; text-transform: uppercase; }
+  .wl-grid { display: grid; grid-template-columns: 1fr; gap: 2px; background: var(--cs-border); }
+  .wl-card { display: grid; background: var(--cs-bg); text-decoration: none; transition: background 0.3s; }
+  .wl-card:hover { background: var(--cs-bg-alt); }
+  .wl-thumb-wrap { position: relative; aspect-ratio: 16/9; overflow: hidden; background: var(--cs-yt-bg); }
+  .wl-thumb { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease; }
+  .wl-card:hover .wl-thumb { transform: scale(1.04); opacity: 0.85; }
+  .wl-thumb-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%); pointer-events: none; }
+  .wl-thumb-meta { position: absolute; bottom: 1.5rem; left: 1.5rem; }
+  .wl-thumb-eyebrow { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgb(255,77,0); margin: 0 0 0.4rem; }
+  .wl-thumb-title { font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 900; color: #F0EFE9; margin: 0; letter-spacing: -0.02em; text-transform: uppercase; }
+  .wl-card-body { padding: 1.75rem 1.5rem; border-top: 1px solid var(--cs-border); }
+  .wl-card-dek { font-size: 0.9rem; line-height: 1.7; color: var(--cs-text-dim); margin: 0 0 1.25rem; max-width: 48rem; }
+  .wl-card-cta { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgb(255,77,0); }
 </style>

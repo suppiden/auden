@@ -96,7 +96,38 @@ const defaultJsonLd = {
       document.documentElement.classList.toggle('dark', theme === 'dark');
     </script>
   </head>
-  <body style="background: #080808;">
+  <style is:global>
+    /* ── Case study page tokens — flip with light/dark mode ── */
+    :root {
+      --cs-bg:           #F5F4F0;
+      --cs-bg-alt:       #EDECEA;
+      --cs-bg-craft:     #E8E7E3;
+      --cs-yt-bg:        #D8D6D2;
+      --cs-text:         #1A1A1A;
+      --cs-text-body:    rgba(26,26,26,0.78);
+      --cs-text-dim:     rgba(26,26,26,0.62);
+      --cs-text-muted:   rgba(26,26,26,0.45);
+      --cs-text-faint:   rgba(26,26,26,0.32);
+      --cs-border:       rgba(26,26,26,0.09);
+      --cs-border-strong:rgba(26,26,26,0.13);
+    }
+    .dark {
+      --cs-bg:           #080808;
+      --cs-bg-alt:       #0D0D0D;
+      --cs-bg-craft:     #0F0F0F;
+      --cs-yt-bg:        #111111;
+      --cs-text:         #F0EFE9;
+      --cs-text-body:    rgba(240,239,233,0.75);
+      --cs-text-dim:     rgba(240,239,233,0.60);
+      --cs-text-muted:   rgba(240,239,233,0.45);
+      --cs-text-faint:   rgba(240,239,233,0.32);
+      --cs-border:       rgba(240,239,233,0.08);
+      --cs-border-strong:rgba(240,239,233,0.12);
+    }
+    .cs-back-link { color: var(--cs-text-muted); }
+    .cs-back-link:hover { color: var(--cs-text); }
+  </style>
+  <body style="background: var(--cs-bg);">
     <div class="cursor-dot" aria-hidden="true"></div>
     <div class="cursor-ring" aria-hidden="true"></div>
 

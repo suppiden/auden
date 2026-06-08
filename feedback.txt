@@ -1,0 +1,18 @@
+[19:31, 11/3/2026] Adria Gomar: Los 3 planes no los vamos a poner, creo que eso es mejor en la llamada. Vamos a poner Auden Sonic Method que seran 4 fases: Brand Decode, Sonic Territory, Sonic Blueprint y Sonic Production
+[19:31, 11/3/2026] Adria Gomar: Y los precios de los servicios individuales tampoco
+[19:31, 11/3/2026] Adria Gomar: La info si que sta bien ponerla 
+
+ le falta un pelin de mas artistico o algun elemento para destacar. Como las otras webs que te pase que son algo mas juguetonas, esta es  demasiado profesional y minimalista
+
+
+[19:36, 11/3/2026] Adria Gomar: Queremos poner que tenemos el auden sonic identity
+[19:37, 11/3/2026] Adria Gomar: En el que estudiamos la marca y creamos un audio logo con los documentos etc (esto te lo pasare literal) y se crea siguiendo el auden sonic method
+[19:37, 11/3/2026] Adria Gomar: Y despues debajo lo de los servicios individuales tal cual esta pero sin el precio
+
+Y quieren que salga el logo en algún sitio
+
+
+
+Ademas ya tienes la tipografia del projecto, lo tienes el el directorio Helvetica Neue LT Pro.
+
+Creo que hemos tirado demasiado por la estética profesional y quieren algo mas jugueton y con personalidad. te he dejado componente.liquid.txt el enlace a un componente de react que les ha gustado y una imagen en inspiración.png
