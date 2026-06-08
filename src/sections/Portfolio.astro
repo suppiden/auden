@@ -146,7 +146,13 @@ const hasWork = portfolio.length > 0;
                         {t.work.categories[item.category]}
                       </p>
                       <h3 class="text-lg font-serif mb-1" style="color: #F0EFE9;">{item.client}</h3>
-                      <p class="text-sm leading-relaxed" style="color: rgba(255,255,255,0.6);">{item.description}</p>
+                      <p class="text-sm leading-relaxed mb-3" style="color: rgba(255,255,255,0.6);">{item.description}</p>
+                      {item.caseStudyUrl && (
+                        <a
+                          href={t.lang === 'es' ? item.caseStudyUrl.replace('/work/', '/es/work/') : item.caseStudyUrl}
+                          style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgb(255,77,0); text-decoration: none; border-bottom: 1px solid rgba(255,77,0,0.35); padding-bottom: 0.1rem; transition: border-color 0.2s;"
+                        >Case study →</a>
+                      )}
                     </article>
                   ))}
                 </div>

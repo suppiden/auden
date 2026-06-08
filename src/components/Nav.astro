@@ -35,6 +35,9 @@ const { t } = Astro.props;
         <a href="#work" class="nav-link transition-colors pb-0.5">{t.nav.work}</a>
       </li>
       <li>
+        <a href={t.lang === 'es' ? '/es/work/' : '/work/'} class="nav-link transition-colors pb-0.5">Case studies</a>
+      </li>
+      <li>
         <a href="#contact" class="nav-link transition-colors pb-0.5">{t.nav.contact}</a>
       </li>
     </ul>
@@ -91,6 +94,7 @@ const { t } = Astro.props;
     <a href="#offer" class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>{t.nav.offer}</a>
     <a href="#packages" class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>{t.nav.about}</a>
     <a href="#work" class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>{t.nav.work}</a>
+    <a href={t.lang === 'es' ? '/es/work/' : '/work/'} class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>Case studies</a>
     <a href="#contact" class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>{t.nav.contact}</a>
     <a href="#contact" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white text-black text-sm font-medium tracking-wide hover:bg-white/90 transition-colors mt-2">{t.nav.contact}</a>
   </div>

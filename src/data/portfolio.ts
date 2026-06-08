@@ -68,6 +68,15 @@ export const portfolio: PortfolioItem[] = [
 
   // ── Post-Production (horizontal) ────────────────────────────────
   {
+    id: 'bandit-grand-prix',
+    client: 'Bandit Grand Prix',
+    category: 'postProduction',
+    aspect: 'horizontal',
+    description: 'Original electronic score, sound design and mix for a 45-second film by Anjelica Florendo.',
+    videoUrl: 'https://www.youtube.com/embed/boZns6DvLl8',
+    caseStudyUrl: '/work/bandit-grand-prix/',
+  },
+  {
     id: 'post-production-01',
     client: 'Post-Production 01',
     category: 'postProduction',
