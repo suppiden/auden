@@ -47,6 +47,8 @@ export const caseStudies: CaseStudy[] = [
     title: "BANDIT GRAND PRIX",
     category: "Sonic Branding",
     videoId: "boZns6DvLl8",
+    deliverableLink:
+      "https://soundcloud.com/auden-439389537/sets/bandit-grand-prix-anjelica/s-U7MyxF7I1FJ?si=a14e611f6e454c159bd3edeb377cdd2a&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing",
     credits: [
       { role: "Film direction", name: "Anjelica Florendo" },
       { role: "Production", name: "Maganda agency" },
