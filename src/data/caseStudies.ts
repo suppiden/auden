@@ -17,6 +17,8 @@ export interface CaseStudyLocale {
   craftLabel: string;
   creditsLabel: string;
   deliverablesLabel: string;
+  scoreJumpCta: string;
+  scoreTitle: string;
   metaTitle: string;
   metaDescription: string;
 }
@@ -34,6 +36,8 @@ export interface CaseStudy {
   videoId: string;
   credits: Credit[];
   deliverableLink?: string;
+  soundcloudPlaylistId?: string;
+  soundcloudSecretToken?: string;
   content: {
     en: CaseStudyLocale;
     es: CaseStudyLocale;
@@ -49,6 +53,8 @@ export const caseStudies: CaseStudy[] = [
     videoId: "boZns6DvLl8",
     deliverableLink:
       "https://soundcloud.com/auden-439389537/sets/bandit-grand-prix-anjelica/s-U7MyxF7I1FJ?si=a14e611f6e454c159bd3edeb377cdd2a&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing",
+    soundcloudPlaylistId: "2251331522",
+    soundcloudSecretToken: "s-U7MyxF7I1FJ",
     credits: [
       { role: "Film direction", name: "Anjelica Florendo" },
       { role: "Production", name: "Maganda agency" },
@@ -64,6 +70,8 @@ export const caseStudies: CaseStudy[] = [
         craftLabel: "Behind the craft",
         creditsLabel: "Credits",
         deliverablesLabel: "Deliverables",
+        scoreJumpCta: "Listen to the score",
+        scoreTitle: "Original score",
         dek: "Sonic branding for a film by Anjelica Florendo. 45 seconds. The race inside her head.",
         body: [
           [
@@ -108,6 +116,8 @@ export const caseStudies: CaseStudy[] = [
         craftLabel: "Detras de la pieza",
         creditsLabel: "Creditos",
         deliverablesLabel: "Entregables",
+        scoreJumpCta: "Escuchar el score",
+        scoreTitle: "Score original",
         dek: "Sonic branding para un film de Anjelica Florendo. 45 segundos. La carrera dentro de su cabeza.",
         body: [
           [

@@ -33,6 +33,13 @@ const jsonLd = {
 };
 
 const ytThumb = `https://img.youtube.com/vi/${cs.videoId}/maxresdefault.jpg`;
+
+const scSrc = cs.soundcloudPlaylistId
+  ? `https://w.soundcloud.com/player/?url=https%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F${cs.soundcloudPlaylistId}&secret_token=${cs.soundcloudSecretToken}&color=%23ff4d00&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true`
+  : null;
+
+// Deterministic waveform heights for the audio facade
+const waveBars = Array.from({ length: 40 }, (_, i) => 22 + Math.round(Math.abs(Math.sin(i * 1.7) * Math.cos(i * 0.6)) * 76));
 ---
 
 <CaseStudyLayout
@@ -98,6 +105,20 @@ const ytThumb = `https://img.youtube.com/vi/${cs.videoId}/maxresdefault.jpg`;
           </div>
           <span class="cs-duration">0:45</span>
         </div>
+
+        {scSrc && (
+          <div class="cs-jump" data-reveal>
+            <a href="#score" class="cs-jump-btn" data-scroll-to="score">
+              <span class="cs-jump-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 14V10M8 18V6M13 15V9M18 20V4M23 13v-2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                </svg>
+              </span>
+              {c.scoreJumpCta}
+              <span aria-hidden="true">↓</span>
+            </a>
+          </div>
+        )}
       </header>
 
       <!-- ── BODY ──────────────────────────────────────────────────── -->
@@ -157,10 +178,40 @@ const ytThumb = `https://img.youtube.com/vi/${cs.videoId}/maxresdefault.jpg`;
             </dl>
           </div>
 
-          <div data-reveal class="cs-sub-block">
+          <div data-reveal class="cs-sub-block" id="score">
             <p class="cs-section-eyebrow" style="margin-bottom: 1.25rem;">{c.deliverablesLabel}</p>
             <p class="cs-deliverables-text">{c.deliverableItems}</p>
-            {cs.deliverableLink ? (
+
+            {scSrc ? (
+              <>
+                <div class="cs-audio">
+                  <div
+                    id="sc-facade"
+                    class="cs-audio-facade"
+                    role="button"
+                    tabindex="0"
+                    aria-label={c.scoreJumpCta}
+                    data-sc-src={scSrc}
+                  >
+                    <div class="cs-audio-play" aria-hidden="true">
+                      <svg width="18" height="20" viewBox="0 0 22 24" fill="none" style="margin-left: 2px;">
+                        <path d="M2 2l18 10L2 22V2z" fill="#fff"/>
+                      </svg>
+                    </div>
+                    <div class="cs-audio-meta">
+                      <p class="cs-audio-title">{c.scoreTitle}</p>
+                      <p class="cs-audio-sub">{cs.title} · SoundCloud</p>
+                    </div>
+                    <div class="cs-audio-wave" aria-hidden="true">
+                      {waveBars.map((h) => (<span style={`height: ${h}%`}></span>))}
+                    </div>
+                  </div>
+                </div>
+                {cs.deliverableLink && (
+                  <a href={cs.deliverableLink} target="_blank" rel="noopener noreferrer" class="cs-score-link" style="margin-top: 1.5rem;">Open in SoundCloud →</a>
+                )}
+              </>
+            ) : cs.deliverableLink ? (
               <a href={cs.deliverableLink} target="_blank" rel="noopener noreferrer" class="cs-score-link">{c.deliverableCta}</a>
             ) : (
               <span class="cs-score-link cs-score-link--disabled">{c.deliverableCta}</span>
@@ -280,6 +331,26 @@ const ytThumb = `https://img.youtube.com/vi/${cs.videoId}/maxresdefault.jpg`;
     backdrop-filter: blur(4px);
   }
 
+  /* ── Jump-to-score button (under hero video) ── */
+  .cs-jump { margin-top: 2.25rem; display: flex; justify-content: center; }
+  .cs-jump-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgb(255,77,0);
+    text-decoration: none;
+    border: 1px solid rgba(255,77,0,0.45);
+    border-radius: 999px;
+    padding: 0.7rem 1.5rem;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  }
+  .cs-jump-btn:hover { background: rgba(255,77,0,0.12); border-color: rgb(255,77,0); transform: translateY(-2px); }
+  .cs-jump-icon { display: inline-flex; color: rgb(255,77,0); }
+
   /* ── Body prose ── */
   .cs-prose { max-width: 42rem; margin: 0 auto; }
   .cs-body-p {
@@ -397,6 +468,59 @@ const ytThumb = `https://img.youtube.com/vi/${cs.videoId}/maxresdefault.jpg`;
     transition: border-color 0.2s;
   }
   .cs-score-link--disabled { color: rgba(255,77,0,0.4); cursor: default; }
+
+  /* ── Audio facade (SoundCloud) ── */
+  .cs-sub-block#score { scroll-margin-top: 7rem; }
+  .cs-audio { margin-top: 1.5rem; }
+  .cs-audio-facade {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.1rem 1.4rem;
+    background: var(--cs-bg-alt);
+    border: 1px solid var(--cs-border-strong);
+    cursor: pointer;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .cs-audio-facade:hover { background: var(--cs-bg-craft); border-color: rgba(255,77,0,0.45); }
+  .cs-audio-play {
+    flex-shrink: 0;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 50%;
+    background: rgb(255,77,0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 0 rgba(255,77,0,0);
+  }
+  .cs-audio-facade:hover .cs-audio-play { transform: scale(1.08); box-shadow: 0 0 40px rgba(255,77,0,0.35); }
+  .cs-audio-meta { flex-shrink: 0; min-width: 0; }
+  .cs-audio-title { font-size: 0.95rem; font-weight: 700; color: var(--cs-text); margin: 0 0 0.2rem; letter-spacing: -0.01em; }
+  .cs-audio-sub { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cs-text-faint); margin: 0; }
+  .cs-audio-wave {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 2.75rem;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .cs-audio-wave span {
+    flex: 1;
+    min-width: 2px;
+    background: var(--cs-text-faint);
+    border-radius: 1px;
+    transition: background 0.3s ease;
+  }
+  .cs-audio-facade:hover .cs-audio-wave span { background: rgba(255,77,0,0.55); }
+  .cs-audio iframe { display: block; border: 0; }
+  @media (max-width: 600px) {
+    .cs-audio-wave { display: none; }
+    .cs-audio-meta { flex: 1; }
+  }
   .cs-about-label {
     font-size: 0.7rem;
     font-weight: 500;
@@ -436,4 +560,38 @@ const ytThumb = `https://img.youtube.com/vi/${cs.videoId}/maxresdefault.jpg`;
     facade.addEventListener('click', loadVideo);
     facade.addEventListener('keydown', keyHandler);
   }
+
+  // ── SoundCloud facade → inline player ────────────────────────
+  const scFacade = document.getElementById('sc-facade') as HTMLElement | null;
+  if (scFacade) {
+    function loadAudio() {
+      const src = scFacade!.dataset.scSrc;
+      if (!src) return;
+      const iframe = document.createElement('iframe');
+      iframe.src = src;
+      iframe.title = 'Bandit Grand Prix — score';
+      iframe.width = '100%';
+      iframe.height = '480';
+      iframe.allow = 'autoplay';
+      iframe.setAttribute('scrolling', 'no');
+      iframe.setAttribute('frameborder', 'no');
+      iframe.style.cssText = 'border: 0; display: block; width: 100%;';
+      scFacade!.replaceWith(iframe);
+    }
+    function scKeyHandler(e: KeyboardEvent) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loadAudio(); }
+    }
+    scFacade.addEventListener('click', loadAudio);
+    scFacade.addEventListener('keydown', scKeyHandler);
+  }
+
+  // ── Smooth scroll for in-page jump buttons ───────────────────
+  document.querySelectorAll<HTMLElement>('[data-scroll-to]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = btn.dataset.scrollTo;
+      if (!id) return;
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
 </script>
