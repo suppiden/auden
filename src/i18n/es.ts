@@ -108,7 +108,7 @@ export const es: Translations = {
     servicesHeadline: 'Auden Sound for Campaigns.',
     services: [
       { name: 'Campaign Sound Production' },
-      { name: 'Sonic Mood Playlist' },
+      { name: 'Sonic Curation' },
       { name: 'Brand Sound Toolkit' },
     ],
   },
@@ -169,7 +169,7 @@ export const es: Translations = {
         ],
       },
       {
-        name: 'Sonic Mood Playlist',
+        name: 'Sonic Curation',
         includes: [
           'Playlist alineada con el mood de la marca',
           'Referencias musicales para campañas y contenido',
