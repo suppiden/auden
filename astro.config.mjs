@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
+import vercel from '@astrojs/vercel/serverless';
 
 export default defineConfig({
   site: 'https://audensonic.com',
@@ -15,5 +16,9 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
-  output: 'static',
+  // Hybrid: every page is prerendered (static) by default. Only the future
+  // /admin app and /api routes will opt into server rendering via
+  // `export const prerender = false`. The public site stays 100% static.
+  output: 'hybrid',
+  adapter: vercel(),
 });

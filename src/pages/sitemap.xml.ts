@@ -1,5 +1,9 @@
 import type { APIRoute } from 'astro';
 
+// Keep the sitemap a build-time static file (hybrid mode renders endpoints
+// on-demand by default).
+export const prerender = true;
+
 const SITE = 'https://audensonic.com';
 
 const pages = [
