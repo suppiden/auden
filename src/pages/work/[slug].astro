@@ -1,0 +1,62 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import InnerNav from '../../components/InnerNav.astro';
+import CaseStudyArticle from '../../components/CaseStudyArticle.astro';
+import Footer from '../../components/Footer.astro';
+import { getTranslations } from '../../i18n/utils';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('caseStudies', ({ data }) => !data.draft);
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+interface Props { entry: CollectionEntry<'caseStudies'> }
+const { entry } = Astro.props;
+const d = entry.data;
+const t = getTranslations('en');
+
+const canonicalUrl = `https://audensonic.com/work/${entry.id}/`;
+const alternateUrl = `https://audensonic.com/es/work/${entry.id}/`;
+
+const seo = d.seo.en;
+const contributors = d.blocks
+  .filter((b) => b.type === 'credits')
+  .flatMap((b: any) => b.items)
+  .filter((c: any) => c.name && c.name !== 'Auden')
+  .map((c: any) => ({ '@type': 'Person', name: c.name }));
+
+const jsonLd = {
+  '@type': 'Article',
+  '@id': `${canonicalUrl}#article`,
+  headline: seo.metaTitle,
+  description: seo.metaDescription,
+  url: canonicalUrl,
+  inLanguage: 'en',
+  author: { '@id': 'https://audensonic.com/#org' },
+  publisher: { '@id': 'https://audensonic.com/#org' },
+  about: {
+    '@type': 'CreativeWork',
+    name: d.title,
+    description: d.dek.en,
+    creator: { '@type': 'Organization', name: 'Auden' },
+    ...(contributors.length ? { contributor: contributors } : {}),
+    genre: d.category,
+  },
+};
+---
+
+<CaseStudyLayout
+  lang="en"
+  title={seo.metaTitle}
+  description={seo.metaDescription}
+  canonicalUrl={canonicalUrl}
+  alternateUrl={alternateUrl}
+  jsonLd={jsonLd}
+>
+  <InnerNav t={t} base="/" slot="nav" />
+  <main id="main-content">
+    <CaseStudyArticle entry={entry} lang="en" />
+  </main>
+  <Footer t={t} />
+</CaseStudyLayout>

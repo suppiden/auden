@@ -1,9 +1,9 @@
 ---
+import { getCollection } from 'astro:content';
 import CaseStudyLayout from '../../../layouts/CaseStudyLayout.astro';
 import InnerNav from '../../../components/InnerNav.astro';
 import Footer from '../../../components/Footer.astro';
 import { getTranslations } from '../../../i18n/utils';
-import { caseStudies } from '../../../data/caseStudies';
 
 const t = getTranslations('es');
 const canonicalUrl = 'https://audensonic.com/es/work/';
@@ -11,6 +11,10 @@ const alternateUrl = 'https://audensonic.com/work/';
 
 const title = 'Trabajo — Case Studies de Sonic Branding | Auden';
 const description = 'Trabajo seleccionado de Auden — sonic branding, diseño sonoro y scores originales para marcas y films.';
+
+const entries = (await getCollection('caseStudies', ({ data }) => !data.draft)).sort(
+  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)
+);
 ---
 
 <CaseStudyLayout
@@ -32,21 +36,21 @@ const description = 'Trabajo seleccionado de Auden — sonic branding, diseño s
         </header>
 
         <div class="wl-grid" data-reveal-stagger>
-          {caseStudies.map((cs) => {
-            const c = cs.content.es;
-            const ytThumb = `https://img.youtube.com/vi/${cs.videoId}/maxresdefault.jpg`;
+          {entries.map((entry) => {
+            const d = entry.data;
+            const ytThumb = `https://img.youtube.com/vi/${d.videoId}/maxresdefault.jpg`;
             return (
-              <a href={`/es/work/${cs.slug}/`} class="wl-card">
+              <a href={`/es/work/${entry.id}/`} class="wl-card">
                 <div class="wl-thumb-wrap">
-                  <img src={ytThumb} alt={cs.title} loading="lazy" class="wl-thumb" />
+                  <img src={ytThumb} alt={d.title} loading="lazy" class="wl-thumb" />
                   <div class="wl-thumb-overlay" aria-hidden="true"></div>
                   <div class="wl-thumb-meta">
-                    <p class="wl-thumb-eyebrow">{cs.category} — {cs.client}</p>
-                    <h2 class="wl-thumb-title">{cs.title}</h2>
+                    <p class="wl-thumb-eyebrow">{d.category} — {d.client}</p>
+                    <h2 class="wl-thumb-title">{d.title}</h2>
                   </div>
                 </div>
                 <div class="wl-card-body">
-                  <p class="wl-card-dek">{c.dek}</p>
+                  <p class="wl-card-dek">{d.dek.es}</p>
                   <span class="wl-card-cta">Leer case study →</span>
                 </div>
               </a>
