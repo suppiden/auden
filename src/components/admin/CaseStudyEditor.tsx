@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // ── Types (mirror src/content/config.ts) ────────────────────────────
 type Lang = 'en' | 'es';
@@ -60,6 +60,31 @@ export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; is
   const [lang, setLang] = useState<Lang>('en');
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<{ msg: string; err?: boolean } | null>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewHtml, setPreviewHtml] = useState('');
+  const [previewTheme, setPreviewTheme] = useState<'dark' | 'light'>('dark');
+  const [previewLoading, setPreviewLoading] = useState(false);
+
+  // Live preview: re-render the real case-study component from the draft.
+  useEffect(() => {
+    if (!previewOpen) return;
+    const t = setTimeout(async () => {
+      setPreviewLoading(true);
+      try {
+        const res = await fetch('/api/admin/preview', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ data: draft, lang, theme: previewTheme }),
+        });
+        setPreviewHtml(await res.text());
+      } catch {
+        setPreviewHtml('<p style="font-family:sans-serif;padding:2rem">Preview failed.</p>');
+      } finally {
+        setPreviewLoading(false);
+      }
+    }, 450);
+    return () => clearTimeout(t);
+  }, [previewOpen, draft, lang, previewTheme]);
 
   function update(mut: (d: Draft) => void) {
     setDraft((prev) => { const next = structuredClone(prev); mut(next); return next; });
@@ -103,6 +128,7 @@ export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; is
             <button data-active={lang === 'en'} onClick={() => setLang('en')}>EN</button>
             <button data-active={lang === 'es'} onClick={() => setLang('es')}>ES</button>
           </div>
+          <button className="adm-btn adm-btn--ghost" onClick={() => setPreviewOpen(true)}>Preview</button>
           <button className="adm-btn adm-btn--primary" onClick={save} disabled={saving}>
             {saving ? 'Saving…' : 'Save & publish'}
           </button>
@@ -172,6 +198,22 @@ export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; is
           ))}
         </div>
       </main>
+
+      {previewOpen && (
+        <div className="adm-preview">
+          <div className="adm-preview-bar">
+            <span className="adm-style-lbl">Live preview — {lang.toUpperCase()}{previewLoading ? ' · updating…' : ''}</span>
+            <div className="adm-row">
+              <div className="adm-lang">
+                <button data-active={previewTheme === 'dark'} onClick={() => setPreviewTheme('dark')}>Dark</button>
+                <button data-active={previewTheme === 'light'} onClick={() => setPreviewTheme('light')}>Light</button>
+              </div>
+              <button className="adm-btn adm-btn--ghost adm-btn--sm" onClick={() => setPreviewOpen(false)}>Close ✕</button>
+            </div>
+          </div>
+          <iframe className="adm-preview-frame" srcDoc={previewHtml} title="Preview" />
+        </div>
+      )}
 
       {toast && <div className={`adm-toast${toast.err ? ' adm-toast--err' : ''}`}>{toast.msg}</div>}
     </>

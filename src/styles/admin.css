@@ -94,3 +94,8 @@ body {
 .adm-toast--err { border-left-color: #ff5a5a; }
 
 .adm-repeat-item { border: 1px solid var(--adm-line-soft); border-radius: 3px; padding: 0.85rem; margin-bottom: 0.6rem; position: relative; }
+
+/* live preview panel */
+.adm-preview { position: fixed; inset: 0; z-index: 60; display: flex; flex-direction: column; background: #000; }
+.adm-preview-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.7rem 1.1rem; background: var(--adm-panel); border-bottom: 1px solid var(--adm-line); }
+.adm-preview-frame { flex: 1; width: 100%; border: 0; background: #fff; }

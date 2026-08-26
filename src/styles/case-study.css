@@ -1,0 +1,73 @@
+/* ── Layout sections ── */
+  .cs-hero { background: var(--cs-bg); padding: 9rem 1.5rem 4rem; text-align: center; }
+  .cs-section { padding: 6rem 1.5rem; }
+  .cs-section[id] { scroll-margin-top: 6rem; }
+  .cs-section--primary  { background: var(--cs-bg); }
+  .cs-section--alt      { background: var(--cs-bg-alt); padding-bottom: 6rem; padding-top: 5rem; }
+  .cs-section--craft    { background: var(--cs-bg-craft); }
+  .cs-section--border   { border-top: 1px solid var(--cs-border); }
+
+  /* ── Header text ── */
+  .cs-eyebrow { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cs-accent, rgb(255,77,0)); margin-bottom: 1.5rem; }
+  .cs-title { font-size: clamp(3rem, 10vw, 8rem); font-weight: 900; line-height: 0.95; letter-spacing: -0.03em; color: var(--cs-text); margin: 0 0 2rem; text-transform: uppercase; }
+  .cs-dek { font-size: clamp(1rem, 2.5vw, 1.375rem); font-weight: 400; line-height: 1.6; color: var(--cs-text-dim); max-width: 42rem; margin: 0 auto 4rem; }
+
+  /* ── Video facade ── */
+  .cs-video-wrap { max-width: 56rem; margin: 0 auto; position: relative; aspect-ratio: 16/9; background: var(--cs-yt-bg); overflow: hidden; cursor: pointer; }
+  .cs-video-thumb { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease, opacity 0.4s ease; }
+  .cs-video-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%); pointer-events: none; }
+  .cs-play-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+  .cs-play-btn { width: 5rem; height: 5rem; border-radius: 50%; background: rgba(255,77,0,0.9); display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease, background 0.3s ease; box-shadow: 0 0 60px rgba(255,77,0,0.4); }
+  .cs-video-wrap:hover .cs-video-thumb { transform: scale(1.03); opacity: 0.85; }
+  .cs-video-wrap:hover .cs-play-btn { transform: scale(1.1); background: rgb(255,77,0); }
+  .cs-duration { position: absolute; bottom: 1rem; right: 1rem; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.05em; padding: 0.25rem 0.5rem; backdrop-filter: blur(4px); }
+
+  /* ── Jump-to-score button ── */
+  .cs-jump { margin-top: 2.25rem; display: flex; justify-content: center; }
+  .cs-jump-btn { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cs-accent, rgb(255,77,0)); text-decoration: none; border: 1px solid rgba(255,77,0,0.45); border-radius: 999px; padding: 0.7rem 1.5rem; transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease; }
+  .cs-jump-btn:hover { background: rgba(255,77,0,0.12); border-color: rgb(255,77,0); transform: translateY(-2px); }
+  .cs-jump-icon { display: inline-flex; color: var(--cs-accent, rgb(255,77,0)); }
+
+  /* ── Body prose ── */
+  .cs-prose { max-width: 42rem; margin: 0 auto; }
+  .cs-body-p { font-size: clamp(1rem, 1.5vw, 1.125rem); line-height: 1.85; color: var(--cs-text-body); margin: 0 0 1.25rem; }
+
+  /* ── Closing ── */
+  .cs-closing-text { font-size: clamp(1.25rem, 3.5vw, 2.25rem); font-weight: 900; line-height: 1.2; letter-spacing: -0.02em; color: var(--cs-text); margin: 0 0 1.5rem; text-transform: uppercase; }
+  .cs-platform-line { font-size: 0.85rem; font-weight: 500; letter-spacing: 0.15em; color: var(--cs-accent, rgb(255,77,0)); text-transform: uppercase; margin: 0; }
+
+  /* ── Craft ── */
+  .cs-craft-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .cs-craft-item { padding: 2.5rem 0; border-top: 1px solid var(--cs-border-strong); display: grid; grid-template-columns: 3rem 1fr; gap: 2rem; align-items: start; }
+  .cs-craft-num { font-size: 0.75rem; font-weight: 500; color: var(--cs-text-faint); padding-top: 0.35rem; font-variant-numeric: tabular-nums; }
+  .cs-craft-heading { display: block; font-size: 1rem; font-weight: 700; color: var(--cs-text); margin-bottom: 0.75rem; letter-spacing: -0.01em; }
+  .cs-craft-body { font-size: 0.95rem; line-height: 1.8; color: var(--cs-text-dim); margin: 0; }
+
+  /* ── Section eyebrow ── */
+  .cs-section-eyebrow { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cs-accent, rgb(255,77,0)); margin: 0; }
+
+  /* ── Credits ── */
+  .cs-credits-dl { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem 2.5rem; }
+  .cs-credit-role { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cs-text-faint); margin-bottom: 0.35rem; }
+  .cs-credit-name { font-size: 0.9rem; font-weight: 500; color: var(--cs-text); margin: 0; }
+
+  /* ── Deliverables / about ── */
+  .cs-deliverables-text { font-size: 0.9rem; color: var(--cs-text-dim); margin: 0; line-height: 1.6; }
+  .cs-score-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cs-accent, rgb(255,77,0)); text-decoration: none; border-bottom: 1px solid rgba(255,77,0,0.4); padding-bottom: 0.15rem; }
+  .cs-about-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cs-text-faint); margin: 0 0 0.75rem; }
+  .cs-about-body { font-size: 0.85rem; line-height: 1.75; color: var(--cs-text-muted); margin: 0; }
+
+  /* ── Audio facade (SoundCloud) ── */
+  .cs-audio { margin-top: 0; }
+  .cs-audio-facade { display: flex; align-items: center; gap: 1.25rem; padding: 1.1rem 1.4rem; background: var(--cs-bg-alt); border: 1px solid var(--cs-border-strong); cursor: pointer; transition: background 0.3s ease, border-color 0.3s ease; }
+  .cs-audio-facade:hover { background: var(--cs-bg-craft); border-color: rgba(255,77,0,0.45); }
+  .cs-audio-play { flex-shrink: 0; width: 3.25rem; height: 3.25rem; border-radius: 50%; background: rgb(255,77,0); display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+  .cs-audio-facade:hover .cs-audio-play { transform: scale(1.08); box-shadow: 0 0 40px rgba(255,77,0,0.35); }
+  .cs-audio-meta { flex-shrink: 0; min-width: 0; }
+  .cs-audio-title { font-size: 0.95rem; font-weight: 700; color: var(--cs-text); margin: 0 0 0.2rem; letter-spacing: -0.01em; }
+  .cs-audio-sub { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cs-text-faint); margin: 0; }
+  .cs-audio-wave { flex: 1; display: flex; align-items: center; gap: 2px; height: 2.75rem; min-width: 0; overflow: hidden; }
+  .cs-audio-wave span { flex: 1; min-width: 2px; background: var(--cs-text-faint); border-radius: 1px; transition: background 0.3s ease; }
+  .cs-audio-facade:hover .cs-audio-wave span { background: rgba(255,77,0,0.55); }
+  .cs-audio iframe { display: block; border: 0; }
+  @media (max-width: 600px) { .cs-audio-wave { display: none; } .cs-audio-meta { flex: 1; } }
