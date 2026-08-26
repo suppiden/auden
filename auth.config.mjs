@@ -21,6 +21,8 @@ export default defineConfig({
       clientSecret: env('GOOGLE_CLIENT_SECRET'),
     }),
   ],
+  // Trust the deployment host (Vercel preview/prod URLs) for callback resolution.
+  trustHost: true,
   // JWT sessions — no database. The allowlist decides who gets in.
   session: { strategy: 'jwt' },
   callbacks: {

@@ -3,8 +3,14 @@ export const prerender = false;
 
 import { getSession } from 'auth-astro/server';
 
-// Already signed in? Go straight to the dashboard.
-const session = await getSession(Astro.request);
+// Already signed in? Go straight to the dashboard. (Tolerate an unconfigured
+// auth setup so the page still renders instead of 500-ing.)
+let session = null;
+try {
+  session = await getSession(Astro.request);
+} catch {
+  session = null;
+}
 if (session?.user?.email) return Astro.redirect('/admin');
 
 const error = Astro.url.searchParams.get('error');
