@@ -1,0 +1,86 @@
+---
+export const prerender = false;
+
+import { getSession } from 'auth-astro/server';
+import { getCollection } from 'astro:content';
+
+// Middleware already guards this route; read the session for display.
+const session = await getSession(Astro.request);
+const email = session?.user?.email ?? '';
+
+const entries = (await getCollection('caseStudies')).sort(
+  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Auden Admin — Case studies</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <style>
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { min-height: 100dvh; background: #080808; color: #F0EFE9; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+      header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.75rem; border-bottom: 1px solid rgba(240,239,233,0.1); }
+      .brand { font-weight: 900; letter-spacing: -0.02em; font-size: 1.1rem; }
+      .brand span { color: rgb(255,77,0); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; margin-left: 0.5rem; }
+      .who { display: flex; align-items: center; gap: 1rem; font-size: 0.78rem; color: rgba(240,239,233,0.55); }
+      .signout { background: none; border: 1px solid rgba(240,239,233,0.25); color: #F0EFE9; padding: 0.4rem 0.9rem; border-radius: 999px; font-size: 0.72rem; cursor: pointer; transition: border-color 0.2s; }
+      .signout:hover { border-color: rgb(255,77,0); }
+      main { max-width: 60rem; margin: 0 auto; padding: 3rem 1.75rem 5rem; }
+      .row { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 2.25rem; }
+      h1 { font-size: 1.75rem; font-weight: 900; letter-spacing: -0.02em; }
+      .new { background: rgb(255,77,0); color: #111; border: 0; padding: 0.65rem 1.2rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; cursor: not-allowed; opacity: 0.5; }
+      .list { display: flex; flex-direction: column; gap: 1px; background: rgba(240,239,233,0.1); border: 1px solid rgba(240,239,233,0.1); }
+      .item { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; background: #0d0d0d; padding: 1.1rem 1.4rem; }
+      .item h2 { font-size: 1rem; font-weight: 700; }
+      .item .meta { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(240,239,233,0.4); margin-top: 0.25rem; }
+      .item a { color: rgb(255,77,0); font-size: 0.75rem; text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; }
+      .note { margin-top: 2rem; font-size: 0.78rem; color: rgba(240,239,233,0.4); line-height: 1.6; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">Auden <span>Admin</span></div>
+      <div class="who">
+        <span>{email}</span>
+        <button id="signout" class="signout">Sign out</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="row">
+        <h1>Case studies</h1>
+        <button class="new" title="Coming in the next step" disabled>+ New case study</button>
+      </div>
+
+      <div class="list">
+        {entries.map((entry) => (
+          <div class="item">
+            <div>
+              <h2>{entry.data.title}</h2>
+              <p class="meta">{entry.data.category} — {entry.data.client} · {entry.data.blocks.length} blocks{entry.data.draft ? ' · draft' : ''}</p>
+            </div>
+            <a href={`/work/${entry.id}/`} target="_blank" rel="noopener">View →</a>
+          </div>
+        ))}
+      </div>
+
+      <p class="note">
+        You are signed in. The block editor (create / edit / reorder) is the next step —
+        for now this dashboard confirms the login works and lists the case studies in the collection.
+      </p>
+    </main>
+
+    <script>
+      import { signOut } from 'auth-astro/client';
+      document.getElementById('signout')?.addEventListener('click', () => {
+        signOut({ callbackUrl: '/admin/login' });
+      });
+    </script>
+  </body>
+</html>

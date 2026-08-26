@@ -2,12 +2,15 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel/serverless';
+import auth from 'auth-astro';
 
 export default defineConfig({
   site: 'https://audensonic.com',
   integrations: [
     react(),
     tailwind({ applyBaseStyles: false }),
+    // Auth.js — injects /api/auth/* routes (Google login for /admin).
+    auth(),
   ],
   i18n: {
     defaultLocale: 'en',
