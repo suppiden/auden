@@ -50,14 +50,14 @@ const entries = (await getCollection('caseStudies')).sort(
       <div class="brand">Auden <span>Admin</span></div>
       <div class="who">
         <span>{email}</span>
-        <button id="signout" class="signout">Sign out</button>
+        <button id="signout" class="signout">Cerrar sesión</button>
       </div>
     </header>
 
     <main>
       <div class="row">
         <h1>Case studies</h1>
-        <a class="new" href="/admin/new">+ New case study</a>
+        <a class="new" href="/admin/new">+ Nuevo case study</a>
       </div>
 
       <div class="list">
@@ -65,19 +65,19 @@ const entries = (await getCollection('caseStudies')).sort(
           <div class="item">
             <div>
               <h2>{entry.data.title}</h2>
-              <p class="meta">{entry.data.category} — {entry.data.client} · {entry.data.blocks.length} blocks{entry.data.draft ? ' · draft' : ''}</p>
+              <p class="meta">{entry.data.category} — {entry.data.client} · {entry.data.blocks.length} bloques{entry.data.draft ? ' · borrador' : ''}</p>
             </div>
             <span class="acts">
-              <a href={`/admin/edit/${entry.id}`}>Edit</a>
-              <a href={`/work/${entry.id}/`} target="_blank" rel="noopener">View →</a>
+              <a href={`/admin/edit/${entry.id}`}>Editar</a>
+              <a href={`/work/${entry.id}/`} target="_blank" rel="noopener">Ver →</a>
             </span>
           </div>
         ))}
       </div>
 
       <p class="note">
-        Signed in. Click a case study to edit it, or “+ New case study” to create one.
-        Publishing commits the change to the site and redeploys automatically (~1–2 min).
+        Sesión iniciada. Haz clic en un case study para editarlo, o en «+ Nuevo case study» para crear uno.
+        Al publicar, el cambio se guarda en la web y se redespliega solo (~1–2 min).
       </p>
     </main>
 

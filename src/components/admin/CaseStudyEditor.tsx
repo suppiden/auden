@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createContext, useContext } from 'react';
 
 // ── Types (mirror src/content/config.ts) ────────────────────────────
 type Lang = 'en' | 'es';
@@ -23,10 +23,92 @@ interface Draft {
   blocks: Block[];
 }
 
-const BLOCK_LABELS: Record<Block['type'], string> = {
-  text: 'Text', quote: 'Quote', numberedList: 'Numbered list',
-  audio: 'Audio', credits: 'Credits', deliverables: 'Deliverables', about: 'About',
+// ── UI translations (panel language, independent of the content language) ──
+type UiLang = 'es' | 'en';
+const UI = {
+  es: {
+    editor: 'Editor', panel: 'Idioma del panel', back: 'Volver al panel',
+    preview: 'Vista previa', save: 'Guardar y publicar', saving: 'Guardando…',
+    newCS: 'Nuevo case study', untitled: 'Sin título',
+    editingA: 'Editando contenido', editingB: 'cambia el idioma del contenido arriba a la derecha · el estilo es común a ambos idiomas.',
+    basics: 'Datos básicos',
+    title: 'Título', slug: 'Slug (URL)', slugHintNew: 'minúsculas-con-guiones · será /work/<slug>/', slugHintLock: 'Bloqueado al editar.',
+    client: 'Cliente', category: 'Categoría',
+    videoId: 'ID del vídeo de YouTube', videoIdHint: 'La parte después de v= (p.ej. boZns6DvLl8).',
+    duration: 'Duración',
+    showJump: 'Mostrar botón «ir al audio» bajo el vídeo', draftFlag: 'Borrador (oculto en la web)',
+    jumpTarget: 'Id del bloque destino', jumpTargetHint: 'Dale este id a un bloque de Audio (por defecto: score).',
+    heroSeo: 'Hero y SEO',
+    dek: 'Dek (subtítulo bajo el título)', backLabel: 'Texto del enlace «volver»', jumpLabel: 'Texto del botón de salto',
+    metaTitle: 'Meta título (SEO)', metaDesc: 'Meta descripción (SEO)',
+    blocks: 'Bloques de contenido', addBlock: 'Añadir bloque',
+    moveUp: 'Subir', moveDown: 'Bajar', del: 'Borrar', delBlock: '¿Borrar este bloque?',
+    // text
+    paragraphs: 'Párrafos — cada caja es un grupo; deja una línea en blanco dentro para separar párrafos.',
+    removeGroup: 'Quitar grupo', addGroup: '+ Añadir grupo',
+    // quote
+    statement: 'Frase', subline: 'Subtítulo (pequeño, color de acento)',
+    // numberedList
+    sectionLabel: 'Etiqueta de sección', point: 'Punto', heading: 'título', body: 'Texto',
+    removePoint: 'Quitar punto', addPoint: '+ Añadir punto',
+    // audio
+    scId: 'ID de la playlist de SoundCloud', scIdHint: 'Id numérico del embed/oEmbed.',
+    scToken: 'Token secreto', scTokenHint: 'Para sets privados (la parte s-XXXX).',
+    scLink: 'Enlace «Abrir en SoundCloud» (URL completa)',
+    // credits
+    creditsShared: 'Créditos (comunes a ambos idiomas)', role: 'Rol', name: 'Nombre', addCredit: '+ Añadir crédito',
+    // deliverables
+    items: 'Elementos', itemsHint: 'Sepáralos con · (punto medio).',
+    // about
+    label: 'Etiqueta',
+    // style
+    style: 'Estilo', bg: 'Fondo', bgDefault: 'Por defecto', bgAlt: 'Alt (más oscuro)', bgCraft: 'Craft (el más oscuro)', bgCustom: 'Personalizado…',
+    align: 'Alineación', alignLeft: 'Izquierda', alignCenter: 'Centro', alignRight: 'Derecha',
+    accent: 'Acento', divider: 'Línea divisoria', reset: 'Volver al estilo de marca',
+    livePreview: 'Vista previa en vivo', updating: 'actualizando…', dark: 'Oscuro', light: 'Claro', close: 'Cerrar',
+    errSlug: 'El slug debe ser minúsculas separadas por guiones.', errTitle: 'El título es obligatorio.',
+    blockLabels: { text: 'Texto', quote: 'Cita', numberedList: 'Lista numerada', audio: 'Audio', credits: 'Créditos', deliverables: 'Entregables', about: 'Sobre la marca' } as Record<Block['type'], string>,
+  },
+  en: {
+    editor: 'Editor', panel: 'Panel language', back: 'Back to dashboard',
+    preview: 'Preview', save: 'Save & publish', saving: 'Saving…',
+    newCS: 'New case study', untitled: 'Untitled',
+    editingA: 'Editing', editingB: 'content · switch the content language top-right · style is shared across languages.',
+    basics: 'Basics',
+    title: 'Title', slug: 'URL slug', slugHintNew: 'lowercase-with-hyphens · becomes /work/<slug>/', slugHintLock: 'Locked when editing.',
+    client: 'Client', category: 'Category',
+    videoId: 'YouTube video ID', videoIdHint: 'The part after v= (e.g. boZns6DvLl8).',
+    duration: 'Duration label',
+    showJump: 'Show “jump to score” button under the hero video', draftFlag: 'Draft (hidden from the site)',
+    jumpTarget: 'Jump targets block id', jumpTargetHint: 'Give an Audio block this id (default: score).',
+    heroSeo: 'Hero & SEO',
+    dek: 'Dek (subtitle under the title)', backLabel: 'Back link label', jumpLabel: 'Jump button label',
+    metaTitle: 'Meta title (SEO)', metaDesc: 'Meta description (SEO)',
+    blocks: 'Content blocks', addBlock: 'Add block',
+    moveUp: 'Move up', moveDown: 'Move down', del: 'Delete', delBlock: 'Delete this block?',
+    paragraphs: 'Paragraphs — each box is one group; leave a blank line inside a box to split paragraphs.',
+    removeGroup: 'Remove group', addGroup: '+ Add group',
+    statement: 'Statement', subline: 'Sub-line (small, accent colour)',
+    sectionLabel: 'Section label', point: 'Point', heading: 'heading', body: 'Body',
+    removePoint: 'Remove point', addPoint: '+ Add point',
+    scId: 'SoundCloud playlist ID', scIdHint: 'Numeric id from the embed / oEmbed URL.',
+    scToken: 'Secret token', scTokenHint: 'For private sets (the s-XXXX part).',
+    scLink: '“Open in SoundCloud” link (full share URL)',
+    creditsShared: 'Credits (shared across languages)', role: 'Role', name: 'Name', addCredit: '+ Add credit',
+    items: 'Items', itemsHint: 'Separate with · (middle dot).',
+    label: 'Label',
+    style: 'Style', bg: 'Background', bgDefault: 'Default', bgAlt: 'Alt (darker)', bgCraft: 'Craft (darkest)', bgCustom: 'Custom…',
+    align: 'Align', alignLeft: 'Left', alignCenter: 'Center', alignRight: 'Right',
+    accent: 'Accent', divider: 'Top divider', reset: 'Reset to brand',
+    livePreview: 'Live preview', updating: 'updating…', dark: 'Dark', light: 'Light', close: 'Close',
+    errSlug: 'Slug must be lowercase words separated by hyphens.', errTitle: 'Title is required.',
+    blockLabels: { text: 'Text', quote: 'Quote', numberedList: 'Numbered list', audio: 'Audio', credits: 'Credits', deliverables: 'Deliverables', about: 'About' } as Record<Block['type'], string>,
+  },
 };
+type Dict = typeof UI.es;
+const TCtx = createContext<Dict>(UI.es);
+const useT = () => useContext(TCtx);
+
 const BG_TOKENS = ['default', 'alt', 'craft'];
 
 function rid(type: string) { return `${type}-${Math.random().toString(36).slice(2, 7)}`; }
@@ -44,7 +126,6 @@ function newBlock(type: Block['type']): Block {
   }
 }
 
-// ── small field helpers ─────────────────────────────────────────────
 function Field({ label, children, hint }: { label: string; children: React.ReactNode; hint?: string }) {
   return (
     <div className="adm-field">
@@ -58,32 +139,30 @@ function Field({ label, children, hint }: { label: string; children: React.React
 export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; isNew: boolean }) {
   const [draft, setDraft] = useState<Draft>(initial);
   const [lang, setLang] = useState<Lang>('en');
+  const [uiLang, setUiLang] = useState<UiLang>('es');
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<{ msg: string; err?: boolean } | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewHtml, setPreviewHtml] = useState('');
   const [previewTheme, setPreviewTheme] = useState<'dark' | 'light'>('dark');
   const [previewLoading, setPreviewLoading] = useState(false);
+  const t = UI[uiLang];
 
-  // Live preview: re-render the real case-study component from the draft.
   useEffect(() => {
     if (!previewOpen) return;
-    const t = setTimeout(async () => {
+    const timer = setTimeout(async () => {
       setPreviewLoading(true);
       try {
         const res = await fetch('/api/admin/preview', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
+          method: 'POST', headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ data: draft, lang, theme: previewTheme }),
         });
         setPreviewHtml(await res.text());
       } catch {
         setPreviewHtml('<p style="font-family:sans-serif;padding:2rem">Preview failed.</p>');
-      } finally {
-        setPreviewLoading(false);
-      }
+      } finally { setPreviewLoading(false); }
     }, 450);
-    return () => clearTimeout(t);
+    return () => clearTimeout(timer);
   }, [previewOpen, draft, lang, previewTheme]);
 
   function update(mut: (d: Draft) => void) {
@@ -97,13 +176,12 @@ export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; is
   const slugValid = /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(draft.slug);
 
   async function save() {
-    if (!slugValid) { showToast('Slug must be lowercase words separated by hyphens.', true); return; }
-    if (!draft.title.trim()) { showToast('Title is required.', true); return; }
+    if (!slugValid) { showToast(t.errSlug, true); return; }
+    if (!draft.title.trim()) { showToast(t.errTitle, true); return; }
     setSaving(true);
     try {
       const res = await fetch('/api/admin/save', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
+        method: 'POST', headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ slug: draft.slug, isNew, data: draft }),
       });
       const json = await res.json();
@@ -111,73 +189,72 @@ export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; is
       showToast(json.message || 'Saved.');
     } catch (e: any) {
       showToast(e.message || 'Save failed', true);
-    } finally {
-      setSaving(false);
-    }
+    } finally { setSaving(false); }
   }
 
   return (
-    <>
+    <TCtx.Provider value={t}>
       <header className="adm-header">
         <div className="adm-row">
-          <a href="/admin" className="adm-iconbtn" title="Back to dashboard" style={{ textDecoration: 'none' }}>←</a>
-          <span className="adm-brand">Auden <span>Editor</span></span>
+          <a href="/admin" className="adm-iconbtn" title={t.back} style={{ textDecoration: 'none' }}>←</a>
+          <span className="adm-brand">Auden <span>{t.editor}</span></span>
+          <div className="adm-lang" title={t.panel} style={{ marginLeft: '0.5rem' }}>
+            <button data-active={uiLang === 'es'} onClick={() => setUiLang('es')}>🌐 ES</button>
+            <button data-active={uiLang === 'en'} onClick={() => setUiLang('en')}>EN</button>
+          </div>
         </div>
         <div className="adm-row">
-          <div className="adm-lang" role="tablist" aria-label="Language">
+          <div className="adm-lang" role="tablist" aria-label="Content language">
             <button data-active={lang === 'en'} onClick={() => setLang('en')}>EN</button>
             <button data-active={lang === 'es'} onClick={() => setLang('es')}>ES</button>
           </div>
-          <button className="adm-btn adm-btn--ghost" onClick={() => setPreviewOpen(true)}>Preview</button>
+          <button className="adm-btn adm-btn--ghost" onClick={() => setPreviewOpen(true)}>{t.preview}</button>
           <button className="adm-btn adm-btn--primary" onClick={save} disabled={saving}>
-            {saving ? 'Saving…' : 'Save & publish'}
+            {saving ? t.saving : t.save}
           </button>
         </div>
       </header>
 
       <main className="adm-main">
-        <h1 className="adm-h1">{isNew ? 'New case study' : draft.title || 'Untitled'}</h1>
-        <p className="adm-sub">Editing <strong>{lang.toUpperCase()}</strong> content · switch language top-right · style is shared across languages.</p>
+        <h1 className="adm-h1">{isNew ? t.newCS : draft.title || t.untitled}</h1>
+        <p className="adm-sub">{t.editingA} <strong>{lang.toUpperCase()}</strong> {t.editingB}</p>
 
-        {/* ── Meta ── */}
         <section className="adm-card">
-          <p className="adm-card-title">Basics</p>
+          <p className="adm-card-title">{t.basics}</p>
           <div className="adm-grid2">
-            <Field label="Title"><input className="adm-input" value={draft.title} onChange={(e) => update((d) => { d.title = e.target.value; })} /></Field>
-            <Field label="URL slug" hint={isNew ? 'lowercase-with-hyphens · becomes /work/<slug>/' : 'Locked when editing.'}>
+            <Field label={t.title}><input className="adm-input" value={draft.title} onChange={(e) => update((d) => { d.title = e.target.value; })} /></Field>
+            <Field label={t.slug} hint={isNew ? t.slugHintNew : t.slugHintLock}>
               <input className="adm-input" value={draft.slug} disabled={!isNew} style={!slugValid ? { borderColor: '#ff5a5a' } : undefined}
                 onChange={(e) => update((d) => { d.slug = e.target.value; })} />
             </Field>
-            <Field label="Client"><input className="adm-input" value={draft.client} onChange={(e) => update((d) => { d.client = e.target.value; })} /></Field>
-            <Field label="Category"><input className="adm-input" value={draft.category} onChange={(e) => update((d) => { d.category = e.target.value; })} /></Field>
-            <Field label="YouTube video ID" hint="The part after v= (e.g. boZns6DvLl8)."><input className="adm-input" value={draft.videoId} onChange={(e) => update((d) => { d.videoId = e.target.value; })} /></Field>
-            <Field label="Duration label"><input className="adm-input" value={draft.durationLabel ?? ''} placeholder="0:45" onChange={(e) => update((d) => { d.durationLabel = e.target.value; })} /></Field>
+            <Field label={t.client}><input className="adm-input" value={draft.client} onChange={(e) => update((d) => { d.client = e.target.value; })} /></Field>
+            <Field label={t.category}><input className="adm-input" value={draft.category} onChange={(e) => update((d) => { d.category = e.target.value; })} /></Field>
+            <Field label={t.videoId} hint={t.videoIdHint}><input className="adm-input" value={draft.videoId} onChange={(e) => update((d) => { d.videoId = e.target.value; })} /></Field>
+            <Field label={t.duration}><input className="adm-input" value={draft.durationLabel ?? ''} placeholder="0:45" onChange={(e) => update((d) => { d.durationLabel = e.target.value; })} /></Field>
           </div>
           <div className="adm-field" style={{ marginTop: '0.9rem', display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
-            <label className="adm-check"><input type="checkbox" checked={!!draft.jumpToScore} onChange={(e) => update((d) => { d.jumpToScore = e.target.checked; })} /> Show “jump to score” button under the hero video</label>
-            <label className="adm-check"><input type="checkbox" checked={!!draft.draft} onChange={(e) => update((d) => { d.draft = e.target.checked; })} /> Draft (hidden from the site)</label>
+            <label className="adm-check"><input type="checkbox" checked={!!draft.jumpToScore} onChange={(e) => update((d) => { d.jumpToScore = e.target.checked; })} /> {t.showJump}</label>
+            <label className="adm-check"><input type="checkbox" checked={!!draft.draft} onChange={(e) => update((d) => { d.draft = e.target.checked; })} /> {t.draftFlag}</label>
           </div>
           {draft.jumpToScore && (
-            <Field label="Jump targets block id" hint="Give an Audio block this id (default: score).">
+            <Field label={t.jumpTarget} hint={t.jumpTargetHint}>
               <input className="adm-input" value={draft.jumpToId ?? 'score'} onChange={(e) => update((d) => { d.jumpToId = e.target.value; })} />
             </Field>
           )}
         </section>
 
-        {/* ── Hero copy ── */}
         <section className="adm-card">
-          <p className="adm-card-title">Hero &amp; SEO — {lang.toUpperCase()}</p>
-          <Field label="Dek (subtitle under the title)"><textarea className="adm-textarea" value={draft.dek[lang]} onChange={(e) => update((d) => { d.dek[lang] = e.target.value; })} /></Field>
+          <p className="adm-card-title">{t.heroSeo} — {lang.toUpperCase()}</p>
+          <Field label={t.dek}><textarea className="adm-textarea" value={draft.dek[lang]} onChange={(e) => update((d) => { d.dek[lang] = e.target.value; })} /></Field>
           <div className="adm-grid2">
-            <Field label="Back link label"><input className="adm-input" value={draft.backLabel[lang]} onChange={(e) => update((d) => { d.backLabel[lang] = e.target.value; })} /></Field>
-            <Field label="Jump button label"><input className="adm-input" value={draft.jumpLabel?.[lang] ?? ''} onChange={(e) => update((d) => { if (!d.jumpLabel) d.jumpLabel = { en: '', es: '' }; d.jumpLabel[lang] = e.target.value; })} /></Field>
+            <Field label={t.backLabel}><input className="adm-input" value={draft.backLabel[lang]} onChange={(e) => update((d) => { d.backLabel[lang] = e.target.value; })} /></Field>
+            <Field label={t.jumpLabel}><input className="adm-input" value={draft.jumpLabel?.[lang] ?? ''} onChange={(e) => update((d) => { if (!d.jumpLabel) d.jumpLabel = { en: '', es: '' }; d.jumpLabel[lang] = e.target.value; })} /></Field>
           </div>
-          <Field label="Meta title (SEO)"><input className="adm-input" value={draft.seo[lang].metaTitle} onChange={(e) => update((d) => { d.seo[lang].metaTitle = e.target.value; })} /></Field>
-          <Field label="Meta description (SEO)"><textarea className="adm-textarea" value={draft.seo[lang].metaDescription} onChange={(e) => update((d) => { d.seo[lang].metaDescription = e.target.value; })} /></Field>
+          <Field label={t.metaTitle}><input className="adm-input" value={draft.seo[lang].metaTitle} onChange={(e) => update((d) => { d.seo[lang].metaTitle = e.target.value; })} /></Field>
+          <Field label={t.metaDesc}><textarea className="adm-textarea" value={draft.seo[lang].metaDescription} onChange={(e) => update((d) => { d.seo[lang].metaDescription = e.target.value; })} /></Field>
         </section>
 
-        {/* ── Blocks ── */}
-        <p className="adm-card-title" style={{ marginTop: '2rem' }}>Content blocks</p>
+        <p className="adm-card-title" style={{ marginTop: '2rem' }}>{t.blocks}</p>
         {draft.blocks.map((block, i) => (
           <BlockCard
             key={block.id}
@@ -192,9 +269,9 @@ export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; is
         ))}
 
         <div className="adm-add">
-          <span className="adm-style-lbl">Add block</span>
-          {(Object.keys(BLOCK_LABELS) as Block['type'][]).map((t) => (
-            <button key={t} className="adm-btn adm-btn--ghost adm-btn--sm" onClick={() => update((d) => { d.blocks.push(newBlock(t)); })}>+ {BLOCK_LABELS[t]}</button>
+          <span className="adm-style-lbl">{t.addBlock}</span>
+          {(Object.keys(t.blockLabels) as Block['type'][]).map((ty) => (
+            <button key={ty} className="adm-btn adm-btn--ghost adm-btn--sm" onClick={() => update((d) => { d.blocks.push(newBlock(ty)); })}>+ {t.blockLabels[ty]}</button>
           ))}
         </div>
       </main>
@@ -202,13 +279,13 @@ export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; is
       {previewOpen && (
         <div className="adm-preview">
           <div className="adm-preview-bar">
-            <span className="adm-style-lbl">Live preview — {lang.toUpperCase()}{previewLoading ? ' · updating…' : ''}</span>
+            <span className="adm-style-lbl">{t.livePreview} — {lang.toUpperCase()}{previewLoading ? ` · ${t.updating}` : ''}</span>
             <div className="adm-row">
               <div className="adm-lang">
-                <button data-active={previewTheme === 'dark'} onClick={() => setPreviewTheme('dark')}>Dark</button>
-                <button data-active={previewTheme === 'light'} onClick={() => setPreviewTheme('light')}>Light</button>
+                <button data-active={previewTheme === 'dark'} onClick={() => setPreviewTheme('dark')}>{t.dark}</button>
+                <button data-active={previewTheme === 'light'} onClick={() => setPreviewTheme('light')}>{t.light}</button>
               </div>
-              <button className="adm-btn adm-btn--ghost adm-btn--sm" onClick={() => setPreviewOpen(false)}>Close ✕</button>
+              <button className="adm-btn adm-btn--ghost adm-btn--sm" onClick={() => setPreviewOpen(false)}>{t.close} ✕</button>
             </div>
           </div>
           <iframe className="adm-preview-frame" srcDoc={previewHtml} title="Preview" />
@@ -216,24 +293,24 @@ export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; is
       )}
 
       {toast && <div className={`adm-toast${toast.err ? ' adm-toast--err' : ''}`}>{toast.msg}</div>}
-    </>
+    </TCtx.Provider>
   );
 }
 
-// ── One block card ──────────────────────────────────────────────────
 function BlockCard({ block, lang, index, total, update, move, remove }: {
   block: Block; lang: Lang; index: number; total: number;
   update: (mut: (b: any) => void) => void;
   move: (dir: number) => void; remove: () => void;
 }) {
+  const t = useT();
   return (
     <div className="adm-block">
       <div className="adm-block-head">
-        <span className="adm-block-type"><b>{BLOCK_LABELS[block.type]}</b> <span style={{ color: 'var(--adm-faint)' }}>#{block.id}</span></span>
+        <span className="adm-block-type"><b>{t.blockLabels[block.type]}</b> <span style={{ color: 'var(--adm-faint)' }}>#{block.id}</span></span>
         <div className="adm-row" style={{ gap: '0.35rem' }}>
-          <button className="adm-iconbtn" title="Move up" disabled={index === 0} onClick={() => move(-1)}>↑</button>
-          <button className="adm-iconbtn" title="Move down" disabled={index === total - 1} onClick={() => move(1)}>↓</button>
-          <button className="adm-iconbtn adm-btn--danger" title="Delete" onClick={() => { if (confirm('Delete this block?')) remove(); }}>✕</button>
+          <button className="adm-iconbtn" title={t.moveUp} disabled={index === 0} onClick={() => move(-1)}>↑</button>
+          <button className="adm-iconbtn" title={t.moveDown} disabled={index === total - 1} onClick={() => move(1)}>↓</button>
+          <button className="adm-iconbtn adm-btn--danger" title={t.del} onClick={() => { if (confirm(t.delBlock)) remove(); }}>✕</button>
         </div>
       </div>
       <div className="adm-block-body">
@@ -245,23 +322,24 @@ function BlockCard({ block, lang, index, total, update, move, remove }: {
 }
 
 function BlockFields({ block, lang, update }: { block: Block; lang: Lang; update: (mut: (b: any) => void) => void }) {
+  const t = useT();
   const c: any = (block as any).content[lang];
 
   if (block.type === 'text') {
     const groups: string[][] = c.paragraphs;
     return (
       <>
-        <label className="adm-label">Paragraphs — each box is one group; leave a blank line inside a box to split paragraphs.</label>
+        <label className="adm-label">{t.paragraphs}</label>
         {groups.map((g, gi) => (
           <div key={gi} className="adm-repeat-item">
             <textarea className="adm-textarea" value={g.join('\n\n')}
               onChange={(e) => update((b) => { b.content[lang].paragraphs[gi] = e.target.value.split(/\n{2,}/); })} />
             <div style={{ marginTop: '0.5rem' }}>
-              <button className="adm-btn adm-btn--ghost adm-btn--sm adm-btn--danger" onClick={() => update((b) => { b.content[lang].paragraphs.splice(gi, 1); })}>Remove group</button>
+              <button className="adm-btn adm-btn--ghost adm-btn--sm adm-btn--danger" onClick={() => update((b) => { b.content[lang].paragraphs.splice(gi, 1); })}>{t.removeGroup}</button>
             </div>
           </div>
         ))}
-        <button className="adm-btn adm-btn--ghost adm-btn--sm" onClick={() => update((b) => { b.content[lang].paragraphs.push(['']); })}>+ Add group</button>
+        <button className="adm-btn adm-btn--ghost adm-btn--sm" onClick={() => update((b) => { b.content[lang].paragraphs.push(['']); })}>{t.addGroup}</button>
       </>
     );
   }
@@ -269,8 +347,8 @@ function BlockFields({ block, lang, update }: { block: Block; lang: Lang; update
   if (block.type === 'quote') {
     return (
       <>
-        <Field label="Statement"><textarea className="adm-textarea" value={c.statement} onChange={(e) => update((b) => { b.content[lang].statement = e.target.value; })} /></Field>
-        <Field label="Sub-line (small, accent colour)"><input className="adm-input" value={c.subline ?? ''} onChange={(e) => update((b) => { b.content[lang].subline = e.target.value; })} /></Field>
+        <Field label={t.statement}><textarea className="adm-textarea" value={c.statement} onChange={(e) => update((b) => { b.content[lang].statement = e.target.value; })} /></Field>
+        <Field label={t.subline}><input className="adm-input" value={c.subline ?? ''} onChange={(e) => update((b) => { b.content[lang].subline = e.target.value; })} /></Field>
       </>
     );
   }
@@ -278,15 +356,15 @@ function BlockFields({ block, lang, update }: { block: Block; lang: Lang; update
   if (block.type === 'numberedList') {
     return (
       <>
-        <Field label="Section label"><input className="adm-input" value={c.label} onChange={(e) => update((b) => { b.content[lang].label = e.target.value; })} /></Field>
+        <Field label={t.sectionLabel}><input className="adm-input" value={c.label} onChange={(e) => update((b) => { b.content[lang].label = e.target.value; })} /></Field>
         {c.items.map((it: any, ii: number) => (
           <div key={ii} className="adm-repeat-item">
-            <Field label={`Point ${ii + 1} — heading`}><input className="adm-input" value={it.heading} onChange={(e) => update((b) => { b.content[lang].items[ii].heading = e.target.value; })} /></Field>
-            <Field label="Body"><textarea className="adm-textarea" value={it.body} onChange={(e) => update((b) => { b.content[lang].items[ii].body = e.target.value; })} /></Field>
-            <button className="adm-btn adm-btn--ghost adm-btn--sm adm-btn--danger" onClick={() => update((b) => { b.content[lang].items.splice(ii, 1); })}>Remove point</button>
+            <Field label={`${t.point} ${ii + 1} — ${t.heading}`}><input className="adm-input" value={it.heading} onChange={(e) => update((b) => { b.content[lang].items[ii].heading = e.target.value; })} /></Field>
+            <Field label={t.body}><textarea className="adm-textarea" value={it.body} onChange={(e) => update((b) => { b.content[lang].items[ii].body = e.target.value; })} /></Field>
+            <button className="adm-btn adm-btn--ghost adm-btn--sm adm-btn--danger" onClick={() => update((b) => { b.content[lang].items.splice(ii, 1); })}>{t.removePoint}</button>
           </div>
         ))}
-        <button className="adm-btn adm-btn--ghost adm-btn--sm" onClick={() => update((b) => { b.content[lang].items.push({ heading: '', body: '' }); })}>+ Add point</button>
+        <button className="adm-btn adm-btn--ghost adm-btn--sm" onClick={() => update((b) => { b.content[lang].items.push({ heading: '', body: '' }); })}>{t.addPoint}</button>
       </>
     );
   }
@@ -295,12 +373,12 @@ function BlockFields({ block, lang, update }: { block: Block; lang: Lang; update
     const b: any = block;
     return (
       <>
-        <Field label="Title"><input className="adm-input" value={c.title} onChange={(e) => update((bb) => { bb.content[lang].title = e.target.value; })} /></Field>
+        <Field label={t.title}><input className="adm-input" value={c.title} onChange={(e) => update((bb) => { bb.content[lang].title = e.target.value; })} /></Field>
         <div className="adm-grid2">
-          <Field label="SoundCloud playlist ID" hint="Numeric id from the oEmbed / embed URL."><input className="adm-input" value={b.soundcloud?.playlistId ?? ''} onChange={(e) => update((bb) => { if (!bb.soundcloud) bb.soundcloud = {}; bb.soundcloud.playlistId = e.target.value; })} /></Field>
-          <Field label="Secret token" hint="For private sets (the s-XXXX part)."><input className="adm-input" value={b.soundcloud?.secretToken ?? ''} onChange={(e) => update((bb) => { if (!bb.soundcloud) bb.soundcloud = {}; bb.soundcloud.secretToken = e.target.value; })} /></Field>
+          <Field label={t.scId} hint={t.scIdHint}><input className="adm-input" value={b.soundcloud?.playlistId ?? ''} onChange={(e) => update((bb) => { if (!bb.soundcloud) bb.soundcloud = {}; bb.soundcloud.playlistId = e.target.value; })} /></Field>
+          <Field label={t.scToken} hint={t.scTokenHint}><input className="adm-input" value={b.soundcloud?.secretToken ?? ''} onChange={(e) => update((bb) => { if (!bb.soundcloud) bb.soundcloud = {}; bb.soundcloud.secretToken = e.target.value; })} /></Field>
         </div>
-        <Field label="“Open in SoundCloud” link (full share URL)"><input className="adm-input" value={b.link ?? ''} onChange={(e) => update((bb) => { bb.link = e.target.value; })} /></Field>
+        <Field label={t.scLink}><input className="adm-input" value={b.link ?? ''} onChange={(e) => update((bb) => { bb.link = e.target.value; })} /></Field>
       </>
     );
   }
@@ -309,16 +387,16 @@ function BlockFields({ block, lang, update }: { block: Block; lang: Lang; update
     const b: any = block;
     return (
       <>
-        <Field label="Section label"><input className="adm-input" value={c.label} onChange={(e) => update((bb) => { bb.content[lang].label = e.target.value; })} /></Field>
-        <label className="adm-label">Credits (shared across languages)</label>
+        <Field label={t.sectionLabel}><input className="adm-input" value={c.label} onChange={(e) => update((bb) => { bb.content[lang].label = e.target.value; })} /></Field>
+        <label className="adm-label">{t.creditsShared}</label>
         {b.items.map((it: any, ii: number) => (
           <div key={ii} className="adm-repeat-item" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: '0.6rem', alignItems: 'end' }}>
-            <div><label className="adm-label">Role</label><input className="adm-input" value={it.role} onChange={(e) => update((bb) => { bb.items[ii].role = e.target.value; })} /></div>
-            <div><label className="adm-label">Name</label><input className="adm-input" value={it.name} onChange={(e) => update((bb) => { bb.items[ii].name = e.target.value; })} /></div>
+            <div><label className="adm-label">{t.role}</label><input className="adm-input" value={it.role} onChange={(e) => update((bb) => { bb.items[ii].role = e.target.value; })} /></div>
+            <div><label className="adm-label">{t.name}</label><input className="adm-input" value={it.name} onChange={(e) => update((bb) => { bb.items[ii].name = e.target.value; })} /></div>
             <button className="adm-iconbtn adm-btn--danger" onClick={() => update((bb) => { bb.items.splice(ii, 1); })}>✕</button>
           </div>
         ))}
-        <button className="adm-btn adm-btn--ghost adm-btn--sm" onClick={() => update((bb) => { bb.items.push({ role: '', name: '' }); })}>+ Add credit</button>
+        <button className="adm-btn adm-btn--ghost adm-btn--sm" onClick={() => update((bb) => { bb.items.push({ role: '', name: '' }); })}>{t.addCredit}</button>
       </>
     );
   }
@@ -326,8 +404,8 @@ function BlockFields({ block, lang, update }: { block: Block; lang: Lang; update
   if (block.type === 'deliverables') {
     return (
       <>
-        <Field label="Section label"><input className="adm-input" value={c.label} onChange={(e) => update((b) => { b.content[lang].label = e.target.value; })} /></Field>
-        <Field label="Items" hint="Separate with · (middle dot)."><input className="adm-input" value={c.items} onChange={(e) => update((b) => { b.content[lang].items = e.target.value; })} /></Field>
+        <Field label={t.sectionLabel}><input className="adm-input" value={c.label} onChange={(e) => update((b) => { b.content[lang].label = e.target.value; })} /></Field>
+        <Field label={t.items} hint={t.itemsHint}><input className="adm-input" value={c.items} onChange={(e) => update((b) => { b.content[lang].items = e.target.value; })} /></Field>
       </>
     );
   }
@@ -335,30 +413,30 @@ function BlockFields({ block, lang, update }: { block: Block; lang: Lang; update
   if (block.type === 'about') {
     return (
       <>
-        <Field label="Label"><input className="adm-input" value={c.label} onChange={(e) => update((b) => { b.content[lang].label = e.target.value; })} /></Field>
-        <Field label="Body"><textarea className="adm-textarea" value={c.body} onChange={(e) => update((b) => { b.content[lang].body = e.target.value; })} /></Field>
+        <Field label={t.label}><input className="adm-input" value={c.label} onChange={(e) => update((b) => { b.content[lang].label = e.target.value; })} /></Field>
+        <Field label={t.body}><textarea className="adm-textarea" value={c.body} onChange={(e) => update((b) => { b.content[lang].body = e.target.value; })} /></Field>
       </>
     );
   }
   return null;
 }
 
-// ── Per-block style controls (wide freedom, with brand reset) ───────
 function StyleControls({ style, update }: { style: Style; update: (mut: (b: any) => void) => void }) {
+  const t = useT();
   const bgMode = style.bg == null ? 'default' : BG_TOKENS.includes(style.bg) ? style.bg : 'custom';
   const hasAccent = !!style.accent;
   return (
     <div className="adm-style">
-      <span className="adm-style-lbl">Style</span>
+      <span className="adm-style-lbl">{t.style}</span>
 
       <label className="adm-style-lbl" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-        Background
+        {t.bg}
         <select className="adm-select" style={{ width: 'auto' }} value={bgMode}
           onChange={(e) => update((b) => { const v = e.target.value; b.style.bg = v === 'custom' ? '#0a0a0a' : v; })}>
-          <option value="default">Default</option>
-          <option value="alt">Alt (darker)</option>
-          <option value="craft">Craft (darkest)</option>
-          <option value="custom">Custom…</option>
+          <option value="default">{t.bgDefault}</option>
+          <option value="alt">{t.bgAlt}</option>
+          <option value="craft">{t.bgCraft}</option>
+          <option value="custom">{t.bgCustom}</option>
         </select>
       </label>
       {bgMode === 'custom' && (
@@ -366,24 +444,24 @@ function StyleControls({ style, update }: { style: Style; update: (mut: (b: any)
       )}
 
       <label className="adm-style-lbl" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-        Align
+        {t.align}
         <select className="adm-select" style={{ width: 'auto' }} value={style.align ?? 'left'} onChange={(e) => update((b) => { b.style.align = e.target.value === 'left' ? undefined : e.target.value; })}>
-          <option value="left">Left</option>
-          <option value="center">Center</option>
-          <option value="right">Right</option>
+          <option value="left">{t.alignLeft}</option>
+          <option value="center">{t.alignCenter}</option>
+          <option value="right">{t.alignRight}</option>
         </select>
       </label>
 
       <label className="adm-check adm-style-lbl">
-        <input type="checkbox" checked={hasAccent} onChange={(e) => update((b) => { b.style.accent = e.target.checked ? '#ff4d00' : undefined; })} /> Accent
+        <input type="checkbox" checked={hasAccent} onChange={(e) => update((b) => { b.style.accent = e.target.checked ? '#ff4d00' : undefined; })} /> {t.accent}
       </label>
       {hasAccent && <input className="adm-color" type="color" value={style.accent || '#ff4d00'} onChange={(e) => update((b) => { b.style.accent = e.target.value; })} />}
 
       <label className="adm-check adm-style-lbl">
-        <input type="checkbox" checked={!!style.border} onChange={(e) => update((b) => { b.style.border = e.target.checked || undefined; })} /> Top divider
+        <input type="checkbox" checked={!!style.border} onChange={(e) => update((b) => { b.style.border = e.target.checked || undefined; })} /> {t.divider}
       </label>
 
-      <button className="adm-btn adm-btn--ghost adm-btn--sm" onClick={() => update((b) => { b.style = {}; })}>Reset to brand</button>
+      <button className="adm-btn adm-btn--ghost adm-btn--sm" onClick={() => update((b) => { b.style = {}; })}>{t.reset}</button>
     </div>
   );
 }
