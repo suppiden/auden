@@ -85,6 +85,13 @@ const { t } = Astro.props;
       <span>{t.footer.rights}</span>
       <div class="flex items-center gap-4">
         <a
+          href="#"
+          onclick="event.preventDefault(); window.audenCookieSettings && window.audenCookieSettings();"
+          class="nav-link hover:text-charcoal transition-colors pb-0.5"
+        >
+          Cookies
+        </a>
+        <a
           href="mailto:hello@audensonic.com"
           class="nav-link hover:text-charcoal transition-colors pb-0.5"
         >

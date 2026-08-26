@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import CookieConsent from '../components/CookieConsent.astro';
 
 interface Props {
   lang: 'en' | 'es';
@@ -89,14 +90,7 @@ const defaultJsonLd = {
     <link rel="sitemap" href="/sitemap.xml" />
     <link rel="preload" href="/auden_isotipo_white.png" as="image" />
 
-    <!-- Google tag -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N5EFP3ND70"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-N5EFP3ND70');
-    </script>
+    <!-- Google Analytics is loaded by the cookie-consent banner, only after consent. -->
 
     <script is:inline>
       const theme = localStorage.getItem('theme') ?? 'dark';
@@ -256,5 +250,7 @@ const defaultJsonLd = {
         });
       });
     </script>
+
+    <CookieConsent lang={lang} />
   </body>
 </html>
