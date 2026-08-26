@@ -1,0 +1,20 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import CaseStudyEditor from '../../../components/admin/CaseStudyEditor.tsx';
+import { getEntry } from 'astro:content';
+
+const { slug } = Astro.params;
+const entry = slug ? await getEntry('caseStudies', slug) : undefined;
+
+if (!entry) {
+  return new Response('Case study not found', { status: 404 });
+}
+
+const initial = { slug: entry.id, ...entry.data };
+---
+
+<AdminLayout title={`Auden Admin — ${entry.data.title}`}>
+  <CaseStudyEditor client:load initial={initial} isNew={false} />
+</AdminLayout>

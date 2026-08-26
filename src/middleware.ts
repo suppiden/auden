@@ -26,6 +26,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (!isGuarded) return next();
 
+  // Local-dev shortcut: when running `astro dev` AND an ADMIN_DEV_EMAIL is set
+  // in .env, skip the Google round-trip. import.meta.env.DEV is always false in
+  // a Vercel build, so this can never weaken a deployed environment.
+  if (import.meta.env.DEV && import.meta.env.ADMIN_DEV_EMAIL) {
+    return next();
+  }
+
   let session;
   try {
     session = await getSession(context.request);

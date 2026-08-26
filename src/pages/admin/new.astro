@@ -1,0 +1,31 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import CaseStudyEditor from '../../components/admin/CaseStudyEditor.tsx';
+
+const emptyDraft = {
+  slug: '',
+  title: '',
+  client: '',
+  category: 'Sonic Branding',
+  videoId: '',
+  durationLabel: '',
+  jumpToScore: false,
+  jumpToId: 'score',
+  order: 99,
+  draft: true,
+  dek: { en: '', es: '' },
+  backLabel: { en: '← Work', es: '← Trabajo' },
+  jumpLabel: { en: 'Listen to the score', es: 'Escuchar el score' },
+  seo: {
+    en: { metaTitle: '', metaDescription: '' },
+    es: { metaTitle: '', metaDescription: '' },
+  },
+  blocks: [],
+};
+---
+
+<AdminLayout title="Auden Admin — New case study">
+  <CaseStudyEditor client:load initial={emptyDraft} isNew={true} />
+</AdminLayout>

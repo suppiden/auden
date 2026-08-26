@@ -34,7 +34,9 @@ const entries = (await getCollection('caseStudies')).sort(
       main { max-width: 60rem; margin: 0 auto; padding: 3rem 1.75rem 5rem; }
       .row { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 2.25rem; }
       h1 { font-size: 1.75rem; font-weight: 900; letter-spacing: -0.02em; }
-      .new { background: rgb(255,77,0); color: #111; border: 0; padding: 0.65rem 1.2rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; cursor: not-allowed; opacity: 0.5; }
+      .new { background: rgb(255,77,0); color: #111; border: 0; padding: 0.65rem 1.2rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: transform 0.2s; }
+      .new:hover { transform: translateY(-1px); }
+      .acts { display: flex; gap: 1.25rem; align-items: center; }
       .list { display: flex; flex-direction: column; gap: 1px; background: rgba(240,239,233,0.1); border: 1px solid rgba(240,239,233,0.1); }
       .item { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; background: #0d0d0d; padding: 1.1rem 1.4rem; }
       .item h2 { font-size: 1rem; font-weight: 700; }
@@ -55,7 +57,7 @@ const entries = (await getCollection('caseStudies')).sort(
     <main>
       <div class="row">
         <h1>Case studies</h1>
-        <button class="new" title="Coming in the next step" disabled>+ New case study</button>
+        <a class="new" href="/admin/new">+ New case study</a>
       </div>
 
       <div class="list">
@@ -65,7 +67,10 @@ const entries = (await getCollection('caseStudies')).sort(
               <h2>{entry.data.title}</h2>
               <p class="meta">{entry.data.category} — {entry.data.client} · {entry.data.blocks.length} blocks{entry.data.draft ? ' · draft' : ''}</p>
             </div>
-            <a href={`/work/${entry.id}/`} target="_blank" rel="noopener">View →</a>
+            <span class="acts">
+              <a href={`/admin/edit/${entry.id}`}>Edit</a>
+              <a href={`/work/${entry.id}/`} target="_blank" rel="noopener">View →</a>
+            </span>
           </div>
         ))}
       </div>

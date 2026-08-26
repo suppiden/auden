@@ -1,0 +1,96 @@
+/* ── Auden admin (CMS) — dark editorial theme ─────────────────────── */
+:root {
+  --adm-bg: #080808;
+  --adm-panel: #0d0d0d;
+  --adm-panel-2: #121212;
+  --adm-line: rgba(240, 239, 233, 0.12);
+  --adm-line-soft: rgba(240, 239, 233, 0.07);
+  --adm-text: #f0efe9;
+  --adm-dim: rgba(240, 239, 233, 0.62);
+  --adm-faint: rgba(240, 239, 233, 0.4);
+  --adm-accent: #ff4d00;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--adm-bg);
+  color: var(--adm-text);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.adm-header {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: 0.9rem 1.5rem;
+  background: rgba(8, 8, 8, 0.85); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--adm-line);
+}
+.adm-brand { font-weight: 900; letter-spacing: -0.02em; font-size: 1rem; }
+.adm-brand span { color: var(--adm-accent); font-weight: 500; font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase; margin-left: 0.5rem; }
+.adm-row { display: flex; align-items: center; gap: 0.75rem; }
+
+/* buttons */
+.adm-btn { font: inherit; cursor: pointer; border-radius: 999px; padding: 0.55rem 1.1rem; font-size: 0.78rem; font-weight: 600; border: 1px solid transparent; transition: all 0.2s ease; white-space: nowrap; }
+.adm-btn--primary { background: var(--adm-accent); color: #111; }
+.adm-btn--primary:hover { transform: translateY(-1px); }
+.adm-btn--primary:disabled { opacity: 0.45; cursor: default; transform: none; }
+.adm-btn--ghost { background: transparent; color: var(--adm-text); border-color: rgba(240,239,233,0.25); }
+.adm-btn--ghost:hover { border-color: var(--adm-accent); }
+.adm-btn--sm { padding: 0.3rem 0.6rem; font-size: 0.68rem; }
+.adm-btn--danger:hover { border-color: #ff5a5a; color: #ff8f8f; }
+
+/* lang toggle */
+.adm-lang { display: inline-flex; border: 1px solid var(--adm-line); border-radius: 999px; overflow: hidden; }
+.adm-lang button { font: inherit; cursor: pointer; background: transparent; color: var(--adm-dim); border: 0; padding: 0.35rem 0.85rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em; }
+.adm-lang button[data-active='true'] { background: var(--adm-text); color: #111; }
+
+/* layout */
+.adm-main { max-width: 60rem; margin: 0 auto; padding: 2.5rem 1.5rem 6rem; }
+.adm-h1 { font-size: 1.6rem; font-weight: 900; letter-spacing: -0.02em; margin: 0 0 0.35rem; }
+.adm-sub { color: var(--adm-faint); font-size: 0.8rem; margin: 0 0 2.25rem; }
+
+/* cards / sections */
+.adm-card { background: var(--adm-panel); border: 1px solid var(--adm-line); border-radius: 4px; padding: 1.4rem 1.5rem; margin-bottom: 1.25rem; }
+.adm-card-title { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--adm-accent); margin: 0 0 1.2rem; }
+
+/* fields */
+.adm-field { margin-bottom: 1rem; }
+.adm-field:last-child { margin-bottom: 0; }
+.adm-label { display: block; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--adm-faint); margin-bottom: 0.4rem; }
+.adm-input, .adm-textarea, .adm-select {
+  width: 100%; font: inherit; font-size: 0.88rem;
+  background: var(--adm-panel-2); color: var(--adm-text);
+  border: 1px solid var(--adm-line); border-radius: 3px;
+  padding: 0.6rem 0.75rem; outline: none; transition: border-color 0.15s;
+}
+.adm-input:focus, .adm-textarea:focus, .adm-select:focus { border-color: var(--adm-accent); }
+.adm-textarea { resize: vertical; min-height: 4.5rem; line-height: 1.55; }
+.adm-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 640px) { .adm-grid2 { grid-template-columns: 1fr; } }
+.adm-check { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--adm-dim); cursor: pointer; }
+.adm-check input { accent-color: var(--adm-accent); width: 1rem; height: 1rem; }
+.adm-hint { font-size: 0.7rem; color: var(--adm-faint); margin-top: 0.35rem; }
+
+/* block cards */
+.adm-block { background: var(--adm-panel); border: 1px solid var(--adm-line); border-radius: 4px; margin-bottom: 1rem; overflow: hidden; }
+.adm-block-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.7rem 1rem; background: var(--adm-panel-2); border-bottom: 1px solid var(--adm-line-soft); }
+.adm-block-type { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; }
+.adm-block-type b { color: var(--adm-accent); }
+.adm-block-body { padding: 1.1rem 1.15rem; }
+.adm-iconbtn { font: inherit; cursor: pointer; background: transparent; border: 1px solid var(--adm-line); color: var(--adm-dim); width: 1.7rem; height: 1.7rem; border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; }
+.adm-iconbtn:hover:not(:disabled) { border-color: var(--adm-accent); color: var(--adm-text); }
+.adm-iconbtn:disabled { opacity: 0.3; cursor: default; }
+
+/* style controls */
+.adm-style { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--adm-line-soft); display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem; }
+.adm-style-lbl { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--adm-faint); }
+.adm-color { width: 2rem; height: 1.7rem; padding: 0; border: 1px solid var(--adm-line); border-radius: 3px; background: none; cursor: pointer; }
+
+/* add-block bar */
+.adm-add { display: flex; align-items: center; gap: 0.6rem; margin-top: 1.25rem; padding: 1rem; border: 1px dashed var(--adm-line); border-radius: 4px; }
+
+/* toast */
+.adm-toast { position: fixed; bottom: 1.25rem; left: 50%; transform: translateX(-50%); background: var(--adm-panel-2); border: 1px solid var(--adm-line); border-left: 3px solid var(--adm-accent); padding: 0.7rem 1.1rem; border-radius: 4px; font-size: 0.8rem; box-shadow: 0 8px 30px rgba(0,0,0,0.5); z-index: 50; max-width: 90vw; }
+.adm-toast--err { border-left-color: #ff5a5a; }
+
+.adm-repeat-item { border: 1px solid var(--adm-line-soft); border-radius: 3px; padding: 0.85rem; margin-bottom: 0.6rem; position: relative; }
