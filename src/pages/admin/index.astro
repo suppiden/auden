@@ -29,6 +29,8 @@ const entries = (await getCollection('caseStudies')).sort(
       .brand { font-weight: 900; letter-spacing: -0.02em; font-size: 1.1rem; }
       .brand span { color: rgb(255,77,0); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; margin-left: 0.5rem; }
       .who { display: flex; align-items: center; gap: 1rem; font-size: 0.78rem; color: rgba(240,239,233,0.55); }
+      .guide-link { color: rgb(255,77,0); text-decoration: none; font-size: 0.78rem; font-weight: 600; }
+      .guide-link:hover { text-decoration: underline; }
       .signout { background: none; border: 1px solid rgba(240,239,233,0.25); color: #F0EFE9; padding: 0.4rem 0.9rem; border-radius: 999px; font-size: 0.72rem; cursor: pointer; transition: border-color 0.2s; }
       .signout:hover { border-color: rgb(255,77,0); }
       main { max-width: 60rem; margin: 0 auto; padding: 3rem 1.75rem 5rem; }
@@ -49,6 +51,7 @@ const entries = (await getCollection('caseStudies')).sort(
     <header>
       <div class="brand">Auden <span>Admin</span></div>
       <div class="who">
+        <a href="/admin/guia" class="guide-link">Guía</a>
         <span>{email}</span>
         <button id="signout" class="signout">Cerrar sesión</button>
       </div>

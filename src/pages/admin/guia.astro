@@ -1,0 +1,292 @@
+---
+export const prerender = false;
+---
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<title>Guía del editor Auden</title>
+<meta name="description" content="Cómo crear, editar y publicar case studies en la web de Auden, paso a paso.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+
+<style>
+  :root {
+    --ground: #F4F2EE;
+    --surface: #FFFFFF;
+    --surface-2: #FBFAF7;
+    --ink: #191817;
+    --mid: #6E6A63;
+    --faint: #A5A097;
+    --border: #E5E2DB;
+    --border-strong: #D8D4CC;
+    --accent: #FF4D00;
+    --accent-soft: rgba(255,77,0,0.09);
+    --shadow: 0 1px 2px rgba(25,24,23,0.04), 0 12px 32px -18px rgba(25,24,23,0.18);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0E0E0C;
+      --surface: #171614;
+      --surface-2: #1C1B18;
+      --ink: #F0EFE9;
+      --mid: #A8A49B;
+      --faint: #6E6A62;
+      --border: rgba(240,239,233,0.11);
+      --border-strong: rgba(240,239,233,0.18);
+      --accent: #FF5A1A;
+      --accent-soft: rgba(255,90,26,0.13);
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 16px 40px -20px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0E0E0C;
+    --surface: #171614;
+    --surface-2: #1C1B18;
+    --ink: #F0EFE9;
+    --mid: #A8A49B;
+    --faint: #6E6A62;
+    --border: rgba(240,239,233,0.11);
+    --border-strong: rgba(240,239,233,0.18);
+    --accent: #FF5A1A;
+    --accent-soft: rgba(255,90,26,0.13);
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 16px 40px -20px rgba(0,0,0,0.6);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: 'Public Sans', system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 46rem; margin: 0 auto; padding: 0 1.5rem; }
+
+  /* ── Header ── */
+  .hero { padding: 5.5rem 0 2.5rem; }
+  .eyebrow { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent); margin: 0 0 1.25rem; }
+  h1 {
+    font-family: 'Archivo', sans-serif; font-weight: 900; text-transform: uppercase;
+    font-size: clamp(2.6rem, 8vw, 4.5rem); line-height: 0.94; letter-spacing: -0.02em;
+    margin: 0 0 1.25rem; text-wrap: balance;
+  }
+  .lede { font-size: 1.2rem; line-height: 1.55; color: var(--mid); max-width: 34rem; margin: 0; }
+  .rule { height: 1px; background: var(--border-strong); margin: 3rem 0; border: 0; }
+
+  /* ── Steps ── */
+  .step { padding: 2.75rem 0; border-top: 1px solid var(--border); }
+  .step:first-of-type { border-top: 0; }
+  .step-num {
+    font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 0.72rem; letter-spacing: 0.15em;
+    color: var(--accent); display: inline-flex; align-items: center; gap: 0.6rem; margin: 0 0 0.9rem;
+  }
+  .step-num::before { content: ""; width: 1.6rem; height: 1px; background: var(--accent); }
+  h2 { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1.08; letter-spacing: -0.015em; margin: 0 0 1rem; text-wrap: balance; }
+  h3 { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 1.05rem; margin: 1.75rem 0 0.5rem; letter-spacing: -0.01em; }
+  p { margin: 0 0 1rem; }
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 600; }
+  .accent { color: var(--accent); font-weight: 600; }
+
+  /* pill for UI element names */
+  .ui {
+    font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 0.86em;
+    background: var(--accent-soft); color: var(--accent);
+    padding: 0.05em 0.5em; border-radius: 4px; white-space: nowrap;
+  }
+  kbd {
+    font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 0.82em;
+    background: var(--surface); border: 1px solid var(--border-strong); border-bottom-width: 2px;
+    padding: 0.1em 0.45em; border-radius: 5px; color: var(--ink);
+  }
+
+  /* lists */
+  ul.clean { list-style: none; padding: 0; margin: 1rem 0; display: flex; flex-direction: column; gap: 0.9rem; }
+  ul.clean li { position: relative; padding-left: 1.4rem; }
+  ul.clean li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+
+  /* block glossary */
+  .glossary { display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 1.25rem 0; }
+  .gitem { background: var(--surface); padding: 0.95rem 1.15rem; display: grid; grid-template-columns: 8.5rem 1fr; gap: 1rem; align-items: baseline; }
+  @media (max-width: 540px) { .gitem { grid-template-columns: 1fr; gap: 0.15rem; } }
+  .gitem dt { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--ink); }
+  .gitem dd { margin: 0; color: var(--mid); font-size: 0.96rem; line-height: 1.5; }
+
+  /* callout */
+  .callout {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent); border-radius: 8px;
+    padding: 1.15rem 1.3rem; margin: 1.5rem 0; box-shadow: var(--shadow);
+  }
+  .callout .k { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.5rem; }
+  .callout p { font-size: 0.96rem; color: var(--mid); }
+  .callout p strong { color: var(--ink); }
+
+  /* figures */
+  figure { margin: 1.75rem 0 0.5rem; }
+  figure img { width: 100%; display: block; border: 1px solid var(--border-strong); border-radius: 10px; box-shadow: var(--shadow); }
+  figcaption { font-size: 0.82rem; color: var(--faint); margin-top: 0.65rem; text-align: center; font-style: italic; }
+
+  /* footer */
+  footer { padding: 3.5rem 0 5rem; border-top: 1px solid var(--border); margin-top: 2rem; color: var(--faint); font-size: 0.85rem; }
+  footer .mark { font-family: 'Archivo', sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; color: var(--ink); font-size: 1rem; }
+
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+</style>
+<style>
+.gbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:.75rem;padding:.8rem 1.5rem;background:var(--surface);border-bottom:1px solid var(--border);}
+.gbar a{font-family:Archivo,sans-serif;font-weight:600;font-size:.82rem;color:var(--ink);text-decoration:none;}
+.gbar a:hover{color:var(--accent);}
+.gbar .b{font-family:Archivo,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-.01em;margin-left:auto;font-size:.85rem;}
+</style>
+</head>
+<body>
+<nav class="gbar"><a href="/admin">← Volver al panel</a><span class="b">Auden</span></nav>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Auden · Panel</p>
+    <h1>Guía del editor</h1>
+    <p class="lede">Cómo crear, editar y publicar case studies en la web de Auden. No necesitas saber nada técnico — se rellena como un formulario y se publica con un botón.</p>
+  </header>
+
+  <hr class="rule">
+
+  <!-- 1 -->
+  <section class="step">
+    <p class="step-num">Paso 01</p>
+    <h2>Entrar al panel</h2>
+    <p>Abre la dirección del panel que te ha pasado el equipo (termina en <strong>/admin</strong>) y pulsa <span class="ui">Entrar con Google</span>. Usa la cuenta de Google que has autorizado.</p>
+    <p>Solo entran las cuentas de la lista de acceso. Si ves el aviso <em>«Esa cuenta de Google no tiene acceso»</em>, es que estás usando otra cuenta — cambia de cuenta o pide que te añadan.</p>
+  </section>
+
+  <!-- 2 -->
+  <section class="step">
+    <p class="step-num">Paso 02</p>
+    <h2>El panel de case studies</h2>
+    <p>Nada más entrar verás la lista de todos los case studies. Desde aquí puedes:</p>
+    <ul class="clean">
+      <li><span class="ui">+ Nuevo case study</span> — empezar uno desde cero.</li>
+      <li><span class="ui">Editar</span> — abrir uno existente para cambiarlo.</li>
+      <li><span class="ui">Ver →</span> — abrir la página publicada en la web, en una pestaña nueva.</li>
+    </ul>
+  </section>
+
+  <!-- 3 -->
+  <section class="step">
+    <p class="step-num">Paso 03</p>
+    <h2>Dos idiomas: el truco clave</h2>
+    <p>Hay <strong>dos</strong> selectores de idioma y es importante no confundirlos:</p>
+    <div class="glossary">
+      <div class="gitem"><dt>🌐 ES / EN</dt><dd>Arriba a la izquierda. Cambia el idioma <strong>del propio editor</strong> (los rótulos). No afecta a la web.</dd></div>
+      <div class="gitem"><dt>EN / ES</dt><dd>Arriba a la derecha. Cambia <strong>qué versión del contenido estás escribiendo</strong>: el texto en inglés o el texto en español de la web.</dd></div>
+    </div>
+    <p>Cada case study se publica en inglés <strong>y</strong> español, así que recuerda rellenar los textos en <strong>las dos pestañas</strong> (EN y ES). La estructura y los estilos son comunes; solo cambia el texto.</p>
+  </section>
+
+  <!-- 4 -->
+  <section class="step">
+    <p class="step-num">Paso 04</p>
+    <h2>Los datos básicos</h2>
+    <p>La parte de arriba del editor son los campos generales de la ficha:</p>
+    <div class="glossary">
+      <div class="gitem"><dt>Título</dt><dd>El nombre grande del case study.</dd></div>
+      <div class="gitem"><dt>Slug (URL)</dt><dd>Lo que aparece en la dirección web: <strong>audensonic.com/work/<span class="accent">slug</span>/</strong>. En minúsculas y con guiones. Se fija al crear y ya no se cambia.</dd></div>
+      <div class="gitem"><dt>Cliente / Categoría</dt><dd>Aparecen como pequeño encabezado sobre el título.</dd></div>
+      <div class="gitem"><dt>ID del vídeo</dt><dd>Solo el código del vídeo de YouTube (la parte después de <strong>v=</strong>), no el enlace entero.</dd></div>
+    </div>
+    <p>Justo debajo, la sección <span class="ui">Hero y SEO</span> es el subtítulo bajo el título y los textos que ve Google (meta título y descripción). Rellénalos en EN y ES.</p>
+    <figure>
+      <img src="/admin-guide/editor.png" alt="Vista del editor con los datos básicos y la sección Hero y SEO en español.">
+      <figcaption>El editor: datos básicos arriba, y las pestañas de idioma del contenido a la derecha.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 5 -->
+  <section class="step">
+    <p class="step-num">Paso 05</p>
+    <h2>Los bloques de contenido</h2>
+    <p>El cuerpo del case study se monta con <strong>bloques</strong> que apilas en el orden que quieras. Con <span class="ui">Añadir bloque</span> eliges el tipo, y cada bloque tiene flechas <kbd>↑</kbd> <kbd>↓</kbd> para moverlo y una <kbd>✕</kbd> para borrarlo.</p>
+    <div class="glossary">
+      <div class="gitem"><dt>Texto</dt><dd>Párrafos del cuerpo.</dd></div>
+      <div class="gitem"><dt>Cita</dt><dd>Una frase grande destacada, con un subtítulo pequeño en naranja.</dd></div>
+      <div class="gitem"><dt>Lista numerada</dt><dd>Puntos numerados con título y texto (tipo «detrás de la pieza»).</dd></div>
+      <div class="gitem"><dt>Audio</dt><dd>El reproductor de SoundCloud. Pega el ID de la playlist y el token.</dd></div>
+      <div class="gitem"><dt>Créditos</dt><dd>Parejas de rol → nombre.</dd></div>
+      <div class="gitem"><dt>Entregables</dt><dd>La lista de lo entregado, separada por puntos.</dd></div>
+      <div class="gitem"><dt>Sobre la marca</dt><dd>El bloque final con la descripción del cliente.</dd></div>
+    </div>
+    <figure>
+      <img src="/admin-guide/blocks.png" alt="Bloques del editor con los controles de estilo en la parte inferior.">
+      <figcaption>Cada bloque tiene sus campos y, abajo, sus controles de estilo.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 6 -->
+  <section class="step">
+    <p class="step-num">Paso 06</p>
+    <h2>El estilo de cada bloque</h2>
+    <p>Al pie de cada bloque tienes controles para darle variedad visual sin romper la línea de la marca:</p>
+    <ul class="clean">
+      <li><strong>Fondo</strong> — tonos de marca (normal, alt, craft) o un color propio.</li>
+      <li><strong>Alineación</strong> y <strong>línea divisoria</strong> superior.</li>
+      <li><strong>Acento</strong> — cambia el naranja de ese bloque si lo necesitas.</li>
+    </ul>
+    <div class="callout">
+      <p class="k">Consejo</p>
+      <p>Si un bloque se te va de las manos, pulsa <span class="ui">Volver al estilo de marca</span> y queda como recién puesto. Ante la duda, deja los tonos de marca: siempre quedan bien.</p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="step">
+    <p class="step-num">Paso 07</p>
+    <h2>Ver cómo queda</h2>
+    <p>En cualquier momento pulsa <span class="ui">Vista previa</span>: se abre una vista <strong>exacta</strong> de cómo se verá en la web, que se actualiza sola mientras editas. Puedes alternar entre <span class="ui">Oscuro</span> y <span class="ui">Claro</span> para comprobar los dos modos.</p>
+    <figure>
+      <img src="/admin-guide/preview.png" alt="La vista previa en vivo mostrando el case study renderizado.">
+      <figcaption>La vista previa muestra el resultado real, no una aproximación.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 8 -->
+  <section class="step">
+    <p class="step-num">Paso 08</p>
+    <h2>Guardar y publicar</h2>
+    <p>Cuando esté listo, pulsa <span class="ui">Guardar y publicar</span>. El case study se guarda y la web se actualiza sola.</p>
+    <div class="callout">
+      <p class="k">Ten en cuenta</p>
+      <p>La web tarda <strong>1–2 minutos</strong> en reconstruirse. Si acabas de publicar y aún no ves el cambio en la página real, espera un momento y recarga — es normal.</p>
+    </div>
+    <p>¿Aún no está terminado? Marca la casilla <span class="ui">Borrador</span> en los datos básicos: se guarda pero <strong>no aparece</strong> en la web hasta que la desmarques.</p>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <h2>En resumen</h2>
+    <ul class="clean">
+      <li>Rellena el contenido en <strong>EN y ES</strong> (las dos pestañas de la derecha).</li>
+      <li>El <strong>slug</strong> es la dirección web y no se cambia luego — elígelo con cuidado.</li>
+      <li>Monta el cuerpo con <strong>bloques</strong>; muévelos con las flechas.</li>
+      <li>Usa <strong>Vista previa</strong> antes de publicar.</li>
+      <li>Publicar tarda <strong>1–2 minutos</strong> en verse en la web.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p class="mark">Auden</p>
+    <p>Guía del editor de case studies. Si algo no encaja o quieres un tipo de bloque nuevo, díselo al equipo.</p>
+  </footer>
+
+</div>
+</body>
+</html>
