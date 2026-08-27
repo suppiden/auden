@@ -34,7 +34,7 @@ const UI = {
     basics: 'Datos básicos',
     title: 'Título', slug: 'Slug (URL)', slugHintNew: 'minúsculas-con-guiones · será /work/<slug>/', slugHintLock: 'Bloqueado al editar.',
     client: 'Cliente', category: 'Categoría',
-    videoId: 'ID del vídeo de YouTube', videoIdHint: 'El vídeo grande de la cabecera. Solo el código, la parte después de v= (p.ej. boZns6DvLl8).',
+    videoId: 'Enlace del vídeo de YouTube', videoIdHint: 'El vídeo grande de la cabecera. Pega el enlace del vídeo y el código se extrae solo.',
     duration: 'Duración', durationHint: 'Etiqueta pequeña que se ve en una esquina del vídeo (p.ej. 0:45). Opcional.',
     showJump: 'Mostrar botón «ir al audio» bajo el vídeo', draftFlag: 'Borrador (oculto en la web)',
     jumpTarget: 'Id del bloque destino', jumpTargetHint: 'Dale este id a un bloque de Audio (por defecto: score).',
@@ -77,7 +77,7 @@ const UI = {
     basics: 'Basics',
     title: 'Title', slug: 'URL slug', slugHintNew: 'lowercase-with-hyphens · becomes /work/<slug>/', slugHintLock: 'Locked when editing.',
     client: 'Client', category: 'Category',
-    videoId: 'YouTube video ID', videoIdHint: 'The large hero video. Just the code, the part after v= (e.g. boZns6DvLl8).',
+    videoId: 'YouTube video link', videoIdHint: 'The large hero video. Paste the video link and the code is extracted for you.',
     duration: 'Duration label', durationHint: 'The small label shown in a corner of the video (e.g. 0:45). Optional.',
     showJump: 'Show “jump to score” button under the hero video', draftFlag: 'Draft (hidden from the site)',
     jumpTarget: 'Jump targets block id', jumpTargetHint: 'Give an Audio block this id (default: score).',
@@ -112,6 +112,13 @@ const useT = () => useContext(TCtx);
 const BG_TOKENS = ['default', 'alt', 'craft'];
 
 function rid(type: string) { return `${type}-${Math.random().toString(36).slice(2, 7)}`; }
+
+// Accept a full YouTube URL (any format) or a raw ID, and return just the 11-char ID.
+function ytId(input: string): string {
+  const s = input.trim();
+  const m = s.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : s;
+}
 
 function newBlock(type: Block['type']): Block {
   const id = rid(type);
@@ -229,7 +236,7 @@ export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; is
             </Field>
             <Field label={t.client}><input className="adm-input" value={draft.client} onChange={(e) => update((d) => { d.client = e.target.value; })} /></Field>
             <Field label={t.category}><input className="adm-input" value={draft.category} onChange={(e) => update((d) => { d.category = e.target.value; })} /></Field>
-            <Field label={t.videoId} hint={t.videoIdHint}><input className="adm-input" value={draft.videoId} onChange={(e) => update((d) => { d.videoId = e.target.value; })} /></Field>
+            <Field label={t.videoId} hint={t.videoIdHint}><input className="adm-input" value={draft.videoId} placeholder="https://youtu.be/…" onChange={(e) => update((d) => { d.videoId = ytId(e.target.value); })} /></Field>
             <Field label={t.duration} hint={t.durationHint}><input className="adm-input" value={draft.durationLabel ?? ''} placeholder="0:45" onChange={(e) => update((d) => { d.durationLabel = e.target.value; })} /></Field>
           </div>
           <div className="adm-field" style={{ marginTop: '0.9rem', display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
