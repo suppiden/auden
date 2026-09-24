@@ -71,3 +71,8 @@
   .cs-audio-facade:hover .cs-audio-wave span { background: rgba(255,77,0,0.55); }
   .cs-audio iframe { display: block; border: 0; }
   @media (max-width: 600px) { .cs-audio-wave { display: none; } .cs-audio-meta { flex: 1; } }
+
+/* ── Image block ── */
+.cs-figure { max-width: 64rem; margin: 0 auto; }
+.cs-figure-img { width: 100%; height: auto; display: block; border-radius: 2px; }
+.cs-figure-cap { margin: 1rem 0 0; font-size: 0.8rem; color: var(--cs-text-muted); text-align: center; letter-spacing: 0.02em; }

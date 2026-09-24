@@ -38,7 +38,7 @@ const entries = (await getCollection('caseStudies', ({ data }) => !data.draft)).
         <div class="wl-grid" data-reveal-stagger>
           {entries.map((entry) => {
             const d = entry.data;
-            const ytThumb = `https://img.youtube.com/vi/${d.videoId}/maxresdefault.jpg`;
+            const ytThumb = d.videoId ? `https://img.youtube.com/vi/${d.videoId}/maxresdefault.jpg` : d.heroImage;
             return (
               <a href={`/es/work/${entry.id}/`} class="wl-card">
                 <div class="wl-thumb-wrap">

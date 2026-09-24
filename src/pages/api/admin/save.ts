@@ -60,7 +60,7 @@ export const POST: APIRoute = async ({ request }) => {
   if (!slug || !SLUG_RE.test(slug)) return json({ message: 'Invalid slug (use lowercase-with-hyphens).' }, 400);
   if (!data || typeof data !== 'object') return json({ message: 'Missing data.' }, 400);
   if (!data.title?.trim()) return json({ message: 'Title is required.' }, 400);
-  if (!data.videoId?.trim()) return json({ message: 'A hero video ID is required.' }, 400);
+  if (!data.videoId?.trim() && !data.heroImage?.trim()) return json({ message: 'A hero video or image is required.' }, 400);
 
   // The slug is the filename, not a field inside the document.
   const { slug: _drop, ...doc } = data;

@@ -12,7 +12,7 @@ const d = entry.data;
 const base = lang === 'en' ? '/' : '/es/';
 const workUrl = `${base}work/`;
 
-const ytThumb = `https://img.youtube.com/vi/${d.videoId}/maxresdefault.jpg`;
+const ytThumb = d.videoId ? `https://img.youtube.com/vi/${d.videoId}/maxresdefault.jpg` : null;
 const openLabel = lang === 'en' ? 'Open in SoundCloud →' : 'Abrir en SoundCloud →';
 
 // Deterministic waveform heights for any audio facade.
@@ -68,26 +68,32 @@ function scPlayerSrc(sc: { playlistId: string; secretToken?: string }) {
       <p itemprop="description" class="cs-dek" data-reveal>{d.dek[lang]}</p>
     </div>
 
-    <div
-      id="yt-facade"
-      class="cs-video-wrap"
-      role="button"
-      tabindex="0"
-      aria-label={`Play ${d.title}`}
-      data-video-id={d.videoId}
-      data-reveal
-    >
-      <img src={ytThumb} alt={`${d.title} — ${d.dek[lang]}`} loading="lazy" class="cs-video-thumb" />
-      <div class="cs-video-overlay" aria-hidden="true"></div>
-      <div class="cs-play-wrap" aria-hidden="true">
-        <div class="cs-play-btn">
-          <svg width="22" height="24" viewBox="0 0 22 24" fill="none" style="margin-left: 3px;">
-            <path d="M2 2l18 10L2 22V2z" fill="#fff"/>
-          </svg>
+    {d.videoId ? (
+      <div
+        id="yt-facade"
+        class="cs-video-wrap"
+        role="button"
+        tabindex="0"
+        aria-label={`Play ${d.title}`}
+        data-video-id={d.videoId}
+        data-reveal
+      >
+        <img src={ytThumb} alt={`${d.title} — ${d.dek[lang]}`} loading="lazy" class="cs-video-thumb" />
+        <div class="cs-video-overlay" aria-hidden="true"></div>
+        <div class="cs-play-wrap" aria-hidden="true">
+          <div class="cs-play-btn">
+            <svg width="22" height="24" viewBox="0 0 22 24" fill="none" style="margin-left: 3px;">
+              <path d="M2 2l18 10L2 22V2z" fill="#fff"/>
+            </svg>
+          </div>
         </div>
+        {d.durationLabel && <span class="cs-duration">{d.durationLabel}</span>}
       </div>
-      {d.durationLabel && <span class="cs-duration">{d.durationLabel}</span>}
-    </div>
+    ) : d.heroImage ? (
+      <div class="cs-video-wrap" data-reveal>
+        <img src={d.heroImage} alt={`${d.title} — ${d.dek[lang]}`} loading="eager" class="cs-video-thumb" style="cursor: default;" />
+      </div>
+    ) : null}
 
     {d.jumpToScore && (
       <div class="cs-jump" data-reveal>
@@ -233,6 +239,18 @@ function scPlayerSrc(sc: { playlistId: string; secretToken?: string }) {
             <p class="cs-about-label">{c.label}</p>
             <p class="cs-about-body">{c.body}</p>
           </div>
+        </section>
+      );
+    }
+
+    if (block.type === 'image') {
+      const c = block.content[lang];
+      return (
+        <section class={sectionClass(block)} style={sectionStyle(block)} aria-label="Image">
+          <figure class="cs-figure" data-reveal>
+            {block.src && <img src={block.src} alt={c.caption || d.title} loading="lazy" class="cs-figure-img" />}
+            {c.caption && <figcaption class="cs-figure-cap">{c.caption}</figcaption>}
+          </figure>
         </section>
       );
     }

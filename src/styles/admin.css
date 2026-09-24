@@ -95,6 +95,10 @@ body {
 
 .adm-repeat-item { border: 1px solid var(--adm-line-soft); border-radius: 3px; padding: 0.85rem; margin-bottom: 0.6rem; position: relative; }
 
+/* image upload */
+.adm-upload { display: flex; flex-direction: column; gap: 0.7rem; align-items: flex-start; }
+.adm-upload-preview { max-width: 100%; max-height: 220px; border: 1px solid var(--adm-line); border-radius: 4px; display: block; }
+
 /* recovered-draft notice */
 .adm-recovered { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin: 0 0 1.75rem; padding: 0.7rem 1.1rem; background: var(--adm-accent-soft, rgba(255,77,0,0.09)); border: 1px solid rgba(255,77,0,0.35); border-radius: 6px; font-size: 0.82rem; color: var(--adm-text); }
 

@@ -75,6 +75,12 @@ const aboutBlock = base.extend({
   content: loc(z.object({ label: z.string(), body: z.string() })),
 });
 
+const imageBlock = base.extend({
+  type: z.literal('image'),
+  src: z.string(),
+  content: loc(z.object({ caption: z.string().optional() })),
+});
+
 const block = z.discriminatedUnion('type', [
   textBlock,
   quoteBlock,
@@ -83,6 +89,7 @@ const block = z.discriminatedUnion('type', [
   creditsBlock,
   deliverablesBlock,
   aboutBlock,
+  imageBlock,
 ]);
 
 const caseStudies = defineCollection({
@@ -91,8 +98,10 @@ const caseStudies = defineCollection({
     title: z.string(),
     client: z.string(),
     category: z.string(),
-    // Hero + index thumbnail video.
-    videoId: z.string(),
+    // Hero media: a YouTube video (videoId) or an image (heroImage). At least
+    // one is required; if both are set the video wins.
+    videoId: z.string().optional(),
+    heroImage: z.string().optional(),
     durationLabel: z.string().optional(),
     // Show the "jump to score" pill under the hero video, targeting a block id.
     jumpToScore: z.boolean().optional(),

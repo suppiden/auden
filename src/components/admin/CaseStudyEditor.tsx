@@ -11,11 +11,12 @@ type Block =
   | { id: string; type: 'audio'; style: Style; soundcloud?: { playlistId: string; secretToken?: string }; link?: string; content: Loc<{ title: string }> }
   | { id: string; type: 'credits'; style: Style; items: { role: string; name: string }[]; content: Loc<{ label: string }> }
   | { id: string; type: 'deliverables'; style: Style; content: Loc<{ label: string; items: string }> }
-  | { id: string; type: 'about'; style: Style; content: Loc<{ label: string; body: string }> };
+  | { id: string; type: 'about'; style: Style; content: Loc<{ label: string; body: string }> }
+  | { id: string; type: 'image'; style: Style; src: string; content: Loc<{ caption?: string }> };
 
 interface Draft {
   slug: string;
-  title: string; client: string; category: string; videoId: string;
+  title: string; client: string; category: string; videoId?: string; heroImage?: string;
   durationLabel?: string; jumpToScore?: boolean; jumpToId?: string;
   order?: number; draft?: boolean;
   dek: Loc<string>; backLabel: Loc<string>; jumpLabel?: Loc<string>;
@@ -68,7 +69,10 @@ const UI = {
     livePreview: 'Vista previa en vivo', updating: 'actualizando…', dark: 'Oscuro', light: 'Claro', close: 'Cerrar',
     recoveredMsg: 'Recuperamos un borrador sin guardar de antes.', discard: 'Descartar cambios',
     errSlug: 'El slug debe ser minúsculas separadas por guiones.', errTitle: 'El título es obligatorio.',
-    blockLabels: { text: 'Texto', quote: 'Cita', numberedList: 'Lista numerada', audio: 'Audio', credits: 'Créditos', deliverables: 'Entregables', about: 'Sobre la marca' } as Record<Block['type'], string>,
+    heroType: 'Cabecera', heroVideo: 'Vídeo', heroPhoto: 'Imagen', heroImageLabel: 'Imagen de cabecera',
+    uploadImage: 'Subir imagen', changeImage: 'Cambiar imagen', removeImage: 'Quitar', uploading: 'Subiendo…',
+    caption: 'Pie de foto (opcional)', errNoMedia: 'Pon un vídeo o una imagen en la cabecera.',
+    blockLabels: { text: 'Texto', quote: 'Cita', numberedList: 'Lista numerada', audio: 'Audio', credits: 'Créditos', deliverables: 'Entregables', about: 'Sobre la marca', image: 'Imagen' } as Record<Block['type'], string>,
   },
   en: {
     editor: 'Editor', panel: 'Panel language', back: 'Back to dashboard',
@@ -104,7 +108,10 @@ const UI = {
     livePreview: 'Live preview', updating: 'updating…', dark: 'Dark', light: 'Light', close: 'Close',
     recoveredMsg: 'Recovered an unsaved draft from before.', discard: 'Discard changes',
     errSlug: 'Slug must be lowercase words separated by hyphens.', errTitle: 'Title is required.',
-    blockLabels: { text: 'Text', quote: 'Quote', numberedList: 'Numbered list', audio: 'Audio', credits: 'Credits', deliverables: 'Deliverables', about: 'About' } as Record<Block['type'], string>,
+    heroType: 'Hero', heroVideo: 'Video', heroPhoto: 'Image', heroImageLabel: 'Hero image',
+    uploadImage: 'Upload image', changeImage: 'Change image', removeImage: 'Remove', uploading: 'Uploading…',
+    caption: 'Caption (optional)', errNoMedia: 'Add a hero video or image.',
+    blockLabels: { text: 'Text', quote: 'Quote', numberedList: 'Numbered list', audio: 'Audio', credits: 'Credits', deliverables: 'Deliverables', about: 'About', image: 'Image' } as Record<Block['type'], string>,
   },
 };
 type Dict = typeof UI.es;
@@ -132,6 +139,7 @@ function newBlock(type: Block['type']): Block {
     case 'credits': return { id, type, style: { border: true }, items: [{ role: '', name: '' }], content: { en: { label: 'Credits' }, es: { label: 'Creditos' } } };
     case 'deliverables': return { id, type, style: { border: true }, content: { en: { label: 'Deliverables', items: '' }, es: { label: 'Entregables', items: '' } } };
     case 'about': return { id, type, style: { border: true }, content: { en: { label: 'About', body: '' }, es: { label: 'Sobre', body: '' } } };
+    case 'image': return { id, type, style: {}, src: '', content: { en: { caption: '' }, es: { caption: '' } } };
   }
 }
 
@@ -141,6 +149,78 @@ function Field({ label, children, hint }: { label: string; children: React.React
       <label className="adm-label">{label}</label>
       {children}
       {hint && <p className="adm-hint">{hint}</p>}
+    </div>
+  );
+}
+
+// Resize/compress an image in the browser before upload (keeps the repo lean).
+function resizeImage(file: File, maxDim = 1600): Promise<{ dataBase64: string; ext: string; dataUrl: string }> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      if (file.type === 'image/gif') { // don't canvas GIFs (would kill animation)
+        resolve({ dataBase64: dataUrl.split(',')[1], ext: 'gif', dataUrl });
+        return;
+      }
+      const img = new Image();
+      img.onerror = reject;
+      img.onload = () => {
+        let { width, height } = img;
+        if (Math.max(width, height) > maxDim) {
+          const s = maxDim / Math.max(width, height);
+          width = Math.round(width * s); height = Math.round(height * s);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        canvas.getContext('2d')!.drawImage(img, 0, 0, width, height);
+        const isPng = file.type === 'image/png';
+        const out = canvas.toDataURL(isPng ? 'image/png' : 'image/jpeg', 0.85);
+        resolve({ dataBase64: out.split(',')[1], ext: isPng ? 'png' : 'jpg', dataUrl: out });
+      };
+      img.src = dataUrl;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function ImageUpload({ slug, value, onChange }: { slug: string; value?: string; onChange: (url: string) => void }) {
+  const t = useT();
+  const [preview, setPreview] = useState<string | undefined>(value);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  async function pick(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    setBusy(true); setErr(null);
+    try {
+      const { dataBase64, ext, dataUrl } = await resizeImage(file);
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ slug, ext, dataBase64 }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.message || 'Error');
+      setPreview(dataUrl);
+      onChange(json.url);
+    } catch (e: any) { setErr(e.message || 'Error'); }
+    finally { setBusy(false); }
+  }
+  return (
+    <div className="adm-upload">
+      {preview && <img src={preview} className="adm-upload-preview" alt="" />}
+      <div className="adm-row" style={{ gap: '0.5rem', flexWrap: 'wrap' }}>
+        <label className="adm-btn adm-btn--ghost adm-btn--sm" style={{ cursor: busy ? 'default' : 'pointer' }}>
+          {busy ? t.uploading : preview ? t.changeImage : t.uploadImage}
+          <input type="file" accept="image/*" hidden onChange={pick} disabled={busy} />
+        </label>
+        {preview && !busy && (
+          <button className="adm-btn adm-btn--ghost adm-btn--sm adm-btn--danger" onClick={() => { setPreview(undefined); onChange(''); }}>{t.removeImage}</button>
+        )}
+        {err && <span style={{ color: '#ff8f8f', fontSize: '0.75rem' }}>{err}</span>}
+      </div>
     </div>
   );
 }
@@ -158,6 +238,7 @@ export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; is
   });
   const [lang, setLang] = useState<Lang>('en');
   const [uiLang, setUiLang] = useState<UiLang>('es');
+  const [heroMode, setHeroMode] = useState<'video' | 'image'>(draft.heroImage && !draft.videoId ? 'image' : 'video');
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<{ msg: string; err?: boolean } | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -211,6 +292,7 @@ export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; is
   async function save() {
     if (!slugValid) { showToast(t.errSlug, true); return; }
     if (!draft.title.trim()) { showToast(t.errTitle, true); return; }
+    if (!draft.videoId && !draft.heroImage) { showToast(t.errNoMedia, true); return; }
     setSaving(true);
     try {
       const res = await fetch('/api/admin/save', {
@@ -272,8 +354,24 @@ export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; is
             </Field>
             <Field label={t.client}><input className="adm-input" value={draft.client} onChange={(e) => update((d) => { d.client = e.target.value; })} /></Field>
             <Field label={t.category}><input className="adm-input" value={draft.category} onChange={(e) => update((d) => { d.category = e.target.value; })} /></Field>
-            <Field label={t.videoId} hint={t.videoIdHint}><input className="adm-input" value={draft.videoId} placeholder="https://youtu.be/…" onChange={(e) => update((d) => { d.videoId = ytId(e.target.value); })} /></Field>
-            <Field label={t.duration} hint={t.durationHint}><input className="adm-input" value={draft.durationLabel ?? ''} placeholder="0:45" onChange={(e) => update((d) => { d.durationLabel = e.target.value; })} /></Field>
+          </div>
+
+          <div className="adm-field" style={{ marginTop: '1.1rem' }}>
+            <label className="adm-label">{t.heroType}</label>
+            <div className="adm-lang" style={{ marginBottom: '0.75rem' }}>
+              <button data-active={heroMode === 'video'} onClick={() => { setHeroMode('video'); update((d) => { d.heroImage = undefined; }); }}>{t.heroVideo}</button>
+              <button data-active={heroMode === 'image'} onClick={() => { setHeroMode('image'); update((d) => { d.videoId = ''; d.durationLabel = ''; }); }}>{t.heroPhoto}</button>
+            </div>
+            {heroMode === 'video' ? (
+              <div className="adm-grid2">
+                <Field label={t.videoId} hint={t.videoIdHint}><input className="adm-input" value={draft.videoId ?? ''} placeholder="https://youtu.be/…" onChange={(e) => update((d) => { d.videoId = ytId(e.target.value); })} /></Field>
+                <Field label={t.duration} hint={t.durationHint}><input className="adm-input" value={draft.durationLabel ?? ''} placeholder="0:45" onChange={(e) => update((d) => { d.durationLabel = e.target.value; })} /></Field>
+              </div>
+            ) : (
+              <Field label={t.heroImageLabel}>
+                <ImageUpload slug={draft.slug} value={draft.heroImage} onChange={(url) => update((d) => { d.heroImage = url || undefined; })} />
+              </Field>
+            )}
           </div>
           <div className="adm-field" style={{ marginTop: '0.9rem', display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
             <label className="adm-check"><input type="checkbox" checked={!!draft.jumpToScore} onChange={(e) => update((d) => { d.jumpToScore = e.target.checked; })} /> {t.showJump}</label>
@@ -458,6 +556,18 @@ function BlockFields({ block, lang, update }: { block: Block; lang: Lang; update
       <>
         <Field label={t.label}><input className="adm-input" value={c.label} onChange={(e) => update((b) => { b.content[lang].label = e.target.value; })} /></Field>
         <Field label={t.body}><textarea className="adm-textarea" value={c.body} onChange={(e) => update((b) => { b.content[lang].body = e.target.value; })} /></Field>
+      </>
+    );
+  }
+
+  if (block.type === 'image') {
+    const b: any = block;
+    return (
+      <>
+        <Field label={t.heroPhoto}>
+          <ImageUpload slug="" value={b.src} onChange={(url) => update((bb) => { bb.src = url; })} />
+        </Field>
+        <Field label={t.caption}><input className="adm-input" value={c.caption ?? ''} onChange={(e) => update((bb) => { bb.content[lang].caption = e.target.value; })} /></Field>
       </>
     );
   }
