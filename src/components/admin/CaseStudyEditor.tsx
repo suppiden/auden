@@ -66,6 +66,7 @@ const UI = {
     align: 'Alineación', alignLeft: 'Izquierda', alignCenter: 'Centro', alignRight: 'Derecha',
     accent: 'Acento', divider: 'Línea divisoria', reset: 'Volver al estilo de marca',
     livePreview: 'Vista previa en vivo', updating: 'actualizando…', dark: 'Oscuro', light: 'Claro', close: 'Cerrar',
+    recoveredMsg: 'Recuperamos un borrador sin guardar de antes.', discard: 'Descartar cambios',
     errSlug: 'El slug debe ser minúsculas separadas por guiones.', errTitle: 'El título es obligatorio.',
     blockLabels: { text: 'Texto', quote: 'Cita', numberedList: 'Lista numerada', audio: 'Audio', credits: 'Créditos', deliverables: 'Entregables', about: 'Sobre la marca' } as Record<Block['type'], string>,
   },
@@ -101,6 +102,7 @@ const UI = {
     align: 'Align', alignLeft: 'Left', alignCenter: 'Center', alignRight: 'Right',
     accent: 'Accent', divider: 'Top divider', reset: 'Reset to brand',
     livePreview: 'Live preview', updating: 'updating…', dark: 'Dark', light: 'Light', close: 'Close',
+    recoveredMsg: 'Recovered an unsaved draft from before.', discard: 'Discard changes',
     errSlug: 'Slug must be lowercase words separated by hyphens.', errTitle: 'Title is required.',
     blockLabels: { text: 'Text', quote: 'Quote', numberedList: 'Numbered list', audio: 'Audio', credits: 'Credits', deliverables: 'Deliverables', about: 'About' } as Record<Block['type'], string>,
   },
@@ -144,7 +146,16 @@ function Field({ label, children, hint }: { label: string; children: React.React
 }
 
 export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; isNew: boolean }) {
-  const [draft, setDraft] = useState<Draft>(initial);
+  // Autosave key: one slot per case study (or one for a new one).
+  const draftKey = isNew ? 'auden-draft:new' : `auden-draft:${initial.slug}`;
+  const [draft, setDraft] = useState<Draft>(() => {
+    try { const s = localStorage.getItem(draftKey); if (s) return JSON.parse(s) as Draft; } catch {}
+    return initial;
+  });
+  // True only when the restored draft actually differs from the saved version.
+  const [recovered, setRecovered] = useState<boolean>(() => {
+    try { const s = localStorage.getItem(draftKey); return !!s && s !== JSON.stringify(initial); } catch { return false; }
+  });
   const [lang, setLang] = useState<Lang>('en');
   const [uiLang, setUiLang] = useState<UiLang>('es');
   const [saving, setSaving] = useState(false);
@@ -172,6 +183,21 @@ export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; is
     return () => clearTimeout(timer);
   }, [previewOpen, draft, lang, previewTheme]);
 
+  // Autosave the draft to the browser (debounced) so opening the preview,
+  // going back, or reloading never loses work.
+  useEffect(() => {
+    const t = setTimeout(() => {
+      try { localStorage.setItem(draftKey, JSON.stringify(draft)); } catch {}
+    }, 600);
+    return () => clearTimeout(t);
+  }, [draft]);
+
+  function discardDraft() {
+    try { localStorage.removeItem(draftKey); } catch {}
+    setDraft(initial);
+    setRecovered(false);
+  }
+
   function update(mut: (d: Draft) => void) {
     setDraft((prev) => { const next = structuredClone(prev); mut(next); return next; });
   }
@@ -194,6 +220,9 @@ export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; is
       const json = await res.json();
       if (!res.ok) throw new Error(json?.message || 'Save failed');
       showToast(json.message || 'Saved.');
+      // Published to the repo — clear the local autosave.
+      try { localStorage.removeItem(draftKey); } catch {}
+      setRecovered(false);
     } catch (e: any) {
       showToast(e.message || 'Save failed', true);
     } finally { setSaving(false); }
@@ -225,6 +254,13 @@ export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; is
       <main className="adm-main">
         <h1 className="adm-h1">{isNew ? t.newCS : draft.title || t.untitled}</h1>
         <p className="adm-sub">{t.editingA} <strong>{lang.toUpperCase()}</strong> {t.editingB}</p>
+
+        {recovered && (
+          <div className="adm-recovered">
+            <span>{t.recoveredMsg}</span>
+            <button className="adm-btn adm-btn--ghost adm-btn--sm" onClick={discardDraft}>{t.discard}</button>
+          </div>
+        )}
 
         <section className="adm-card">
           <p className="adm-card-title">{t.basics}</p>
