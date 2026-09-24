@@ -1,0 +1,269 @@
+{
+  "title": "TERRA -  SONIC IDENTITY",
+  "client": "TERRA",
+  "category": "Sonic Identity",
+  "videoId": "boZns6DvLl8",
+  "durationLabel": "",
+  "jumpToScore": false,
+  "jumpToId": "score",
+  "order": 99,
+  "draft": true,
+  "dek": {
+    "en": "Sonic identity for a restaurant of proximity, land and emotion. A sonic logo built from the kitchen and the earth, and a sound curation for the dining room.",
+    "es": ""
+  },
+  "backLabel": {
+    "en": "← Work",
+    "es": "← Trabajo"
+  },
+  "jumpLabel": {
+    "en": "Listen to the score",
+    "es": "Escuchar el score"
+  },
+  "seo": {
+    "en": {
+      "metaTitle": "Terra — Sonic Identity Case Study | Auden",
+      "metaDescription": "Sonic identity for Terra, in Cullera: a sonic logo built from the sound of rice simmering and the earth, and a sound curation for the dining room."
+    },
+    "es": {
+      "metaTitle": "",
+      "metaDescription": ""
+    }
+  },
+  "blocks": [
+    {
+      "id": "text-1ytja",
+      "type": "text",
+      "style": {},
+      "content": {
+        "en": {
+          "paragraphs": [
+            [
+              "Terra is a restaurant in Cullera, on the Valencian coast. Proximity cooking: local produce, the seasons and roots. It is listed in the MICHELIN Guide and the Repsol Guide."
+            ],
+            [
+              "The brief held a tension. On one side, tradition: family, proximity, a kitchen with nothing to hide. On the other, ambition: a restaurant stepping into fine dining."
+            ],
+            [
+              "The sound had to hold both. It had to feel like La Terreta, the land around Cullera and Valencia, without turning into a postcard, and it had to raise the level of every place the brand is heard: the screen and the dining room."
+            ]
+          ]
+        },
+        "es": {
+          "paragraphs": [
+            [
+              ""
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "numberedList-iaird",
+      "type": "numberedList",
+      "style": {
+        "bg": "craft",
+        "border": true
+      },
+      "content": {
+        "en": {
+          "label": "The Blueprint - Five steps, agreed before anything is composed",
+          "items": [
+            {
+              "heading": "01 — Brand Sound Positioning",
+              "body": "Warm elegance, not cold luxury. Luxury with roots. Proximity and humility come before display"
+            },
+            {
+              "heading": "02 — Emotional Mapping",
+              "body": "Trust and calm on the surface. Underneath, something older: roots, ancestors and a trace of melancholy. The feeling of a place that was there before you, and will be there after"
+            },
+            {
+              "heading": "03 — Sonic DNA",
+              "body": "One sound, taken from the kitchen: rice simmering in the pan. The earth closes it and puts it out. Very few notes. Organic textures and a natural room. Nothing digital, nothing loud"
+            },
+            {
+              "heading": "04 — Sonic Asset System",
+              "body": "Two pieces: a sonic logo, in a sound version and a version with the word Terra, and a sound curation for the dining room"
+            },
+            {
+              "heading": "05 — Deployment & Consistency",
+              "body": "The brand lives in two places. On screen, through the sonic logo. At the table, through the curation. Both come from the same Blueprint, so they read as one identity"
+            }
+          ]
+        },
+        "es": {
+          "label": "Detras de la pieza",
+          "items": [
+            {
+              "heading": "",
+              "body": ""
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "numberedList-17zw5",
+      "type": "numberedList",
+      "style": {
+        "bg": "craft",
+        "border": true
+      },
+      "content": {
+        "en": {
+          "label": "The sonic logo - A simmer, the earth, and then silence",
+          "items": [
+            {
+              "heading": "1. The first sound is the kitchen's",
+              "body": "Rice simmering in the pan is the sound every Valencian recognises before seeing the dish. We used it to open the logo. It is not a sound effect: it is the signature of the house"
+            },
+            {
+              "heading": "2. The earth closes it",
+              "body": "The simmering is put out by the sound of earth falling to the ground. It is the name of the restaurant, turned into sound. It carries the roots, the land and a touch of melancholy that runs through the family's story"
+            },
+            {
+              "heading": "3. Restraint is the elevation",
+              "body": "Few notes, space between them, a clean and warm production. Tradition, heard with the precision of a fine dining room. It sounds local without sounding folkloric"
+            }
+          ]
+        },
+        "es": {
+          "label": "Detras de la pieza",
+          "items": [
+            {
+              "heading": "",
+              "body": ""
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "audio-pq6po",
+      "type": "audio",
+      "style": {
+        "border": true
+      },
+      "soundcloud": {
+        "playlistId": "2402922435",
+        "secretToken": "s-O3dZjy1GynS"
+      },
+      "link": "https://soundcloud.com/auden-439389537/terra-audio-logo-2-1/s-O3dZjy1GynS?si=a2673241a8984060b5e134357fee3124&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing",
+      "content": {
+        "en": {
+          "title": "The sonic logo"
+        },
+        "es": {
+          "title": "Score original"
+        }
+      }
+    },
+    {
+      "id": "numberedList-kwi1s",
+      "type": "numberedList",
+      "style": {
+        "bg": "craft",
+        "border": true
+      },
+      "content": {
+        "en": {
+          "label": "Sound curation -  The logo is the signature. The curation is what the room lives in.",
+          "items": [
+            {
+              "heading": "",
+              "body": "It is built on the same Blueprint: warm, organic, unhurried, with space for the conversation at the table. It is not background music chosen at random. It carries into the dining room the same identity the logo announces on screen, so the restaurant sounds like itself from the first post a guest sees to the last course."
+            }
+          ]
+        },
+        "es": {
+          "label": "Detras de la pieza",
+          "items": [
+            {
+              "heading": "",
+              "body": ""
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "audio-fdl84",
+      "type": "audio",
+      "style": {
+        "border": true
+      },
+      "soundcloud": {
+        "playlistId": "2402926851",
+        "secretToken": "s-XQJLOd9lBAf"
+      },
+      "link": "https://soundcloud.com/auden-439389537/terra-curation/s-XQJLOd9lBAf?si=8fe3fc98a1ba4c528099d04cc88bc051&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing",
+      "content": {
+        "en": {
+          "title": "Sonic Curation"
+        },
+        "es": {
+          "title": "Score original"
+        }
+      }
+    },
+    {
+      "id": "credits-unk5f",
+      "type": "credits",
+      "style": {
+        "border": true
+      },
+      "items": [
+        {
+          "role": "Sonic Identity",
+          "name": "Auden"
+        },
+        {
+          "role": "Client",
+          "name": "Terra"
+        }
+      ],
+      "content": {
+        "en": {
+          "label": "Credits"
+        },
+        "es": {
+          "label": "Creditos"
+        }
+      }
+    },
+    {
+      "id": "deliverables-prdln",
+      "type": "deliverables",
+      "style": {
+        "border": true
+      },
+      "content": {
+        "en": {
+          "label": "Deliverables",
+          "items": ""
+        },
+        "es": {
+          "label": "Entregables",
+          "items": ""
+        }
+      }
+    },
+    {
+      "id": "about-78zlc",
+      "type": "about",
+      "style": {
+        "border": true
+      },
+      "content": {
+        "en": {
+          "label": "About",
+          "body": "Terra is a restaurant in Cullera (Valencia), run by chefs Kiko Rocher and Loli Sambal. Proximity cooking, land and emotion: local produce, the seasons and roots, from rice to seafood to desserts. Listed in the MICHELIN Guide and the Repsol Guide."
+        },
+        "es": {
+          "label": "Sobre",
+          "body": ""
+        }
+      }
+    }
+  ]
+}
