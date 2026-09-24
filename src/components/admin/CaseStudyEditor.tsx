@@ -56,6 +56,8 @@ const UI = {
     scId: 'ID de la playlist de SoundCloud', scIdHint: 'Id numérico del embed/oEmbed.',
     scToken: 'Token secreto', scTokenHint: 'Para sets privados (la parte s-XXXX).',
     scLink: 'Enlace «Abrir en SoundCloud» (URL completa)',
+    scLinkLabel: 'Enlace de SoundCloud', scLinkHint: 'Pega el enlace del set o pista. Si es privado, el código se coge automáticamente.',
+    scLoad: 'Cargar', scResolving: 'Cargando…', scLoaded: 'Cargado',
     // credits
     creditsShared: 'Créditos (comunes a ambos idiomas)', role: 'Rol', name: 'Nombre', addCredit: '+ Añadir crédito',
     // deliverables
@@ -99,6 +101,8 @@ const UI = {
     scId: 'SoundCloud playlist ID', scIdHint: 'Numeric id from the embed / oEmbed URL.',
     scToken: 'Secret token', scTokenHint: 'For private sets (the s-XXXX part).',
     scLink: '“Open in SoundCloud” link (full share URL)',
+    scLinkLabel: 'SoundCloud link', scLinkHint: 'Paste the set or track link. If private, the code is captured automatically.',
+    scLoad: 'Load', scResolving: 'Loading…', scLoaded: 'Loaded',
     creditsShared: 'Credits (shared across languages)', role: 'Role', name: 'Name', addCredit: '+ Add credit',
     items: 'Items', itemsHint: 'Separate with · (middle dot).',
     label: 'Label',
@@ -222,6 +226,44 @@ function ImageUpload({ slug, value, onChange }: { slug: string; value?: string; 
         {err && <span style={{ color: '#ff8f8f', fontSize: '0.75rem' }}>{err}</span>}
       </div>
     </div>
+  );
+}
+
+function SoundCloudField({ block, update }: { block: any; update: (mut: (b: any) => void) => void }) {
+  const t = useT();
+  const [input, setInput] = useState<string>(block.soundcloud?.url ?? block.link ?? '');
+  const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState<{ ok?: string; err?: string } | null>(
+    block.soundcloud?.playlistId || block.soundcloud?.trackId ? { ok: t.scLoaded } : null
+  );
+  async function resolve() {
+    const v = input.trim();
+    if (!v) return;
+    if (v === block.soundcloud?.url && (block.soundcloud?.playlistId || block.soundcloud?.trackId)) return; // unchanged
+    setBusy(true); setStatus(null);
+    try {
+      const res = await fetch('/api/admin/soundcloud', {
+        method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ url: v }),
+      });
+      const j = await res.json();
+      if (!res.ok) throw new Error(j.message || 'Error');
+      update((b) => { b.soundcloud = { url: v, playlistId: j.playlistId, trackId: j.trackId, secretToken: j.secretToken }; b.link = v; });
+      setStatus({ ok: j.title || t.scLoaded });
+    } catch (e: any) { setStatus({ err: e.message }); }
+    finally { setBusy(false); }
+  }
+  return (
+    <Field label={t.scLinkLabel} hint={t.scLinkHint}>
+      <div className="adm-row" style={{ gap: '0.5rem' }}>
+        <input className="adm-input" value={input} placeholder="https://soundcloud.com/…"
+          onChange={(e) => setInput(e.target.value)} onBlur={resolve} />
+        <button className="adm-btn adm-btn--ghost adm-btn--sm" onClick={resolve} disabled={busy}>{busy ? t.scResolving : t.scLoad}</button>
+      </div>
+      <div style={{ marginTop: '0.4rem', fontSize: '0.75rem' }}>
+        {status?.ok && <span style={{ color: '#7dd69b' }}>✓ {status.ok}</span>}
+        {status?.err && <span style={{ color: '#ff8f8f' }}>{status.err}</span>}
+      </div>
+    </Field>
   );
 }
 
@@ -511,15 +553,10 @@ function BlockFields({ block, lang, update }: { block: Block; lang: Lang; update
   }
 
   if (block.type === 'audio') {
-    const b: any = block;
     return (
       <>
         <Field label={t.title}><input className="adm-input" value={c.title} onChange={(e) => update((bb) => { bb.content[lang].title = e.target.value; })} /></Field>
-        <div className="adm-grid2">
-          <Field label={t.scId} hint={t.scIdHint}><input className="adm-input" value={b.soundcloud?.playlistId ?? ''} onChange={(e) => update((bb) => { if (!bb.soundcloud) bb.soundcloud = {}; bb.soundcloud.playlistId = e.target.value; })} /></Field>
-          <Field label={t.scToken} hint={t.scTokenHint}><input className="adm-input" value={b.soundcloud?.secretToken ?? ''} onChange={(e) => update((bb) => { if (!bb.soundcloud) bb.soundcloud = {}; bb.soundcloud.secretToken = e.target.value; })} /></Field>
-        </div>
-        <Field label={t.scLink}><input className="adm-input" value={b.link ?? ''} onChange={(e) => update((bb) => { bb.link = e.target.value; })} /></Field>
+        <SoundCloudField block={block} update={update} />
       </>
     );
   }

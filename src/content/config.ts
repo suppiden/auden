@@ -53,7 +53,12 @@ const numberedListBlock = base.extend({
 
 const audioBlock = base.extend({
   type: z.literal('audio'),
-  soundcloud: z.object({ playlistId: z.string(), secretToken: z.string().optional() }).optional(),
+  soundcloud: z.object({
+    url: z.string().optional(),
+    playlistId: z.string().optional(),
+    trackId: z.string().optional(),
+    secretToken: z.string().optional(),
+  }).optional(),
   link: z.string().optional(),
   content: loc(z.object({ title: z.string() })),
 });

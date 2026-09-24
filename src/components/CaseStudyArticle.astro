@@ -43,9 +43,11 @@ function sectionStyle(block: any) {
   if (s.textColor) out.push(`--cs-text: ${s.textColor}`);
   return out.join('; ');
 }
-function scPlayerSrc(sc: { playlistId: string; secretToken?: string }) {
+function scPlayerSrc(sc: { playlistId?: string; trackId?: string; secretToken?: string }) {
+  const resource = sc.playlistId ? `playlists/${sc.playlistId}` : sc.trackId ? `tracks/${sc.trackId}` : null;
+  if (!resource) return null;
   const token = sc.secretToken ? `&secret_token=${sc.secretToken}` : '';
-  return `https://w.soundcloud.com/player/?url=https%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F${sc.playlistId}${token}&color=%23ff4d00&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true`;
+  return `https://w.soundcloud.com/player/?url=https%3A%2F%2Fapi.soundcloud.com%2F${resource}${token}&color=%23ff4d00&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true`;
 }
 ---
 
