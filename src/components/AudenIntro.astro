@@ -1,0 +1,39 @@
+---
+import AudenMark from './AudenMark.astro';
+interface Props { lang: 'en' | 'es' }
+const { lang } = Astro.props;
+const es = lang === 'es';
+---
+
+<section id="auden-intro" aria-label={es ? 'Presentación de Auden' : 'Auden introduction'}>
+  <div class="intro-stage" data-intro-mark aria-hidden="true">
+    <div class="intro-halo"></div>
+    <AudenMark />
+  </div>
+  <button class="intro-skip" type="button">{es ? 'Saltar intro' : 'Skip intro'} <span aria-hidden="true">↗</span></button>
+</section>
+
+<script>
+  import { startAudenIntro } from '../scripts/auden-intro';
+  startAudenIntro();
+  document.addEventListener('astro:page-load', startAudenIntro);
+  window.addEventListener('pageshow', e => { if (e.persisted) startAudenIntro(); });
+</script>
+
+<style>
+  #auden-intro { display: none; position: fixed; inset: 0; z-index: 99999; background: #080808; color: #fff; pointer-events: none; transition: opacity 850ms ease, visibility 850ms ease; }
+  :global(.auden-intro-pending) #auden-intro { display: block; }
+  #auden-intro.is-leaving { opacity: 0; visibility: hidden; }
+  .intro-stage { position: absolute; left: 50%; top: 47%; width: clamp(8rem, 24vw, 17rem); aspect-ratio: 899 / 617; transform: translate(-50%,-50%); color: #fff; pointer-events: none; }
+  .intro-stage :global(svg) { display: block; width: 100%; height: 100%; overflow: visible; animation: signal-reveal 850ms ease-out both; filter: drop-shadow(0 0 10px #ff4d0060) drop-shadow(0 0 30px #ff4d0030); transition: filter 800ms ease; }
+  .intro-halo { position: absolute; inset: -100%; border-radius: 50%; background: radial-gradient(ellipse, #ff4d0029, #ff4d0008 36%, transparent 65%); animation: signal-light 1000ms ease-out both; }
+  .intro-stage.is-flying :global(svg) { animation: none; filter: none; }
+  .intro-stage.is-flying .intro-halo { animation: none; opacity: 0; transition: opacity 600ms ease; }
+  .intro-skip { position: absolute; bottom: max(1.5rem, env(safe-area-inset-bottom)); right: max(1.5rem, env(safe-area-inset-right)); pointer-events: auto; min-height: 44px; padding: .5rem 1rem; border: 0; background: transparent; color: #a9a7a4; font: inherit; font-size: .65rem; letter-spacing: .08em; cursor: pointer; }
+  .intro-skip span { margin-left: 1rem; }
+  .intro-skip:hover { color: white; }
+  .intro-skip:focus-visible { outline: 2px solid #ff4d00; outline-offset: 4px; }
+  @keyframes signal-reveal { 0% { opacity: .1; transform: scale(.985); } 25% { opacity: 1; } 42% { opacity: .65; } 68%,100% { opacity: 1; transform: scale(1); } }
+  @keyframes signal-light { 0% { opacity: 0; transform: scale(.8); } 50% { opacity: 1; } 100% { opacity: .6; transform: scale(1.08); } }
+  @media(prefers-reduced-motion: reduce) { :global(.auden-intro-pending) #auden-intro { display: none; } }
+</style>

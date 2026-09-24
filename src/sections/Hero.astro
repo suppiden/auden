@@ -32,19 +32,17 @@ const { t } = Astro.props;
       <span
         id="hero-logo-glow"
         class="absolute inset-0 -inset-x-20 -inset-y-10 pointer-events-none"
-        style="opacity: 0; transition: opacity 1.2s ease;"
+        style="opacity: 1; transition: opacity 1.2s ease;"
         aria-hidden="true"
       ></span>
-      <!-- Light mode: black logo. Dark mode: white logo (swapped via JS) -->
-      <img
-        id="hero-wordmark"
-        src="/auden_logo_black.png"
-        data-src-light="/auden_logo_black.png"
-        data-src-dark="/auden_logo_white.png"
-        alt="AUDEN"
-        class="relative hero-logo"
-        style="width: clamp(16rem, 50vw, 40rem); display: inline-block; transition: filter 1.2s ease;"
-      />
+      <!-- U bounds in the 4500px source: 1222,2056,899,617.
+           Mask only after WebGL is ready, keeping the full original as fallback. -->
+      <span id="hero-wordmark-frame">
+        <img id="hero-wordmark" src="/auden_logo_black.png"
+          data-src-light="/auden_logo_black.png" data-src-dark="/auden_logo_white.png"
+          alt="AUDEN" width="4500" height="4500" class="relative hero-logo" />
+        <span id="hero-u-slot" aria-hidden="true"></span>
+      </span>
     </h1>
 
     <div>
@@ -87,6 +85,24 @@ const { t } = Astro.props;
 </section>
 
 <style>
+  :global(.auden-intro-pending) #hero-logo-glow { opacity: 0 !important; }
+  :global(.auden-logo-canvas.auden-logo-interactive) { position: absolute; inset: auto; left: 50%; top: 50%; width: 256px; height: 175.69744px; transform-origin: center; transition: opacity 240ms ease; }
+  :global(.auden-logo-control) { position: absolute; inset: 0; min-height: 44px; padding: 0; border: 0; border-radius: 6px; background: transparent; cursor: grab; pointer-events: auto; touch-action: pan-y pinch-zoom; user-select: none; -webkit-tap-highlight-color: transparent; z-index: 1; }
+  :global(.auden-logo-control[hidden]) { display: none; }
+  :global(.auden-logo-control.is-dragging) { cursor: grabbing; }
+  :global(.auden-logo-control:focus-visible) { outline: 1px solid #ff4d00; outline-offset: 8px; }
+
+  #hero-wordmark-frame { position: relative; display: inline-block; width: clamp(16rem, 50vw, 40rem); vertical-align: bottom; }
+  #hero-wordmark { display: block; width: 100%; height: auto; }
+  /* Clear bands lie in the A/U and U/D whitespace, never on another glyph. */
+  #hero-wordmark-frame:global(.intro-u-arriving) #hero-wordmark,
+  #hero-wordmark-frame:global(.has-3d-u) #hero-wordmark {
+    mask-image: linear-gradient(to right, #000 0% 26.6667%, transparent 26.6667% 47.6667%, #000 47.6667% 100%);
+  }
+  #hero-u-slot { position: absolute; left: 27.15556%; top: 45.68889%; width: 19.97778%; height: 13.71111%; pointer-events: none; }
+  :global(.auden-logo-canvas) { position: absolute; inset: -25%; width: 150%; height: 150%; pointer-events: none; }
+  :global(.auden-logo-canvas canvas) { display: block; width: 100%; height: 100%; }
+
   /* ── Light mode ── */
   .hero-video {
     opacity: 0.6;
