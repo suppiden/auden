@@ -178,10 +178,19 @@ function resizeImage(file: File, maxDim = 1600): Promise<{ dataBase64: string; e
         }
         const canvas = document.createElement('canvas');
         canvas.width = width; canvas.height = height;
-        canvas.getContext('2d')!.drawImage(img, 0, 0, width, height);
-        const isPng = file.type === 'image/png';
-        const out = canvas.toDataURL(isPng ? 'image/png' : 'image/jpeg', 0.85);
-        resolve({ dataBase64: out.split(',')[1], ext: isPng ? 'png' : 'jpg', dataUrl: out });
+        const ctx = canvas.getContext('2d')!;
+        ctx.drawImage(img, 0, 0, width, height);
+        // Keep PNG only when the image actually has transparency (logos);
+        // photos — even if uploaded as PNG — become JPEG (far smaller).
+        let transparent = false;
+        if (file.type === 'image/png') {
+          try {
+            const d = ctx.getImageData(0, 0, width, height).data;
+            for (let i = 3; i < d.length; i += 4) { if (d[i] < 250) { transparent = true; break; } }
+          } catch { transparent = true; } // tainted canvas → play safe
+        }
+        const out = transparent ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', 0.82);
+        resolve({ dataBase64: out.split(',')[1], ext: transparent ? 'png' : 'jpg', dataUrl: out });
       };
       img.src = dataUrl;
     };
