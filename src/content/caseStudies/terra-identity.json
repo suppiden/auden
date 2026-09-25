@@ -3,6 +3,7 @@
   "client": "TERRA",
   "category": "Sonic Identity",
   "videoId": "",
+  "heroImage": "/uploads/terra-identity-mugsie5cqfeg.png",
   "durationLabel": "",
   "jumpToScore": true,
   "jumpToId": "score",
@@ -248,6 +249,5 @@
         }
       }
     }
-  ],
-  "heroImage": "/uploads/terra-identity-mugsie5cqfeg.png"
+  ]
 }
