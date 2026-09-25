@@ -2,9 +2,10 @@
   "title": "TERRA -  SONIC IDENTITY",
   "client": "TERRA",
   "category": "Sonic Identity",
-  "videoId": "boZns6DvLl8",
+  "videoId": "",
+  "heroImage": "/uploads/terra-identity-mugsie5cqfeg.png",
   "durationLabel": "",
-  "jumpToScore": false,
+  "jumpToScore": true,
   "jumpToId": "score",
   "order": 99,
   "draft": false,
@@ -33,8 +34,8 @@
   "blocks": [
     {
       "id": "text-1ytja",
-      "type": "text",
       "style": {},
+      "type": "text",
       "content": {
         "en": {
           "paragraphs": [
@@ -60,11 +61,11 @@
     },
     {
       "id": "numberedList-iaird",
-      "type": "numberedList",
       "style": {
         "bg": "craft",
         "border": true
       },
+      "type": "numberedList",
       "content": {
         "en": {
           "label": "The Blueprint - Five steps, agreed before anything is composed",
@@ -104,11 +105,11 @@
     },
     {
       "id": "numberedList-17zw5",
-      "type": "numberedList",
       "style": {
         "bg": "craft",
         "border": true
       },
+      "type": "numberedList",
       "content": {
         "en": {
           "label": "The sonic logo - A simmer, the earth, and then silence",
@@ -140,10 +141,10 @@
     },
     {
       "id": "audio-pq6po",
-      "type": "audio",
       "style": {
         "border": true
       },
+      "type": "audio",
       "soundcloud": {
         "playlistId": "2402922435",
         "secretToken": "s-O3dZjy1GynS"
@@ -160,11 +161,11 @@
     },
     {
       "id": "numberedList-kwi1s",
-      "type": "numberedList",
       "style": {
         "bg": "craft",
         "border": true
       },
+      "type": "numberedList",
       "content": {
         "en": {
           "label": "Sound curation -  The logo is the signature. The curation is what the room lives in.",
@@ -188,10 +189,10 @@
     },
     {
       "id": "audio-fdl84",
-      "type": "audio",
       "style": {
         "border": true
       },
+      "type": "audio",
       "soundcloud": {
         "playlistId": "2402926851",
         "secretToken": "s-XQJLOd9lBAf"
@@ -208,10 +209,10 @@
     },
     {
       "id": "credits-unk5f",
-      "type": "credits",
       "style": {
         "border": true
       },
+      "type": "credits",
       "items": [
         {
           "role": "Sonic Identity",
@@ -232,28 +233,11 @@
       }
     },
     {
-      "id": "deliverables-prdln",
-      "type": "deliverables",
-      "style": {
-        "border": true
-      },
-      "content": {
-        "en": {
-          "label": "Deliverables",
-          "items": ""
-        },
-        "es": {
-          "label": "Entregables",
-          "items": ""
-        }
-      }
-    },
-    {
       "id": "about-78zlc",
-      "type": "about",
       "style": {
         "border": true
       },
+      "type": "about",
       "content": {
         "en": {
           "label": "About",
