@@ -212,7 +212,7 @@ function scPlayerSrc(sc: { playlistId?: string; trackId?: string; secretToken?: 
             {scSrc ? (
               <>
                 <div class="cs-audio">
-                  <div id="sc-facade" class="cs-audio-facade" role="button" tabindex="0" aria-label={c.title} data-sc-src={scSrc}>
+                  <div class="cs-audio-facade" role="button" tabindex="0" aria-label={c.title} data-sc-src={scSrc}>
                     <div class="cs-audio-play" aria-hidden="true">
                       <svg width="18" height="20" viewBox="0 0 22 24" fill="none" style="margin-left: 2px;">
                         <path d="M2 2l18 10L2 22V2z" fill="#fff"/>
@@ -291,11 +291,10 @@ function scPlayerSrc(sc: { playlistId?: string; trackId?: string; secretToken?: 
     facade.addEventListener('keydown', keyHandler);
   }
 
-  // ── SoundCloud facade → inline player ────────────────────────
-  const scFacade = document.getElementById('sc-facade') as HTMLElement | null;
-  if (scFacade) {
+  // ── SoundCloud facades → inline players (one per audio block) ─
+  document.querySelectorAll<HTMLElement>('[data-sc-src]').forEach((facade) => {
     function loadAudio() {
-      const src = scFacade!.dataset.scSrc;
+      const src = facade.dataset.scSrc;
       if (!src) return;
       const iframe = document.createElement('iframe');
       iframe.src = src;
@@ -306,12 +305,11 @@ function scPlayerSrc(sc: { playlistId?: string; trackId?: string; secretToken?: 
       iframe.setAttribute('scrolling', 'no');
       iframe.setAttribute('frameborder', 'no');
       iframe.style.cssText = 'border: 0; display: block; width: 100%;';
-      scFacade!.replaceWith(iframe);
+      facade.replaceWith(iframe);
     }
-    function scKeyHandler(e: KeyboardEvent) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loadAudio(); } }
-    scFacade.addEventListener('click', loadAudio);
-    scFacade.addEventListener('keydown', scKeyHandler);
-  }
+    facade.addEventListener('click', loadAudio);
+    facade.addEventListener('keydown', (e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loadAudio(); } });
+  });
 
   // ── Smooth scroll for in-page jump buttons ───────────────────
   document.querySelectorAll<HTMLElement>('[data-scroll-to]').forEach((btn) => {
