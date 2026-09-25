@@ -9,6 +9,12 @@ interface Props {
 
 const { entry, lang } = Astro.props;
 const d = entry.data;
+
+// Jump target for the hero "listen" button: prefer an explicit block-id match,
+// otherwise the first audio block. (Auto so the client never has to match ids.)
+const jumpTarget = d.jumpToScore
+  ? (d.blocks.find((b) => b.id === d.jumpToId)?.id ?? d.blocks.find((b) => b.type === 'audio')?.id)
+  : null;
 const base = lang === 'en' ? '/' : '/es/';
 const workUrl = `${base}work/`;
 
@@ -97,9 +103,9 @@ function scPlayerSrc(sc: { playlistId?: string; trackId?: string; secretToken?: 
       </div>
     ) : null}
 
-    {d.jumpToScore && (
+    {jumpTarget && (
       <div class="cs-jump" data-reveal>
-        <a href={`#${d.jumpToId}`} class="cs-jump-btn" data-scroll-to={d.jumpToId}>
+        <a href={`#${jumpTarget}`} class="cs-jump-btn" data-scroll-to={jumpTarget}>
           <span class="cs-jump-icon" aria-hidden="true">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
               <path d="M3 14V10M8 18V6M13 15V9M18 20V4M23 13v-2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>

@@ -37,7 +37,7 @@ const UI = {
     client: 'Cliente', category: 'Categoría',
     videoId: 'Enlace del vídeo de YouTube', videoIdHint: 'El vídeo grande de la cabecera. Pega el enlace del vídeo y el código se extrae solo.',
     duration: 'Duración', durationHint: 'Etiqueta pequeña que se ve en una esquina del vídeo (p.ej. 0:45). Opcional.',
-    showJump: 'Mostrar botón «ir al audio» bajo el vídeo', draftFlag: 'Borrador (oculto en la web)',
+    showJump: 'Mostrar botón para saltar al audio en la cabecera (salta solo al primer bloque de Audio)', draftFlag: 'Borrador (oculto en la web)',
     jumpTarget: 'Id del bloque destino', jumpTargetHint: 'Dale este id a un bloque de Audio (por defecto: score).',
     heroSeo: 'Hero y SEO',
     dek: 'Dek (subtítulo bajo el título)', backLabel: 'Texto del enlace «volver»', jumpLabel: 'Texto del botón de salto',
@@ -86,7 +86,7 @@ const UI = {
     client: 'Client', category: 'Category',
     videoId: 'YouTube video link', videoIdHint: 'The large hero video. Paste the video link and the code is extracted for you.',
     duration: 'Duration label', durationHint: 'The small label shown in a corner of the video (e.g. 0:45). Optional.',
-    showJump: 'Show “jump to score” button under the hero video', draftFlag: 'Draft (hidden from the site)',
+    showJump: 'Show a button in the hero that jumps to the audio (auto-targets the first Audio block)', draftFlag: 'Draft (hidden from the site)',
     jumpTarget: 'Jump targets block id', jumpTargetHint: 'Give an Audio block this id (default: score).',
     heroSeo: 'Hero & SEO',
     dek: 'Dek (subtitle under the title)', backLabel: 'Back link label', jumpLabel: 'Jump button label',
@@ -428,11 +428,6 @@ export default function CaseStudyEditor({ initial, isNew }: { initial: Draft; is
             <label className="adm-check"><input type="checkbox" checked={!!draft.jumpToScore} onChange={(e) => update((d) => { d.jumpToScore = e.target.checked; })} /> {t.showJump}</label>
             <label className="adm-check"><input type="checkbox" checked={!!draft.draft} onChange={(e) => update((d) => { d.draft = e.target.checked; })} /> {t.draftFlag}</label>
           </div>
-          {draft.jumpToScore && (
-            <Field label={t.jumpTarget} hint={t.jumpTargetHint}>
-              <input className="adm-input" value={draft.jumpToId ?? 'score'} onChange={(e) => update((d) => { d.jumpToId = e.target.value; })} />
-            </Field>
-          )}
         </section>
 
         <section className="adm-card">

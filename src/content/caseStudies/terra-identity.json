@@ -146,8 +146,8 @@
       },
       "type": "audio",
       "soundcloud": {
-        "playlistId": "2402922435",
-        "secretToken": "s-O3dZjy1GynS"
+        "secretToken": "s-O3dZjy1GynS",
+        "trackId": "2402922435"
       },
       "link": "https://soundcloud.com/auden-439389537/terra-audio-logo-2-1/s-O3dZjy1GynS?si=a2673241a8984060b5e134357fee3124&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing",
       "content": {
@@ -194,8 +194,8 @@
       },
       "type": "audio",
       "soundcloud": {
-        "playlistId": "2402926851",
-        "secretToken": "s-XQJLOd9lBAf"
+        "secretToken": "s-XQJLOd9lBAf",
+        "trackId": "2402926851"
       },
       "link": "https://soundcloud.com/auden-439389537/terra-curation/s-XQJLOd9lBAf?si=8fe3fc98a1ba4c528099d04cc88bc051&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing",
       "content": {
