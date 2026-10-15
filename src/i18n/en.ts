@@ -4,7 +4,7 @@ export const en = {
     title: 'Auden — Sonic Branding Agency',
     description:
       'Auden creates original sonic identities for brands that want to differentiate through sound. Strategic sonic branding for recognition, memory, and consistency.',
-    ogImage: '/og-image.jpg',
+    ogImage: '/og-image-v2.jpg',
   },
   nav: {
     offer: 'Our offer',

@@ -6,7 +6,7 @@ export const es: Translations = {
     title: 'Auden — Agencia de Sonic Branding',
     description:
       'Auden crea identidades sonoras originales para marcas que quieren diferenciarse a través del sonido. Sonic branding estratégico para el reconocimiento, la memoria y la consistencia.',
-    ogImage: '/og-image.jpg',
+    ogImage: '/og-image-v2.jpg',
   },
   nav: {
     offer: 'Nuestra oferta',
