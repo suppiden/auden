@@ -23,7 +23,7 @@ export const es: Translations = {
     tagline: 'Audio Branding y Sonido para Campañ as',
     subheadline:
       'Creamos identidades sonoras originales para marcas que quieren ser reconocidas sin necesidad de ser vistas.',
-    cta: 'Iniciar un proyecto',
+    cta: 'Reserva una demo',
     ctaHref: 'https://eez6xtvk.forms.app/auden-1',
     secondary: 'Ver nuestro trabajo',
     secondaryHref: '#work',
@@ -63,7 +63,7 @@ export const es: Translations = {
       'Guía estratégica de identidad sonora',
       'Derechos de uso comercial',
     ],
-    cta: 'Iniciar un proyecto',
+    cta: 'Reserva una demo',
     methodEyebrow: 'Auden Sonic Method',
     methodHeadline: 'Cómo trabajamos.',
     phases: [
