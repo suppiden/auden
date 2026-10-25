@@ -21,7 +21,7 @@ export const en = {
     tagline: 'Audio Branding & Campaign Sound Studio',
     subheadline:
       'We create original sonic identities for brands that want to be recognized without being seen.',
-    cta: 'Start a project',
+    cta: 'Book a demo',
     ctaHref: 'https://eez6xtvk.forms.app/auden-1',
     secondary: 'See our work',
     secondaryHref: '#work',
@@ -61,7 +61,7 @@ export const en = {
       'Strategic sonic identity guide',
       'Commercial usage rights',
     ],
-    cta: 'Start a project',
+    cta: 'Book a demo',
     methodEyebrow: 'Auden Sonic Method',
     methodHeadline: 'How we work.',
     phases: [

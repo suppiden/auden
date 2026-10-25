@@ -16,12 +16,28 @@ export interface PortfolioItem {
 export const portfolio: PortfolioItem[] = [
   // ── Studio (horizontal, agency-led) ─────────────────────────────
   {
+    id: 'lor-del-xuquer',
+    client: "L'or del Xúquer",
+    category: 'studio',
+    aspect: 'horizontal',
+    description: 'Original score and sound design for the brand launch film.',
+    videoUrl: 'https://www.youtube.com/embed/Ky2QgGD40hY',
+  },
+  {
     id: 'sonic-identity-studio',
     client: 'Auden — Sonic Identity Studio',
     category: 'studio',
     aspect: 'horizontal',
     description: 'A complete sonic identity system built from strategy to final assets.',
     videoUrl: 'https://www.youtube.com/embed/3aAK9RnQxBc',
+  },
+  {
+    id: 'brand-sound-toolkit',
+    client: 'Auden — Brand Sound Toolkit',
+    category: 'studio',
+    aspect: 'horizontal',
+    description: 'Stingers, transitions and sound elements designed for digital content.',
+    videoUrl: 'https://www.youtube.com/embed/KtoV6BfEb14',
   },
   {
     id: 'action-sport',
@@ -38,14 +54,6 @@ export const portfolio: PortfolioItem[] = [
     aspect: 'horizontal',
     description: 'A sonic identity concept built around movement, discovery and emotion.',
     videoUrl: 'https://www.youtube.com/embed/gJZ66MGXdmo',
-  },
-  {
-    id: 'brand-sound-toolkit',
-    client: 'Auden — Brand Sound Toolkit',
-    category: 'studio',
-    aspect: 'horizontal',
-    description: 'Stingers, transitions and sound elements designed for digital content.',
-    videoUrl: 'https://www.youtube.com/embed/KtoV6BfEb14',
   },
 
   // ── Concept (vertical Shorts) ───────────────────────────────────
