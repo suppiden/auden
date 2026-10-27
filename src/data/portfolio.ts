@@ -40,6 +40,14 @@ export const portfolio: PortfolioItem[] = [
     videoUrl: 'https://www.youtube.com/embed/KtoV6BfEb14',
   },
   {
+    id: 'richard-mille-mclaren',
+    client: 'Richard Mille × McLaren',
+    category: 'studio',
+    aspect: 'horizontal',
+    description: 'Original score and sound design for the brand film.',
+    videoUrl: 'https://www.youtube.com/embed/OQzD_D4p2Lg',
+  },
+  {
     id: 'action-sport',
     client: 'Action Sport',
     category: 'studio',
@@ -54,24 +62,6 @@ export const portfolio: PortfolioItem[] = [
     aspect: 'horizontal',
     description: 'A sonic identity concept built around movement, discovery and emotion.',
     videoUrl: 'https://www.youtube.com/embed/gJZ66MGXdmo',
-  },
-
-  // ── Concept (vertical Shorts) ───────────────────────────────────
-  {
-    id: 'richard-mille',
-    client: 'Richard Mille',
-    category: 'concept',
-    aspect: 'vertical',
-    description: 'A short-form sonic concept exploring the brand\'s precision and craft.',
-    videoUrl: 'https://www.youtube.com/embed/qQewBkqsNic',
-  },
-  {
-    id: 'concept-reel',
-    client: 'Concept Reel',
-    category: 'concept',
-    aspect: 'vertical',
-    description: 'A sonic concept piece exploring brand mood through movement and texture.',
-    videoUrl: 'https://www.youtube.com/embed/mEkctaH_ye4',
   },
 
   // ── Post-Production (horizontal) ────────────────────────────────
