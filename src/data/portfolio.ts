@@ -39,29 +39,15 @@ export const portfolio: PortfolioItem[] = [
     description: 'Stingers, transitions and sound elements designed for digital content.',
     videoUrl: 'https://www.youtube.com/embed/KtoV6BfEb14',
   },
+
+  // ── Concept ─────────────────────────────────────────────────────
   {
     id: 'richard-mille-mclaren',
     client: 'Richard Mille × McLaren',
-    category: 'studio',
+    category: 'concept',
     aspect: 'horizontal',
     description: 'Original score and sound design for the brand film.',
     videoUrl: 'https://www.youtube.com/embed/OQzD_D4p2Lg',
-  },
-  {
-    id: 'action-sport',
-    client: 'Action Sport',
-    category: 'studio',
-    aspect: 'horizontal',
-    description: 'Sound design and sonic concept for an action-sport piece.',
-    videoUrl: 'https://www.youtube.com/embed/pGiE_-tjgEU',
-  },
-  {
-    id: 'travel-brand-concept',
-    client: 'Auden — Travel Brand Concept',
-    category: 'studio',
-    aspect: 'horizontal',
-    description: 'A sonic identity concept built around movement, discovery and emotion.',
-    videoUrl: 'https://www.youtube.com/embed/gJZ66MGXdmo',
   },
 
   // ── Post-Production (horizontal) ────────────────────────────────
