@@ -1,0 +1,250 @@
+---
+// Renders the approved FAQ content (delivered as styleless HTML partials).
+// The same visible text is mirrored in the FAQPage JSON-LD on each page.
+import mainEn from '../data/faq/main-en.html?raw';
+import mainEs from '../data/faq/main-es.html?raw';
+
+interface Props {
+  lang: 'en' | 'es';
+}
+
+const { lang } = Astro.props;
+const main = lang === 'es' ? mainEs : mainEn;
+---
+
+<main id="main-content" class="faq-page">
+  <div class="faq-wrap">
+    <Fragment set:html={main} />
+  </div>
+</main>
+
+<style is:global>
+  /* ── FAQ page — scoped under .faq-page so it never leaks ─────────── */
+  .faq-page {
+    background: var(--cs-bg);
+    min-height: 100dvh;
+    padding: 9rem 1.5rem 7rem;
+  }
+  .faq-wrap { max-width: 46rem; margin: 0 auto; }
+
+  .faq-page h1 {
+    font-size: clamp(2rem, 5.5vw, 3.25rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: var(--cs-text);
+    margin: 0 0 1.25rem;
+  }
+  .faq-page .faq-updated {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cs-text-muted);
+    margin: 0 0 1.5rem;
+  }
+  .faq-page > .faq-wrap > p:not(.faq-updated):not(.faq-cta) {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--cs-text-body);
+    margin: 0 0 2.5rem;
+  }
+
+  /* Contents index */
+  .faq-page nav[aria-label] {
+    border-top: 1px solid var(--cs-border);
+    border-bottom: 1px solid var(--cs-border);
+    padding: 1.5rem 0;
+    margin: 0 0 3.5rem;
+  }
+  .faq-page nav[aria-label] ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .faq-page nav[aria-label] a {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--cs-text);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .faq-page nav[aria-label] a:hover {
+    color: rgb(255, 77, 0);
+    border-bottom-color: rgba(255, 77, 0, 0.4);
+  }
+
+  /* Section blocks */
+  .faq-page section[id^='bloque'] { margin: 0 0 3rem; }
+  .faq-page section[id^='bloque'] > h2 {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgb(255, 77, 0);
+    margin: 0 0 0.5rem;
+  }
+
+  /* FAQ item (row) */
+  .faq-page .faq-item { border-top: 1px solid var(--cs-border); }
+  .faq-page section[id^='bloque'] > h2 + .faq-item { border-top: 1px solid var(--cs-border-strong); }
+  .faq-page .faq-item h3 { margin: 0; }
+
+  /* The toggle button injected around each question */
+  .faq-page .faq-q {
+    all: unset;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.25rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1.35rem 0;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--cs-text);
+    transition: color 0.2s;
+  }
+  .faq-page .faq-q:hover { color: rgb(255, 77, 0); }
+  .faq-page .faq-q:focus-visible {
+    outline: 2px solid rgb(255, 77, 0);
+    outline-offset: 3px;
+  }
+  .faq-page .faq-chev {
+    flex: 0 0 auto;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.15rem;
+    position: relative;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .faq-page .faq-chev::before,
+  .faq-page .faq-chev::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 0.62rem;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+  }
+  .faq-page .faq-chev::before { left: 0; transform: translateY(-50%) rotate(45deg); }
+  .faq-page .faq-chev::after  { right: 0; transform: translateY(-50%) rotate(-45deg); }
+  .faq-page .faq-item.is-open .faq-chev { transform: rotate(180deg); }
+
+  /* Answer panel */
+  .faq-page .faq-answer { padding: 0 0 1.6rem; max-width: 42rem; }
+  .faq-page .faq-answer > *:first-child { margin-top: 0; }
+  .faq-page .faq-answer p {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--cs-text-body);
+    margin: 0 0 1rem;
+  }
+  .faq-page .faq-answer p:last-child { margin-bottom: 0; }
+  .faq-page .faq-answer ul,
+  .faq-page .faq-answer ol {
+    margin: 0 0 1rem;
+    padding-left: 1.2rem;
+    color: var(--cs-text-body);
+  }
+  .faq-page .faq-answer li { margin: 0 0 0.4rem; line-height: 1.7; }
+  .faq-page .faq-answer a {
+    color: rgb(255, 77, 0);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 77, 0, 0.35);
+    transition: border-color 0.2s;
+  }
+  .faq-page .faq-answer a:hover { border-bottom-color: rgb(255, 77, 0); }
+
+  /* CTA lines between questions */
+  .faq-page .faq-cta {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--cs-text-body);
+    border-left: 2px solid rgb(255, 77, 0);
+    padding: 0.35rem 0 0.35rem 1rem;
+    margin: 1.5rem 0 2.25rem;
+  }
+  .faq-page .faq-cta a {
+    color: rgb(255, 77, 0);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 77, 0, 0.35);
+  }
+  .faq-page .faq-cta a:hover { border-bottom-color: rgb(255, 77, 0); }
+
+  /* No-JS / pre-enhancement: answers stay visible (crawlable). */
+  .faq-page.is-enhanced .faq-answer[hidden] { display: none; }
+</style>
+
+<script>
+  // ── FAQ accordion — progressive enhancement ──────────────────────────
+  // Delivered markup is <div class="faq-item"><h3>Q</h3> …answer… </div>.
+  // We wrap the question in a button and collapse the answer. Without JS the
+  // full answers remain in the DOM and visible (good for SEO + no-JS users).
+  (() => {
+    const page = document.querySelector<HTMLElement>('.faq-page');
+    if (!page) return;
+    const items = Array.from(page.querySelectorAll<HTMLElement>('.faq-item'));
+
+    items.forEach((item, idx) => {
+      const h3 = item.querySelector('h3');
+      if (!h3) return;
+
+      const panelId = `${item.id || 'faq'}-panel-${idx}`;
+      const qText = h3.textContent?.trim() ?? '';
+
+      // Collect everything after the h3 into the answer panel.
+      const panel = document.createElement('div');
+      panel.className = 'faq-answer';
+      panel.id = panelId;
+      panel.hidden = true;
+      let node = h3.nextSibling;
+      while (node) {
+        const next = node.nextSibling;
+        panel.appendChild(node);
+        node = next;
+      }
+
+      // Turn the heading into a real toggle button.
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'faq-q';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-controls', panelId);
+      btn.innerHTML = `<span>${qText}</span><span class="faq-chev" aria-hidden="true"></span>`;
+      h3.textContent = '';
+      h3.appendChild(btn);
+      item.appendChild(panel);
+
+      const setOpen = (open: boolean) => {
+        item.classList.toggle('is-open', open);
+        btn.setAttribute('aria-expanded', String(open));
+        panel.hidden = !open;
+      };
+      btn.addEventListener('click', () => setOpen(panel.hidden));
+    });
+
+    page.classList.add('is-enhanced');
+
+    // Open (and scroll to) an item linked directly via #qN.
+    const openFromHash = () => {
+      const id = location.hash.slice(1);
+      if (!id) return;
+      const target = document.getElementById(id);
+      if (target?.classList.contains('faq-item')) {
+        const btn = target.querySelector<HTMLButtonElement>('.faq-q');
+        if (btn && btn.getAttribute('aria-expanded') === 'false') btn.click();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+    openFromHash();
+    window.addEventListener('hashchange', openFromHash);
+  })();
+</script>

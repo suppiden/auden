@@ -9,7 +9,13 @@ interface Props {
   canonicalUrl: string;
   alternateUrl: string;
   ogImage?: string;
-  jsonLd?: object;
+  jsonLd?: object | object[];
+  /**
+   * Breadcrumb trail (excluding the page itself, which is appended automatically).
+   * Defaults to the "Work" trail. Pass `null` to omit the layout breadcrumb
+   * entirely (e.g. when the page supplies its own BreadcrumbList via jsonLd).
+   */
+  breadcrumbItems?: { name: string; item: string }[] | null;
 }
 
 const {
@@ -20,10 +26,26 @@ const {
   alternateUrl,
   ogImage = '/og-image-v2.jpg',
   jsonLd,
+  breadcrumbItems,
 } = Astro.props;
 
 const alternateLang = lang === 'en' ? 'es' : 'en';
 const ogImageAbsolute = `https://audensonic.com${ogImage}`;
+
+const defaultTrail = [
+  { name: 'Auden', item: 'https://audensonic.com' },
+  { name: lang === 'en' ? 'Work' : 'Trabajo', item: `https://audensonic.com${lang === 'en' ? '/work/' : '/es/work/'}` },
+  { name: title, item: canonicalUrl },
+];
+// `undefined` → default Work trail; `null` → no layout breadcrumb; array → custom trail (+ page).
+const trail =
+  breadcrumbItems === null
+    ? null
+    : breadcrumbItems
+      ? [...breadcrumbItems, { name: title, item: canonicalUrl }]
+      : defaultTrail;
+
+const extraJsonLd = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
 
 const defaultJsonLd = {
   '@context': 'https://schema.org',
@@ -35,16 +57,16 @@ const defaultJsonLd = {
       url: 'https://audensonic.com',
       description: 'Sonic branding agency.',
     },
-    {
-      '@type': 'BreadcrumbList',
-      '@id': `${canonicalUrl}#breadcrumb`,
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Auden', item: 'https://audensonic.com' },
-        { '@type': 'ListItem', position: 2, name: lang === 'en' ? 'Work' : 'Trabajo', item: `https://audensonic.com${lang === 'en' ? '/work/' : '/es/work/'}` },
-        { '@type': 'ListItem', position: 3, name: title, item: canonicalUrl },
-      ],
-    },
-    ...(jsonLd ? [jsonLd] : []),
+    ...(trail
+      ? [{
+          '@type': 'BreadcrumbList',
+          '@id': `${canonicalUrl}#breadcrumb`,
+          itemListElement: trail.map((b, i) => ({
+            '@type': 'ListItem', position: i + 1, name: b.name, item: b.item,
+          })),
+        }]
+      : []),
+    ...extraJsonLd,
   ],
 };
 ---

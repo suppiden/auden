@@ -1,0 +1,46 @@
+---
+import CaseStudyLayout from '../../../layouts/CaseStudyLayout.astro';
+import InnerNav from '../../../components/InnerNav.astro';
+import Footer from '../../../components/Footer.astro';
+import Faq from '../../../sections/Faq.astro';
+import { getTranslations } from '../../../i18n/utils';
+import schema from '../../../data/faq/faq-es.schema.json';
+
+const t = getTranslations('es');
+const SITE = 'https://audensonic.com';
+const canonicalUrl = `${SITE}/es/preguntas-frecuentes/`;
+const alternateUrl = `${SITE}/faq/`;
+
+const title = 'Preguntas frecuentes sobre branding sonoro | Auden';
+const description =
+  'Qué es el branding sonoro, qué incluye una identidad sonora, cuánto tarda, cómo es un audio logo y qué derechos incluye la música. Respuestas de Auden.';
+
+// Reuse the site's existing Organization (#org) and WebSite (#website) ids;
+// drop the delivered standalone Organization node (see LEEME-programador).
+const jsonLd = [
+  { '@type': 'WebSite', '@id': `${SITE}/#website`, url: `${SITE}/`, name: 'Auden', publisher: { '@id': `${SITE}/#org` } },
+  ...(schema['@graph'] as any[])
+    .filter((n) => n['@type'] !== 'Organization')
+    .map((n) =>
+      n['@type'] === 'WebPage'
+        ? { ...n, publisher: { '@id': `${SITE}/#org` }, isPartOf: { '@id': `${SITE}/#website` } }
+        : n,
+    ),
+];
+---
+
+<CaseStudyLayout
+  lang="es"
+  title={title}
+  description={description}
+  canonicalUrl={canonicalUrl}
+  alternateUrl={alternateUrl}
+  jsonLd={jsonLd}
+  breadcrumbItems={null}
+>
+  <InnerNav t={t} base="/es/" langSwitchHref="/faq/" slot="nav" />
+
+  <Faq lang="es" />
+
+  <Footer t={t} langSwitchHref="/faq/" />
+</CaseStudyLayout>

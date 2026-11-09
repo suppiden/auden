@@ -3,9 +3,15 @@ import type { Translations } from '../i18n/en';
 
 interface Props {
   t: Translations;
+  /** Where the language switch points. Defaults to the other language's home. */
+  langSwitchHref?: string;
 }
 
-const { t } = Astro.props;
+const { t, langSwitchHref = t.nav.langSwitchHref } = Astro.props;
+
+const isEs = t.lang === 'es';
+const faqHref = isEs ? '/es/preguntas-frecuentes/' : '/faq/';
+const faqLabel = isEs ? 'Preguntas frecuentes' : 'FAQ';
 ---
 
 <footer class="bg-cream overflow-hidden">
@@ -85,6 +91,12 @@ const { t } = Astro.props;
       <span>{t.footer.rights}</span>
       <div class="flex items-center gap-4">
         <a
+          href={faqHref}
+          class="nav-link hover:text-charcoal transition-colors pb-0.5"
+        >
+          {faqLabel}
+        </a>
+        <a
           href="#"
           onclick="event.preventDefault(); window.audenCookieSettings && window.audenCookieSettings();"
           class="nav-link hover:text-charcoal transition-colors pb-0.5"
@@ -98,7 +110,7 @@ const { t } = Astro.props;
           hello@audensonic.com
         </a>
         <a
-          href={t.nav.langSwitchHref}
+          href={langSwitchHref}
           class="nav-link hover:text-charcoal transition-colors pb-0.5"
         >
           {t.nav.langSwitch}

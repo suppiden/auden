@@ -1,0 +1,195 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://audensonic.com/#organization",
+      "name": "Auden",
+      "alternateName": "Auden Sonic",
+      "url": "https://audensonic.com/",
+      "email": "hello@audensonic.com",
+      "description": "Sonic identity studio",
+      "areaServed": "Worldwide"
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://audensonic.com/faq/#webpage",
+      "url": "https://audensonic.com/faq/",
+      "name": "Sonic branding and sonic identity: frequently asked questions",
+      "description": "What sonic branding is, what a sonic identity includes, how long it takes and how brand music is directed. Clear answers from Auden.",
+      "inLanguage": "en",
+      "dateModified": "2026-11-06",
+      "isPartOf": {
+        "@id": "https://audensonic.com/#website"
+      },
+      "publisher": {
+        "@id": "https://audensonic.com/#organization"
+      },
+      "breadcrumb": {
+        "@id": "https://audensonic.com/faq/#breadcrumb"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://audensonic.com/faq/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Auden",
+          "item": "https://audensonic.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "FAQ",
+          "item": "https://audensonic.com/faq/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://audensonic.com/faq/#faq",
+      "url": "https://audensonic.com/faq/",
+      "inLanguage": "en",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is sonic branding?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>Sonic branding is the strategic, consistent use of sound (music, sonic logo, voice, effects and interface sounds) so a brand is recognizable by ear at every touchpoint. It is also called audio branding, sound branding, acoustic branding or brand sound, and the result is the brand&#x27;s sonic identity.</p><p>It is not adding music to an ad. It is deciding how the brand sounds and keeping that consistent over time: in advertising, social, video, web, podcasts, apps, events and physical spaces. It helps people recognize you without seeing you, set you apart from competitors and make every piece sound like the same brand. At Auden we treat it as a system: a sonic signature, a musical character and rules for using them.</p>"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does a sonic identity include?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>A full sonic identity brings together the sonic logo, the brand&#x27;s music and the rules to apply them. Auden&#x27;s sonic identity includes an original sonic logo with variations, a music bed for campaigns, a definition of the sound&#x27;s mood, emotion and character, a strategic usage guide and commercial usage rights.</p><p>The guide is the Sonic Blueprint: the document that defines how the brand sounds and how to apply its identity across campaigns, digital products and brand experiences, so any future piece sounds coherent, even if another team produces it.</p>"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Sonic logo, jingle and brand song: what's the difference?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>They are different pieces inside a sonic identity. The sonic logo (or audio logo) is the brand&#x27;s short signature, a jingle is a piece, usually with lyrics, made for a campaign, and a brand song is a longer track that expresses its values. The sonic identity is the system that organizes all three.</p><ul><li><strong>Sonic logo (audio logo)</strong>: What it is: A very short fragment of sound or music that represents the brand, like a visual logo; What it is for: Instant recognition at any touchpoint</li><li><strong>Jingle</strong>: What it is: A musical piece, usually with lyrics, made for an ad or campaign; What it is for: Fixing one specific message</li><li><strong>Brand song</strong>: What it is: A longer track that conveys values and emotion; What it is for: Campaigns, events, internal culture</li><li><strong>Sonic identity</strong>: What it is: The system that includes the above and defines how and when each piece is used; What it is for: Consistency across every channel</li></ul><p>A sonic logo lasts a few seconds and is always used the same way. It helps to have a sound-only version and one that closes with the brand name: according to the SoundOut Index 2025, sonic logos that include the name are 9 times more effective at attribution (see question 15).</p>"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is music direction for a brand?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>Music direction for a brand is the judgment that decides what music it uses, how it should sound and where, so every piece answers to the same idea. It is not conducting an orchestra: it is a brand decision.</p><p>At Auden it includes setting musical references, deciding when original music makes sense and when existing music does, and adapting the result to each format and channel. Once a brand has a sonic identity, music direction is what applies it day to day across ads, content, events and spaces.</p>"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does sound matter for a brand?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>Because sound reaches people even when nobody is looking at the screen: in a podcast, a background video, a speaker or a store. Without a clear approach, every piece sounds different, or sounds like stock music, and the brand builds no memory. With a sonic identity, every appearance reinforces the same recognition.</p><p>A well-built sonic identity aims at three things: recognition (the brand identified by ear), emotional connection with a more refined brand perception, and consistency across channels. These are goals of the work, not guaranteed outcomes. In an Ipsos analysis of more than 2,000 video ads, sonic brand cues appeared in fewer than 10% of them and were linked to stronger brand attention.</p><p>The most recent case: in October 2026 Apple Music renewed its identity from a composition by Fred again.. and NEST Acoustics. The same piece is its new sonic signature and was used to generate the visual logo, according to <a href=\"https://9to5mac.com/2026/10/21/apple-music-unveils-new-design-rebrand-with-logo-made-by-sound/\" rel=\"noopener\">9to5Mac</a>.</p><p>The available data and its limits are in question 15.</p>"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does Auden build a sonic identity?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>Auden starts with strategy, not music. The Auden Sonic Method has four stages: understanding the brand (values, positioning, audience and emotional tone), exploring its sonic territory and its competitors&#x27;, setting the direction in the Sonic Blueprint, and producing the final assets.</p><p>In a standard project, the first week goes to analyzing the brand, the second to exploring sonic directions, and weeks 3 and 4 to the Sonic Blueprint and producing the assets.</p>"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does the music and sound service for ads include?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>Campaign Sound is Auden&#x27;s service for ads, campaigns and branded content: original music, sound design, effects, transitions and a final mix ready to use. A piece of up to 60 seconds includes:</p><ul><li>Masters adapted to each medium; broadcast on TV and radio is contracted separately.</li><li>2 duration cuts derived from the master.</li><li>3 revision rounds.</li><li>Delivery in WAV and MP3.</li><li>Usage rights in every medium except radio and TV (social, web, digital advertising and internal use), worldwide and with no time limit.</li></ul>"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does it take?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>A campaign piece is delivered in 5 to 14 days, depending on its length, after the brief is closed and we receive the final edit. The clock stops while we wait for your feedback. Each of the 3 revision rounds is one consolidated set of notes.</p><p>A full sonic identity takes at least 4 weeks and can run to several months, depending on scope and on whether the whole identity is built or only part of it.</p>"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does it cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>Price depends on scope, and we agree it before starting, with deliverables, revisions and usage defined in writing. A sonic logo, a full sonic identity and the music for an ad are different projects and do not cost the same. Three things determine it: the type of project, the number of pieces, durations and versions, and where it will run. Usage rights are included in every medium except radio and TV, which are quoted separately. Tell us about your brand or your piece and we will send a fixed proposal.</p>"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What do I need to get started?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>For a sonic identity it helps to gather the brand&#x27;s pillars (values, positioning, audience and tone), basic information about the business, the sound or music references you like and the ones you don&#x27;t, and where the brand will be heard (ads, social, retail, events). We collect it in a brand form, and timelines start from the moment we receive it.</p><p>For a campaign piece we need the edit, even a rough one, its length, the publication date and the channels it will run on.</p>"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Original or stock music for an ad?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>It depends on the goal. Stock music is faster and cheaper, but other brands can use the same track and it is not made for your edit. Original music is composed and mixed for the piece and can be exclusive to the brand.</p><p>Original pays off when sound is part of what you want people to remember, or when the piece will carry a lot of media spend. It also lets you use the music in any medium (advertising, social, events, and TV or radio with the rights contracted) without depending on third-party licenses or on another brand using the same track. For short-lived content on a tight budget, stock can be enough.</p>"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What usage rights are included, and what about TV and radio?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>The base price of a Campaign Sound piece includes usage rights in every medium except radio and TV (social, web, digital advertising and the brand&#x27;s internal use), worldwide and with no time limit, for the commissioned piece. Radio and TV broadcast is quoted separately, because the media investment behind it is different.</p><p>The license can be sublicensed to the end advertiser, so the brand can use its ad even if a production company or agency commissioned it. Auden keeps authorship of the work and the right to credit it and show it in its portfolio.</p>"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do video formats and duration cuts cost extra?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>Video formats do not: 16:9, 9:16 and 1:1 use exactly the same audio. Durations are quoted. A 60-second ad and its 30- or 15-second versions are not trims: each length is re-edited to have its own arc, opening and ending.</p><p>The base piece includes 2 duration cuts and the masters adapted to each medium. Additional cuts are quoted separately.</p><p>A recent example: Apple TV&#x27;s sonic identity, introduced in November 2025, exists in three versions: 5 seconds, 1 second for movie trailers and 12 seconds for the start of feature films in theaters, as Apple&#x27;s music director David Taylor explained, <a href=\"https://senalnews.com/es/digital/apple-tv-presento-su-nueva-identidad-visual-y-sonora\" rel=\"noopener\">according to Señal News</a> (in Spanish).</p>"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is sound curation, and how is it different from background music?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>Sound curation is the selection and sequencing of music designed for a space or an experience (a restaurant, a store, an event, a session) and built on the brand&#x27;s identity. It is not background music picked at random: it decides how the experience begins, how it evolves and what it leaves behind.</p><p>It works for restaurants, stores, hotels, gyms, events or sessions: anywhere music is part of the experience. Playback runs from the client&#x27;s own licensed music service and Auden does not hand over files: it provides the judgment and the journey.</p>"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does sonic branding work? How is it measured?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>Yes, with limits: nearly all studies cover US and UK advertising, some are published by companies in the sector, and there is no large Spanish-language study. This is what keeps showing up:</p><ul><li><strong>Ipsos, The Power of You (2020).</strong> Across more than 2,000 video ads, the top performers on branded attention were about 8.5 times more likely to include sonic brand cues, present in fewer than 10% of ads. This is a correlation, not proof of cause. <a href=\"https://www.ipsos.com/sites/default/files/ct/publication/documents/2024-01/Ipsos_Views_Power_of_You.pdf\" rel=\"noopener\">Report</a>.</li><li><strong>SoundOut Index 2025.</strong> Sonic logos that include the brand name are 9 times more effective at attribution, and 36% of consumers say they recognize a sonic logo but are right 43% of the time. SoundOut sells sonic-brand tests. <a href=\"https://www.newswire.com/news/largest-ever-sonic-brand-tracking-study-reveals-the-best-performing-22657209\" rel=\"noopener\">Press release</a>.</li><li><strong>Audacy and Veritonic (2023).</strong> A sonic logo deployed consistently improved ad recall by 17% in radio ads and 14% in podcasts. <a href=\"https://audacyinc.com/press/a-joint-study-by-audacy-and-veritonic-highlights-how-to-make-audio-ads-most-effective/\" rel=\"noopener\">Press release</a>.</li></ul><p>Practical reading: recognizing a sound is not enough; it has to be tied to the brand name and repeated the same way every time. That is why we work with a system and with versions that carry the name. It helps to decide before launch what will be measured: recall, attribution and results.</p>"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is sonic branding only for big brands?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>No. It started with big brands, but it serves any business that wants to stand out and has touchpoints where it is heard: a small business, a startup, a restaurant, a store, a content creator. What changes is scale: a small brand does not need an orchestra, it needs a sound of its own and to use it the same way every time.</p>"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you work with agencies and production companies?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "<p>Yes. If you work with a creative or media agency, we plug in as your sound production partner: original music, sound design and mix for your clients&#x27; pieces. The license can be sublicensed to the end advertiser, so the agency-to-brand chain stays intact.</p><p>As an example of post-production work, Bandit Grand Prix: an original electronic score, sound design and mix for a 45-second short film.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}

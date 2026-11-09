@@ -4,9 +4,11 @@ import type { Translations } from '../i18n/en';
 interface Props {
   t: Translations;
   base: string;
+  /** Where the language switch points. Defaults to the other language's home. */
+  langSwitchHref?: string;
 }
 
-const { t, base } = Astro.props;
+const { t, base, langSwitchHref = t.nav.langSwitchHref } = Astro.props;
 ---
 
 <header
@@ -33,7 +35,7 @@ const { t, base } = Astro.props;
 
     <div class="flex items-center gap-5">
       <a
-        href={t.nav.langSwitchHref}
+        href={langSwitchHref}
         class="text-xs font-medium tracking-widest uppercase hover:text-white transition-colors"
         style="color: rgba(255,255,255,0.6);"
         aria-label={`Switch to ${t.nav.langSwitch}`}
