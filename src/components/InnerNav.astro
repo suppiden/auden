@@ -9,6 +9,7 @@ interface Props {
 }
 
 const { t, base, langSwitchHref = t.nav.langSwitchHref } = Astro.props;
+const faqHref = t.lang === 'es' ? '/es/preguntas-frecuentes/' : '/faq/';
 ---
 
 <header
@@ -30,6 +31,7 @@ const { t, base, langSwitchHref = t.nav.langSwitchHref } = Astro.props;
       <li><a href={`${base}#packages`} class="nav-link transition-colors pb-0.5">{t.nav.about}</a></li>
       <li><a href={`${base}#work`} class="nav-link transition-colors pb-0.5">{t.nav.work}</a></li>
       <li><a href={t.lang === 'es' ? '/es/work/' : '/work/'} class="nav-link transition-colors pb-0.5">Case studies</a></li>
+      <li><a href={faqHref} class="nav-link transition-colors pb-0.5">FAQ</a></li>
       <li><a href={`${base}#contact`} class="nav-link transition-colors pb-0.5">{t.nav.contact}</a></li>
     </ul>
 
@@ -82,6 +84,7 @@ const { t, base, langSwitchHref = t.nav.langSwitchHref } = Astro.props;
     <a href={`${base}#packages`} class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>{t.nav.about}</a>
     <a href={`${base}#work`} class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>{t.nav.work}</a>
     <a href={t.lang === 'es' ? '/es/work/' : '/work/'} class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>Case studies</a>
+    <a href={faqHref} class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>FAQ</a>
     <a href={`${base}#contact`} class="text-base font-medium text-white/80 hover:text-white transition-colors" data-mobile-link>{t.nav.contact}</a>
     <a href={`${base}#contact`} class="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white text-black text-sm font-medium tracking-wide hover:bg-white/90 transition-colors mt-2">{t.nav.contact}</a>
   </div>
